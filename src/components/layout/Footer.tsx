@@ -6,6 +6,7 @@ import { LiveBadge } from "@/components/ui/Badges";
 import { SocialIcon } from "@/components/ui/SocialIcon";
 import { FooterWordmark } from "./FooterWordmark";
 import { BackToTop } from "./BackToTop";
+import { MotionSwitch } from "@/components/motion/MotionControls";
 
 function LinkList({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
@@ -95,7 +96,10 @@ export function Footer() {
           <p>
             © {year} {site.legal.companyName}. All rights reserved.
           </p>
-          <BackToTop />
+          <div className="flex items-center gap-8">
+            <MotionSwitch />
+            <BackToTop />
+          </div>
         </div>
       </div>
     </footer>

@@ -4,7 +4,7 @@ import { useRef, type ReactNode } from "react";
 import { site } from "@/config/site";
 import { media, type PhotoKey } from "@/config/media";
 import { Photo } from "@/components/ui/Photo";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, motionQuery, useGSAP } from "@/lib/gsap";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { Counter } from "@/components/motion/Counter";
 
@@ -13,6 +13,7 @@ function PhotoPill({ k, live = false }: { k: PhotoKey; live?: boolean }) {
   return (
     <span
       aria-hidden
+      data-liquid
       className="mf-w group/pill relative mx-[0.12em] inline-block h-[0.84em] w-[1.75em] -translate-y-[0.07em] overflow-hidden rounded-full align-middle ring-1 ring-white/15 transition-[width] duration-700 ease-(--ease-signal) hover:w-[2.7em]"
     >
       <Photo k={k} sizes="220px" className="transition-transform duration-700 ease-(--ease-signal) group-hover/pill:scale-110" />
@@ -42,7 +43,7 @@ export function Manifesto() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(motionQuery(), () => {
         gsap.fromTo(
           ".mf-w",
           { opacity: 0.12 },

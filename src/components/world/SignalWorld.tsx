@@ -1,5 +1,6 @@
 "use client";
 
+import { motionOff } from "@/lib/motion";
 import { useEffect, useRef } from "react";
 import {
   AdditiveBlending,
@@ -62,7 +63,7 @@ export default function SignalWorld({ count }: { count: number }) {
   useEffect(() => {
     const el = host.current;
     if (!el) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = motionOff();
 
     let renderer: WebGLRenderer;
     try {

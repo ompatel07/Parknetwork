@@ -14,9 +14,39 @@ html.js [data-reveal="scale"] { transform: scale(0.94); }
 html.js [data-reveal="left"] { transform: translate3d(-40px, 0, 0); }
 html.js [data-reveal].is-in { opacity: 1; transform: none; }
 
-/* ─── Hero ───────────────────────────────────────────────────────── */
-.hero { --cx: 50%; --cy: 27%; }
-@media (min-width: 1024px) { .hero { --cx: 71%; --cy: 42%; } }
+/* ─── Hero: wall of feeds + program monitor ──────────────────────── */
+/* Monitor slot size — shared by the hero, its scroll animation and the preloader */
+:root { --tw: min(26vw, 52svh); --th: calc(var(--tw) * 0.625); --tg: clamp(10px, 1.1vw, 20px); }
+@media (max-width: 767px) { :root { --tw: 56vw; --th: calc(var(--tw) * 1.28); --tg: 10px; } }
+
+.hero-monitor { clip-path: inset(calc(50% - var(--th) / 2) calc(50% - var(--tw) / 2) round 16px); }
+@media (min-width: 768px) { .hero-monitor { clip-path: inset(calc(50% - var(--th) / 2) calc(50% - var(--tw) / 2) round 22px); } }
+.hero-ui { top: calc(50% - var(--th) / 2); bottom: calc(50% - var(--th) / 2); left: calc(50% - var(--tw) / 2); right: calc(50% - var(--tw) / 2); }
+.hero-feeds { transform: scale(1.25); }
+html[data-motion="off"] .hero-feeds { transform: none; }
+
+.hero-tile-img { filter: grayscale(0.55) brightness(0.42); transition: filter 0.7s var(--ease-signal), transform 1.2s var(--ease-signal); }
+.hero-tile:hover .hero-tile-img { filter: none; transform: scale(1.06); }
+
+/* Intro: the wall powers on from the centre outward, then the monitor flashes up */
+html[data-motion="on"] .hero-tile {
+  animation: tile-in 1.3s var(--ease-signal) both;
+  animation-delay: calc(var(--intro-delay) - 0.4s + var(--d, 0s));
+}
+@keyframes tile-in {
+  0% { opacity: 0; transform: scale(0.8); filter: brightness(3); }
+  40% { opacity: 1; }
+  100% { opacity: 1; transform: none; filter: none; }
+}
+html[data-motion="on"] .hero-monitor-in {
+  animation: monitor-in 1.5s var(--ease-signal) both;
+  animation-delay: calc(var(--intro-delay) - 0.55s);
+}
+@keyframes monitor-in {
+  0% { transform: scale(1.4); filter: brightness(2.6) saturate(0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: none; filter: none; opacity: 1; }
+}
 
 .hero-pulse {
   transform-box: fill-box;
@@ -213,6 +243,40 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
 .group:hover .roll > span + span,
 .group:focus-visible .roll > span + span { transform: none; }
 
+/* ─── 3D ring gallery ────────────────────────────────────────────── */
+.ring-scene { perspective: 1800px; --cw: clamp(12rem, 19.5vw, 22rem); --r: calc(var(--cw) * 1.5); }
+@media (max-width: 767px) { .ring-scene { perspective: 900px; --cw: 44vw; --r: calc(var(--cw) * 1.45); } }
+.ring3d { transform-style: preserve-3d; transform: rotateX(-14deg) rotateY(18deg); }
+.ring-card { backface-visibility: hidden; -webkit-backface-visibility: hidden; --lit: 1; }
+.ring-shade { opacity: calc(0.78 - var(--lit) * 0.78); }
+
+/* ─── Masked word reveal for headings (see <RevealHeading>) ─────── */
+.rl { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.rw { display: inline-block; }
+html.js[data-motion="on"] [data-reveal="words"] { opacity: 1; transform: none; transition: none; }
+html.js[data-motion="on"] [data-reveal="words"] .rw {
+  transform: translate3d(0, 115%, 0) rotate(6deg);
+  transform-origin: 0 100%;
+  transition: transform 1.15s var(--ease-signal);
+  transition-delay: calc(var(--d, 0s) + var(--i, 0) * 0.055s);
+}
+html.js[data-motion="on"] [data-reveal="words"].is-in .rw { transform: none; }
+
+/* ─── Photo inside type ("GO" in the closing section) ───────────── */
+.photo-type {
+  background-size: 160% auto, cover;
+  background-position: 30% 40%, center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: saturate(1.25) contrast(1.1);
+}
+html[data-motion="on"] .photo-type { animation: photo-pan 14s ease-in-out infinite alternate; }
+@keyframes photo-pan {
+  from { background-position: 10% 30%, center; background-size: 170% auto, cover; }
+  to { background-position: 90% 65%, center; background-size: 140% auto, cover; }
+}
+
 /* ─── 404 glitch ─────────────────────────────────────────────────── */
 .glitch::before,
 .glitch::after {
@@ -257,26 +321,11 @@ html.js [data-reveal="frame"] .frame-img img {
 html.js [data-reveal="frame"].is-in .frame-img img { transform: scale(1); }
 
 /* ─── Hero program monitor: feeds cut like a vision mixer ──────── */
-/* Starting size of the monitor (GSAP opens it to full screen on scroll) */
-.hero-frame { clip-path: inset(26% 6% 32% 6% round 22px); }
-.hero-ui { top: 26%; right: 6%; bottom: 32%; left: 6%; }
-@media (min-width: 768px) {
-  .hero-frame { clip-path: inset(17% 27% 21% 27% round 28px); }
-  .hero-ui { top: 17%; right: 27%; bottom: 21%; left: 27%; }
-}
 .feed-layer { clip-path: inset(0 0 0 100%); transition: clip-path 1s var(--ease-swift); }
 .feed-layer[data-state="on"] { clip-path: inset(0 0 0 0); z-index: 2; }
 .feed-layer[data-state="prev"] { clip-path: inset(0 0 0 0); z-index: 1; }
 .feed-layer[data-state="on"] img { animation: ken-burns 6s linear both; }
 @keyframes ken-burns { from { transform: scale(1.14); } to { transform: scale(1); } }
-.feed-glitch { opacity: 0; }
-.feed-glitch[data-cut] { animation: feed-glitch 0.45s steps(2) 1; }
-@keyframes feed-glitch {
-  0% { opacity: 0.55; transform: translateX(-2%); clip-path: inset(18% 0 62% 0); }
-  25% { opacity: 0.4; transform: translateX(3%); clip-path: inset(58% 0 20% 0); }
-  50% { opacity: 0.5; transform: translateX(-1%); clip-path: inset(40% 0 44% 0); }
-  100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
-}
 .scanlines {
   background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.045) 0 1px, transparent 1px 3px);
   mix-blend-mode: overlay;
@@ -302,15 +351,13 @@ html.js [data-reveal="frame"].is-in .frame-img img { transform: scale(1); }
 .tile-img img { filter: grayscale(0.85) brightness(0.62); transition: filter 0.8s var(--ease-signal), transform 1.4s var(--ease-signal); }
 
 /* ─── Reduced motion: show the finished state ───────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  html.js [data-reveal] { opacity: 1; transform: none; }
-  .map-arc { stroke-dashoffset: 0; }
-  .step { opacity: 1; }
-  .step__live { opacity: 1; transform: none; }
-  .hero-pulse { display: none; }
-  .neon[data-on] { animation: none; }
-  html.js [data-reveal="frame"] .frame-clip { clip-path: none; }
-  html.js [data-reveal="frame"] .frame-img img { transform: none; }
-  .feed-layer[data-state="on"] img { animation: none; }
-  .meter span { animation: none; transform: scaleY(0.6); }
-}
+html.js[data-motion="off"] [data-reveal] { opacity: 1; transform: none; }
+html[data-motion="off"] .map-arc { stroke-dashoffset: 0; }
+html[data-motion="off"] .step { opacity: 1; }
+html[data-motion="off"] .step__live { opacity: 1; transform: none; }
+html[data-motion="off"] .hero-pulse { display: none; }
+html[data-motion="off"] .neon[data-on] { animation: none; }
+html.js[data-motion="off"] [data-reveal="frame"] .frame-clip { clip-path: none; }
+html.js[data-motion="off"] [data-reveal="frame"] .frame-img img { transform: none; }
+html[data-motion="off"] .feed-layer[data-state="on"] img { animation: none; }
+html[data-motion="off"] .meter span { animation: none; transform: scaleY(0.6); }

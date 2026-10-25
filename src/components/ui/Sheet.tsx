@@ -1,11 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useId, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { useDialog } from "@/lib/useDialog";
-import { useIsDesktop } from "@/lib/hooks";
+import { useIsDesktop, useReducedMotion } from "@/lib/hooks";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 

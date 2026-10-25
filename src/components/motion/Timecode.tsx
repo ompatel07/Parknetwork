@@ -1,5 +1,6 @@
 "use client";
 
+import { motionOff } from "@/lib/motion";
 import { useEffect, useRef } from "react";
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -10,7 +11,7 @@ export function Timecode({ className }: { className?: string }) {
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff()) return;
     const start = performance.now();
     let raf = 0;
     let last = -1;

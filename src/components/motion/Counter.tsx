@@ -1,5 +1,6 @@
 "use client";
 
+import { motionOff } from "@/lib/motion";
 import { useEffect, useRef } from "react";
 
 /**
@@ -11,7 +12,7 @@ export function Counter({ value, suffix = "", duration = 2 }: { value: number; s
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff()) return;
     const fmt = (n: number) => `${Math.round(n).toLocaleString("en-IN")}${suffix}`;
 
     // Only animate if it starts off-screen (avoids a visible jump to 0)

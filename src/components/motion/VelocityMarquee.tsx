@@ -1,5 +1,6 @@
 "use client";
 
+import { motionOff } from "@/lib/motion";
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
 
@@ -23,7 +24,7 @@ export function VelocityMarquee({
 
   useEffect(() => {
     const el = track.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff()) return;
     let x = 0;
     let raf = 0;
     let prev = performance.now();
@@ -80,7 +81,7 @@ export function VelocityMarquee({
 
   return (
     <div className={cn("relative overflow-hidden py-2", className)}>
-      <div ref={track} className="flex w-max will-change-transform motion-reduce:w-auto motion-reduce:flex-wrap">
+      <div ref={track} className="flex w-max will-change-transform motion-off:w-auto motion-off:flex-wrap">
         {row(false)}
         {row(true)}
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { motionOff } from "@/lib/motion";
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
 
@@ -14,7 +15,7 @@ export function AudioVisualizer({ bars = 48, className }: { bars?: number; class
     const canvas = ref.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = motionOff();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     let w = 0;

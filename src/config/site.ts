@@ -47,6 +47,14 @@ export const site = {
   description:
     "Park Live Network supports live-streaming and audio chat communities through host support, agency coordination, coin seller services and business partnerships.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.parklivenetwork.com", // PLACEHOLDER domain
+
+  /**
+   * Animations. "system" respects the visitor's device setting
+   * ("reduce motion" / Windows "Animation effects" off) and offers a
+   * one-click "Enable animations" button. "on" always animates (visitors
+   * can still switch motion off from the footer).
+   */
+  motion: { default: "system" as "system" | "on" },
   locale: "en_IN",
   language: "en",
 

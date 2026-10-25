@@ -2,6 +2,10 @@
 @import "lenis/dist/lenis.css";
 @import "./effects.css";
 
+/* motion-on: / motion-off: variants follow <html data-motion> (lib/motion.ts) */
+@custom-variant motion-on (&:where(html[data-motion="on"] *));
+@custom-variant motion-off (&:where(html[data-motion="off"] *));
+
 /* ════════════════════════════════════════════════════════════════════
    DESIGN TOKENS — "THE SIGNAL"
    ════════════════════════════════════════════════════════════════════ */
@@ -278,17 +282,16 @@
 }
 .preloader__frame {
   position: absolute;
-  top: 26%; right: 6%; bottom: 32%; left: 6%;
+  top: calc(50% - var(--th) / 2); bottom: calc(50% - var(--th) / 2);
+  left: calc(50% - var(--tw) / 2); right: calc(50% - var(--tw) / 2);
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: 16px;
   background: var(--color-surface);
   box-shadow: 0 0 0 2px rgb(255 61 110 / 0.7);
   clip-path: inset(50% 0 50% 0 round 22px);
   animation: pl-open 0.7s var(--ease-swift) 0.1s forwards, pl-fade 0.45s ease 1.7s forwards;
 }
-@media (min-width: 768px) {
-  .preloader__frame { top: 17%; right: 27%; bottom: 21%; left: 27%; border-radius: 28px; }
-}
+@media (min-width: 768px) { .preloader__frame { border-radius: 22px; } }
 .pl-img { opacity: 0; animation: pl-show 0.01s steps(1) forwards; animation-delay: calc(0.35s + var(--i) * 0.24s); }
 .preloader__meta {
   position: absolute;
@@ -361,14 +364,15 @@ html[data-preloaded] { --intro-delay: 0.55s; }
 /* ════════════════════════════════════════════════════════════════════
    REDUCED MOTION — calm, static fallbacks everywhere
    ════════════════════════════════════════════════════════════════════ */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    animation-delay: 0s !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-  .grain { animation: none; }
-  .preloader { display: none; }
+/* Driven by <html data-motion="off"> (device setting or visitor toggle — lib/motion.ts) */
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: 0s !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
 }
+html[data-motion="off"] .grain { animation: none; }
+html[data-motion="off"] .preloader { display: none; }

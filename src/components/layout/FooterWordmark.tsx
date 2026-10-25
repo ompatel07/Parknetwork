@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, motionQuery, useGSAP } from "@/lib/gsap";
 
 const WORD = ["P", "A", "R", "K", " ", "L", "I", "V", "E"];
 
@@ -12,7 +12,7 @@ export function FooterWordmark() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(motionQuery(), () => {
         const main = document.getElementById("main");
         const footer = root.current?.closest("footer");
         if (!main || !footer) return;

@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { site } from "@/config/site";
 import { media } from "@/config/media";
 import { useFinePointer, useReducedMotion } from "@/lib/hooks";
+import { RevealHeading } from "@/components/ui/RevealHeading";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { Button } from "@/components/ui/Button";
 import { Photo } from "@/components/ui/Photo";
@@ -56,11 +57,7 @@ export function Multiview() {
             <ChannelLabel channel="02" data-reveal>
               Multiview
             </ChannelLabel>
-            <h2 className="mt-8 text-d1 uppercase" data-reveal style={{ ["--d" as string]: "0.05s" }}>
-              Six channels.
-              <br />
-              <span className="accent normal-case text-beam">One network.</span>
-            </h2>
+            <RevealHeading title="Six channels." accent="One network." breakAccent delay={0.05} className="mt-8 text-d1 uppercase" />
           </div>
           <div className="lg:col-span-4 lg:col-start-9" data-reveal style={{ ["--d" as string]: "0.1s" }}>
             <p className="text-lead text-muted">
@@ -92,7 +89,7 @@ export function Multiview() {
               <Timecode className="text-ink/80" />
             </span>
           </div>
-          <ul className="grid gap-2 md:grid-cols-2 md:gap-2.5 lg:grid-cols-3">
+          <ul data-vskew className="grid gap-2 md:grid-cols-2 md:gap-2.5 lg:grid-cols-3">
             {services.map((s, i) => {
               const live = i === active;
               return (
@@ -100,6 +97,7 @@ export function Multiview() {
                   <TransitionLink
                     href={`/services#${s.slug}`}
                     data-tile={i}
+                    data-liquid
                     data-live={live || undefined}
                     data-cursor={fine ? "Watch" : undefined}
                     onPointerEnter={() => fine && setHover(i)}

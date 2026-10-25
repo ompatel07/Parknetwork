@@ -1,6 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useReducedMotion } from "@/lib/hooks";
 import { useEffect, useRef } from "react";
 import { ArrowUpRight, Mail, MessageCircle } from "lucide-react";
 import { mailHref, site, whatsappHref } from "@/config/site";

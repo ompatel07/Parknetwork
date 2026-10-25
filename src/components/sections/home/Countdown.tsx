@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { site } from "@/config/site";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, motionQuery, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { Photo } from "@/components/ui/Photo";
 import { media } from "@/config/media";
@@ -43,7 +43,7 @@ export function Countdown({ channel = "04" }: { channel?: string }) {
       };
 
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(motionQuery(), () => {
         render(0);
         const st = ScrollTrigger.create({
           trigger: el,
@@ -54,17 +54,49 @@ export function Countdown({ channel = "04" }: { channel?: string }) {
         });
         return () => st.kill();
       });
-      mm.add("(prefers-reduced-motion: reduce)", () => render(1));
     },
     { scope: section },
   );
 
   return (
+    <>
+      {/* Animations off: the same story as a calm, readable list */}
+      <section data-scene="dust" data-scene-dim="0.2" className="relative hidden bg-bg py-(--section-y) motion-off:block">
+        <div className="container-site">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <ChannelLabel channel={channel}>How it works</ChannelLabel>
+              <h2 className="mt-7 text-d1 uppercase">
+                Countdown to <span className="accent normal-case text-beam">on air.</span>
+              </h2>
+            </div>
+            <span className="neon self-start rounded-xl border-2 px-5 py-2.5 font-display text-[clamp(1.2rem,0.9rem+1.4vw,2.4rem)] font-bold tracking-[0.16em]" data-on="">
+              ON AIR
+            </span>
+          </div>
+          <ol className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {steps.map((s, i) => (
+              <li key={s.title} className="overflow-hidden rounded-[1.75rem] border border-line bg-surface">
+                <div className="relative aspect-[16/11]">
+                  <Photo k={media.steps[i] ?? "on-air"} sizes="(min-width: 1024px) 24vw, (min-width: 768px) 48vw, 94vw" />
+                  <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90">T – {String(n - i).padStart(2, "0")}</span>
+                </div>
+                <div className="p-6">
+                  <p className="eyebrow text-cyan">Step {String(i + 1).padStart(2, "0")}</p>
+                  <h3 className="mt-3 text-h4 font-semibold">{s.title}</h3>
+                  <p className="mt-2 text-muted">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
     <section
       ref={section}
       data-scene="dust"
       data-scene-dim="0"
-      className="group/cd relative h-svh min-h-[40rem] overflow-hidden bg-bg"
+      className="group/cd relative h-svh min-h-[40rem] overflow-hidden bg-bg motion-off:hidden"
     >
       {/* ambient red wash when live */}
       <div
@@ -149,5 +181,6 @@ export function Countdown({ channel = "04" }: { channel?: string }) {
         </div>
       </div>
     </section>
+    </>
   );
 }

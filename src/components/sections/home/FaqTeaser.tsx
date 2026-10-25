@@ -1,4 +1,5 @@
 import { site } from "@/config/site";
+import { RevealHeading } from "@/components/ui/RevealHeading";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { Button } from "@/components/ui/Button";
 import { Accordion } from "@/components/ui/Accordion";
@@ -12,9 +13,7 @@ export function FaqTeaser({ channel = "06" }: { channel?: string }) {
             <ChannelLabel channel={channel} data-reveal>
               Frequently asked
             </ChannelLabel>
-            <h2 className="mt-8 text-d1 uppercase" data-reveal style={{ ["--d" as string]: "0.05s" }}>
-              Good <span className="accent normal-case text-beam">questions.</span>
-            </h2>
+            <RevealHeading title="Good" accent="questions." delay={0.05} className="mt-8 text-d1 uppercase" />
             <p className="mt-6 max-w-sm text-muted" data-reveal style={{ ["--d" as string]: "0.1s" }}>
               The things people ask us most. Can&apos;t find yours? Our support team is a message away.
             </p>

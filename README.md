@@ -18,7 +18,15 @@ One persistent WebGL particle system runs behind every page and reshapes itself 
 
 Any section opts in with `data-scene="globe"` (plus optional `data-scene-align="left|right|center"` and `data-scene-dim="0.4"`). See `src/components/world/`.
 
-Every animation respects `prefers-reduced-motion`. Phones get a smaller particle budget, and low-end devices get fewer particles still.
+### Animations and "reduce motion"
+
+All motion is controlled by one switch, `<html data-motion="on|off">`, set before the page paints (`src/lib/motion.ts`):
+
+- By default (`site.motion.default = "system"`), the site follows the visitor's device setting. On Windows, turning off **Settings → Accessibility → Visual effects → Animation effects** makes Chrome report "prefers reduced motion", and the site then shows a calm, static version.
+- When that happens, a small prompt offers **Enable animations**. The footer also has a Motion On/Off switch. Both choices are remembered.
+- To always animate regardless of the device setting, set `motion: { default: "on" }` in `src/config/site.ts`.
+
+Phones get a smaller particle budget, and low-end devices get fewer particles still.
 
 ## Getting started
 

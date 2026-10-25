@@ -3,7 +3,8 @@
 import { useRef } from "react";
 import { Check } from "lucide-react";
 import { site } from "@/config/site";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, motionQuery, useGSAP } from "@/lib/gsap";
+import { RevealHeading } from "@/components/ui/RevealHeading";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -26,7 +27,7 @@ export function RolesStack() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(motionQuery(), () => {
         const cards = gsap.utils.toArray<HTMLElement>(".role-card");
         cards.forEach((card, i) => {
           const next = cards[i + 1];
@@ -51,11 +52,7 @@ export function RolesStack() {
             <ChannelLabel channel="03" data-reveal>
               Join the team
             </ChannelLabel>
-            <h2 className="mt-8 text-d1 uppercase" data-reveal style={{ ["--d" as string]: "0.05s" }}>
-              Find your <span className="accent normal-case text-beam">seat</span>
-              <br />
-              in the control room.
-            </h2>
+            <RevealHeading title="Find your seat" accent="in the control room." breakAccent delay={0.05} className="mt-8 text-d1 uppercase" />
           </div>
           <p className="text-muted lg:col-span-4" data-reveal style={{ ["--d" as string]: "0.1s" }}>
             Four ways to work with us. Every role is for adults aged 18+, and applying is always free.
@@ -74,7 +71,7 @@ export function RolesStack() {
                 style={{ backgroundImage: MESH[i % MESH.length] }}
               >
                 {/* Photo */}
-                <div className="relative overflow-hidden rounded-[1.4rem] max-lg:aspect-[16/9] md:rounded-[2rem] lg:order-2 lg:col-span-5">
+                <div data-liquid className="relative overflow-hidden rounded-[1.4rem] max-lg:aspect-[16/9] md:rounded-[2rem] lg:order-2 lg:col-span-5">
                   <Photo
                     k={media.roles[r.slug as keyof typeof media.roles]}
                     sizes="(min-width: 1024px) 38vw, 94vw"

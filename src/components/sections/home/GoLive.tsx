@@ -4,6 +4,7 @@ import { ChannelLabel } from "@/components/ui/Badges";
 import { OrbitButton } from "@/components/ui/OrbitButton";
 import { Button } from "@/components/ui/Button";
 import { ImageTrail } from "@/components/motion/ImageTrail";
+import { PHOTOS } from "@/data/photos";
 
 /** Closing call to action: giant "GO LIVE" over the reassembled particle logo. */
 export function GoLive({
@@ -34,7 +35,16 @@ export function GoLive({
           className="mt-8 font-display text-[clamp(5rem,1rem+19vw,22rem)] leading-[0.78] font-semibold tracking-[-0.05em] uppercase"
           data-reveal="scale"
         >
-          {title} <span className="accent normal-case text-beam">{accent}</span>
+          {/* The word is filled with a live crowd photo that slowly pans inside the letters */}
+          <span
+            className="photo-type"
+            style={{
+              backgroundImage: `url(/_next/image?url=${encodeURIComponent(PHOTOS["crowd-blue"].src)}&w=1920&q=75), linear-gradient(#f5f4fa,#f5f4fa)`,
+            }}
+          >
+            {title}
+          </span>{" "}
+          <span className="accent normal-case text-beam">{accent}</span>
           <span aria-hidden className="ml-[0.04em] inline-block size-[0.13em] rounded-full bg-live align-baseline shadow-[0_0_0.2em_var(--color-live)]" />
         </h2>
         <p className="mt-8 max-w-md text-lead text-muted" data-reveal style={{ ["--d" as string]: "0.1s" }}>

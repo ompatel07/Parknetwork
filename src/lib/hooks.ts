@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { motionOff } from "./motion";
 
 function subscribeMedia(query: string) {
   return (onChange: () => void) => {
@@ -19,7 +20,10 @@ export function useMediaQuery(query: string, serverValue = false) {
   );
 }
 
-export const useReducedMotion = () => useMediaQuery("(prefers-reduced-motion: reduce)", false);
+const noopSub = () => () => {};
+
+/** True when animations are off (device setting or the visitor's toggle). See lib/motion.ts. */
+export const useReducedMotion = () => useSyncExternalStore(noopSub, motionOff, () => false);
 
 /** True on mouse / trackpad devices — gates the custom cursor and magnetic effects. */
 export const useFinePointer = () => useMediaQuery("(hover: hover) and (pointer: fine)", false);

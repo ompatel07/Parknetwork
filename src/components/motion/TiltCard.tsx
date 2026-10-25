@@ -1,5 +1,6 @@
 "use client";
 
+import { motionOff } from "@/lib/motion";
 import { useRef, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
@@ -20,7 +21,7 @@ export function TiltCard({ children, className, max = 6, ...rest }: Props) {
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const el = ref.current;
     if (!el || e.pointerType !== "mouse") return;
-    reduced.current ??= window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    reduced.current ??= motionOff();
     const r = el.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width;
     const y = (e.clientY - r.top) / r.height;

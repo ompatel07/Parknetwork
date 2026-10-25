@@ -10,9 +10,13 @@ import { RevealObserver } from "@/components/motion/RevealObserver";
 import { ParallaxController } from "@/components/motion/ParallaxController";
 import { WorldLoader } from "@/components/world/WorldLoader";
 import { SceneDirector } from "@/components/world/SceneDirector";
-import { Preloader, preloaderScript } from "@/components/motion/Preloader";
+import { Preloader } from "@/components/motion/Preloader";
+import { preloaderScript } from "@/lib/boot";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { MotionNotice } from "@/components/motion/MotionControls";
+import { LiquidController } from "@/components/motion/LiquidController";
+import { motionScript } from "@/lib/motion";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -44,7 +48,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang={site.language} className={`${clash.variable} ${general.variable} ${serif.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: preloaderScript }} />
+        <script dangerouslySetInnerHTML={{ __html: motionScript + preloaderScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -83,6 +87,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Cursor />
             <RevealObserver />
             <ParallaxController />
+            <LiquidController />
+            <MotionNotice />
           </PageTransitionProvider>
         </SmoothScroll>
         <div className="grain" aria-hidden />

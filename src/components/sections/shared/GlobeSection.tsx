@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { site } from "@/config/site";
 import { signal } from "@/components/world/store";
+import { RevealHeading } from "@/components/ui/RevealHeading";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { cn } from "@/lib/cn";
 
@@ -40,9 +41,7 @@ export function GlobeSection({
           <ChannelLabel channel={channel} data-reveal>
             Global reach
           </ChannelLabel>
-          <h2 className="mt-8 text-d1 uppercase" data-reveal style={{ ["--d" as string]: "0.05s" }}>
-            {title} <span className="accent normal-case text-beam">{accent}</span>
-          </h2>
+          <RevealHeading title={title} accent={accent} delay={0.05} className="mt-8 text-d1 uppercase" />
           <p className="mt-6 max-w-md text-lead text-muted" data-reveal style={{ ["--d" as string]: "0.1s" }}>
             {lead ??
               `Our team supports hosts, agencies and partners across ${regions.length} countries — with local understanding and one consistent standard.`}

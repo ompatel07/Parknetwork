@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, motionQuery, useGSAP } from "@/lib/gsap";
 import { cn } from "@/lib/cn";
 
 /** Paragraph whose words light up one by one as you scroll through it. */
@@ -11,7 +11,7 @@ export function ScrubText({ text, className }: { text: string; className?: strin
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(motionQuery(), () => {
         gsap.fromTo(
           ".scrub-word",
           { opacity: 0.16 },

@@ -1,118 +1,133 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { media } from "@/config/media";
-import { gsap } from "@/lib/gsap";
-import { useFinePointer, useReducedMotion } from "@/lib/hooks";
+import { gsap, motionQuery, useGSAP } from "@/lib/gsap";
+import { RevealHeading } from "@/components/ui/RevealHeading";
 import { ChannelLabel, LiveBadge } from "@/components/ui/Badges";
 import { Photo } from "@/components/ui/Photo";
 
+const ITEMS = media.reel;
+const N = ITEMS.length;
+const STEP = 360 / N;
+
 /**
- * A reel of tall photo cards. Mouse: drag with momentum (cards skew with
- * speed). Touch: native swipe with snap.
+ * "Moments on air": photo cards on a 3D cylinder that turns as you scroll
+ * (section pins). The card facing you lights up; the rest dim with angle.
+ * Animations off: a plain swipeable row.
  */
 export function OnAirReel({ channel = "05" }: { channel?: string }) {
-  const viewport = useRef<HTMLDivElement>(null);
-  const track = useRef<HTMLDivElement>(null);
-  const bar = useRef<HTMLDivElement>(null);
-  const fine = useFinePointer();
-  const reduced = useReducedMotion();
-  const items = media.reel;
+  const section = useRef<HTMLElement>(null);
+  const ring = useRef<HTMLDivElement>(null);
+  const count = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => {
-    const vp = viewport.current;
-    const tr = track.current;
-    if (!vp || !tr || !fine) return;
-    let draggable: { kill: () => void } | null = null;
-    let cancelled = false;
-
-    (async () => {
-      const [{ Draggable }, { InertiaPlugin }] = await Promise.all([import("gsap/Draggable"), import("gsap/InertiaPlugin")]);
-      if (cancelled) return;
-      gsap.registerPlugin(Draggable, InertiaPlugin);
-      const cards = gsap.utils.toArray<HTMLElement>(".reel-card", tr);
-      const skewTo = gsap.quickTo(cards, "skewX", { duration: 0.5, ease: "power3.out" });
-
-      const update = function (this: { x: number; minX: number }) {
-        const p = this.minX ? this.x / this.minX : 0;
-        if (bar.current) bar.current.style.transform = `scaleX(${Math.max(0.06, Math.min(1, p))})`;
-        if (!reduced) {
-          const v = InertiaPlugin.getVelocity(tr, "x");
-          skewTo(Math.max(-9, Math.min(9, v / -180)));
-        }
-      };
-
-      draggable =
-        Draggable.create(tr, {
-        type: "x",
-        bounds: vp,
-        inertia: true,
-        edgeResistance: 0.85,
-        dragClickables: true,
-        onDrag: update,
-        onThrowUpdate: update,
-        onThrowComplete: () => skewTo(0),
-        onRelease: () => skewTo(0),
-      })[0] ?? null;
-    })();
-
-    return () => {
-      cancelled = true;
-      draggable?.kill();
-      gsap.set(tr, { clearProps: "transform" });
-    };
-  }, [fine, reduced]);
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(motionQuery(), () => {
+        const cards = gsap.utils.toArray<HTMLElement>(".ring-card", ring.current);
+        const state = { rot: 18, tilt: -14 };
+        const paint = () => {
+          if (ring.current) ring.current.style.transform = `rotateX(${state.tilt}deg) rotateY(${state.rot}deg)`;
+          let best = 0;
+          let bestCos = -2;
+          cards.forEach((c, i) => {
+            const a = ((i * STEP + state.rot) * Math.PI) / 180;
+            const cos = Math.cos(a);
+            if (cos > bestCos) {
+              bestCos = cos;
+              best = i;
+            }
+            c.style.setProperty("--lit", Math.max(0, cos).toFixed(3));
+          });
+          if (count.current) count.current.textContent = String(best + 1).padStart(2, "0");
+        };
+        paint();
+        gsap.to(state, {
+          rot: 18 - STEP * (N - 1) - 24,
+          tilt: 6,
+          ease: "none",
+          onUpdate: paint,
+          scrollTrigger: { trigger: section.current, start: "top top", end: "+=260%", pin: true, scrub: 1 },
+        });
+      });
+    },
+    { scope: section },
+  );
 
   return (
-    <section data-scene="dust" data-scene-dim="0.3" className="relative overflow-hidden py-(--section-y)">
-      <div className="container-site flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-        <div>
-          <ChannelLabel channel={channel} data-reveal>
-            On air
-          </ChannelLabel>
-          <h2 className="mt-8 text-d1 uppercase" data-reveal style={{ ["--d" as string]: "0.05s" }}>
-            Moments <span className="accent normal-case text-beam">on air.</span>
-          </h2>
-        </div>
-        <div className="flex items-center gap-4 md:w-80" data-reveal style={{ ["--d" as string]: "0.1s" }}>
-          <span className="eyebrow text-muted">{fine ? "Drag" : "Swipe"}</span>
-          <div className="h-px flex-1 bg-line">
-            <div ref={bar} className="h-px origin-left scale-x-[0.06] bg-[linear-gradient(90deg,var(--color-violet),var(--color-cyan))]" />
+    <>
+      <section ref={section} data-scene="dust" data-scene-dim="0.35" className="relative h-svh min-h-[42rem] overflow-hidden motion-off:hidden">
+        <div className="container-site relative z-20 flex items-start justify-between pt-[calc(var(--header-h)+1.5rem)] lg:pt-28">
+          <div>
+            <ChannelLabel channel={channel}>On air</ChannelLabel>
+            <h2 className="mt-6 text-d2 uppercase">
+              Moments <span className="accent normal-case text-beam">on air.</span>
+            </h2>
           </div>
-          <span className="eyebrow text-muted">{String(items.length).padStart(2, "0")}</span>
+          <p className="eyebrow mt-1 text-muted">
+            <span ref={count} className="text-ink">
+              01
+            </span>{" "}
+            / {String(N).padStart(2, "0")}
+          </p>
         </div>
-      </div>
 
-      <div
-        ref={viewport}
-        data-cursor={fine ? "Drag" : undefined}
-        className="no-scrollbar mt-12 overflow-x-auto overscroll-x-contain md:mt-16 [@media(pointer:fine)]:cursor-grab [@media(pointer:fine)]:overflow-visible"
-      >
-        <div ref={track} className="flex w-max snap-x snap-mandatory gap-3 px-(--gutter) md:gap-5">
-          {items.map((it, i) => (
-            <figure
-              key={it.key}
-              className="reel-card group relative aspect-[3/4] w-[72vw] shrink-0 snap-start overflow-hidden rounded-[1.4rem] bg-surface select-none sm:w-[44vw] md:rounded-[1.75rem] lg:w-[clamp(16rem,23vw,24rem)]"
-              data-reveal="scale"
-              style={{ ["--d" as string]: `${Math.min(i, 4) * 0.06}s` }}
-            >
-              <Photo
-                k={it.key}
-                sizes="(min-width: 1024px) 24vw, (min-width: 640px) 44vw, 72vw"
-                className="pointer-events-none transition-transform duration-[1.4s] ease-(--ease-signal) group-hover:scale-[1.07]"
-              />
-              <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(7_6_13/0.85),transparent_50%)]" />
-              {i % 3 === 0 && <LiveBadge className="absolute top-4 left-4 bg-bg/60 backdrop-blur">Live</LiveBadge>}
-              <figcaption className="absolute inset-x-5 bottom-5">
-                <span className="eyebrow text-white/70">0{i + 1}</span>
-                <span className="mt-2 block translate-y-1 font-display text-[clamp(1.25rem,1rem+0.8vw,1.75rem)] leading-tight font-semibold uppercase transition-transform duration-700 ease-(--ease-signal) group-hover:translate-y-0">
-                  {it.label}
-                </span>
-              </figcaption>
-            </figure>
-          ))}
+        {/* giant outline word inside the cylinder */}
+        <p
+          aria-hidden
+          className="text-outline pointer-events-none absolute inset-x-0 top-1/2 z-0 -translate-y-1/2 text-center font-display text-[24vw] leading-none font-bold tracking-[-0.05em] whitespace-nowrap"
+        >
+          ON AIR
+        </p>
+
+        <div className="ring-scene absolute inset-0 top-[8%] z-10 grid place-items-center">
+          <div ref={ring} className="ring3d relative aspect-[3/4] w-(--cw)">
+            {ITEMS.map((it, i) => (
+              <figure
+                key={it.key}
+                data-liquid
+                className="ring-card absolute inset-0 overflow-hidden rounded-[1.25rem] bg-surface md:rounded-[1.6rem]"
+                style={{ transform: `rotateY(${i * STEP}deg) translateZ(var(--r))` }}
+              >
+                <Photo k={it.key} sizes="(min-width: 768px) 20vw, 46vw" />
+                <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(7_6_13/0.85),transparent_50%)]" />
+                {i % 3 === 0 && <LiveBadge className="absolute top-3 left-3 bg-bg/60 backdrop-blur">Live</LiveBadge>}
+                <figcaption className="absolute inset-x-4 bottom-4">
+                  <span className="eyebrow text-white/70">0{i + 1}</span>
+                  <span className="mt-1.5 block font-display text-[clamp(1rem,0.8rem+0.8vw,1.5rem)] leading-tight font-semibold uppercase">
+                    {it.label}
+                  </span>
+                </figcaption>
+                <div aria-hidden className="ring-shade pointer-events-none absolute inset-0 bg-bg" />
+              </figure>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-1/4 bg-[linear-gradient(to_top,var(--color-bg),transparent)]" />
+      </section>
+
+      {/* Animations off: a swipeable row */}
+      <section className="relative hidden py-(--section-y) motion-off:block">
+        <div className="container-site">
+          <ChannelLabel channel={channel}>On air</ChannelLabel>
+          <RevealHeading title="Moments" accent="on air." className="mt-6 text-d1 uppercase" />
+        </div>
+        <div className="no-scrollbar mt-12 overflow-x-auto">
+          <div className="flex w-max snap-x snap-mandatory gap-4 px-(--gutter)">
+            {ITEMS.map((it, i) => (
+              <figure key={it.key} className="relative aspect-[3/4] w-[70vw] shrink-0 snap-start overflow-hidden rounded-[1.4rem] sm:w-[40vw] lg:w-[22vw]">
+                <Photo k={it.key} sizes="(min-width: 1024px) 22vw, 70vw" />
+                <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(7_6_13/0.85),transparent_50%)]" />
+                <figcaption className="absolute inset-x-5 bottom-5">
+                  <span className="eyebrow text-white/70">0{i + 1}</span>
+                  <span className="mt-2 block font-display text-xl font-semibold uppercase">{it.label}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
