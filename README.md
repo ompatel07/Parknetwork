@@ -83,7 +83,9 @@ The site is tuned to stay smooth on mid-range phones. When adding features, keep
 - Read the scroll position with `getScrollY()` / `onScrollY()` from `src/lib/scroll.ts`, never `window.scrollY` inside animation frames (that forces a page layout every frame).
 - Animate only `transform` and `opacity`. Don't put CSS variables or container units (`cqw`) inside `@keyframes`; use the Web Animations API with plain values instead (see the hearts in `LivePhone.tsx`).
 - Don't wrap animated content in `transform-style: preserve-3d` unless children really use depth. It keeps every animation inside on the main thread.
-- Avoid `backdrop-filter` blur over the particle canvas.
+- Avoid `backdrop-filter` blur over the particle canvas, and full-screen overlays on top of it (the film grain is painted into the `body` background for this reason).
+- Hover effects on big photos should fade a solid overlay, not the photo itself (see `.tile-dim` in the Multiview).
+- Add `data-world-rest` to a large interactive area that covers the particles (like the Multiview wall). While the mouse is over it, the particles hold still, so the GPU can spend its time on the hover effects.
 - Off-screen sections pause their CSS animations automatically (`data-inview`, set in `RevealObserver.tsx`).
 - Links prefetch when hovered or touched, not when they scroll into view (`TransitionLink.tsx`).
 - To debug without the particle world, run `localStorage.setItem("pln:noworld", "1")` in the browser console and reload (remove it to switch the world back on).

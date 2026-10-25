@@ -189,6 +189,7 @@ export const site = {
       { name: "Likee", category: "Short-video & creator platform", logo: "/platforms/likee.jpg" },
       { name: "ShareChat", category: "Social networking platform", logo: "/platforms/sharechat.jpg" },
       { name: "YoYo", category: "Social & voice chat platform", logo: "/platforms/yoyo.jpg" },
+      { name: "imo", category: "Voice, video & group chat platform", logo: "/platforms/imo.jpg" },
     ],
     categories: ["Live streaming", "Audio chat rooms", "Group voice chat", "Dating apps", "Social networking", "Short video"],
     disclaimer:

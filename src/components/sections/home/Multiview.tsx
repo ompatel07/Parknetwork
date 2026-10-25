@@ -76,6 +76,7 @@ export function Multiview() {
           ref={wall}
           className="mt-14 rounded-[1.6rem] border border-line-strong bg-[#050409] p-2 shadow-[0_40px_120px_-40px_rgb(124_92_255/0.45)] md:mt-20 md:rounded-[2rem] md:p-3"
           data-reveal="scale"
+          data-world-rest
           onPointerLeave={() => setHover(null)}
         >
           <div className="flex items-center justify-between px-3 pt-2 pb-3 md:px-4">
@@ -104,15 +105,20 @@ export function Multiview() {
                     onBlur={() => setHover(null)}
                     className={cn("group relative block overflow-hidden rounded-[1.1rem] bg-surface md:rounded-[1.25rem]", i < 2 ? "aspect-[16/10] lg:aspect-[16/9]" : i === 4 ? "aspect-[16/10] md:aspect-[16/7] lg:aspect-[4/3.1]" : "aspect-[16/10] lg:aspect-[4/3.1]")}
                   >
-                    <div className="tile-img absolute inset-0">
+                    <div className="absolute inset-0">
                       <Photo k={media.services[s.slug as keyof typeof media.services]} sizes={i < 2 ? "(min-width: 1024px) 47vw, (min-width: 768px) 48vw, 94vw" : "(min-width: 1024px) 31vw, (min-width: 768px) 48vw, 94vw"} />
                     </div>
-                    <div aria-hidden className="scanlines absolute inset-0" />
-                    <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(5_4_9/0.92),rgb(5_4_9/0.15)_55%,rgb(5_4_9/0.35))]" />
-                    <div aria-hidden className="tile-ring pointer-events-none absolute inset-0 rounded-[inherit] transition-shadow duration-500" />
+                    {/* preview feeds sit dimmed; the live one lights up */}
+                    <div aria-hidden className="tile-dim absolute inset-0" />
+                    {/* scanlines + bottom shade in one layer (fewer layers = smoother) */}
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 bg-[linear-gradient(to_top,rgb(5_4_9/0.92),rgb(5_4_9/0.15)_55%,rgb(5_4_9/0.35)),repeating-linear-gradient(to_bottom,rgb(0_0_0/0.16)_0_1px,transparent_1px_3px)]"
+                    />
+                    <div aria-hidden className="tile-ring pointer-events-none absolute inset-0 rounded-[inherit]" />
 
                     <div className="absolute top-3.5 left-4 flex items-center gap-2 md:top-4 md:left-5">
-                      <span className="tally size-2 rounded-full transition-all duration-300" />
+                      <span className="tally size-2 rounded-full transition-colors duration-300" />
                       <span className="eyebrow text-white/85">CH.{String(i + 1).padStart(2, "0")}</span>
                     </div>
                     <span
@@ -126,20 +132,28 @@ export function Multiview() {
                     {live && <Meter bars={5} className="absolute top-1/2 right-4 -translate-y-1/2 md:right-5" />}
 
                     <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-4 md:inset-x-5 md:bottom-5">
-                      <div className="min-w-0">
+                      {/* The two-line summary always takes its space (h-10 + mt-2 =
+                          3rem); preview tiles slide the block down by exactly that,
+                          so switching only moves/fades — no layout animation. */}
+                      <div
+                        className={cn(
+                          "min-w-0 transition-transform duration-500 ease-(--ease-signal)",
+                          live ? "translate-y-0" : "translate-y-12",
+                        )}
+                      >
                         <h3 className="font-display text-[clamp(1.3rem,1rem+1.1vw,2.1rem)] leading-[0.95] font-semibold tracking-[-0.02em] uppercase">
                           {s.title}
                         </h3>
                         <p
                           className={cn(
-                            "mt-2 max-w-xs text-sm text-white/75 transition-all duration-500 ease-(--ease-signal)",
-                            live ? "max-h-16 opacity-100" : "max-h-0 opacity-0",
+                            "mt-2 line-clamp-2 h-10 max-w-xs text-sm leading-5 text-white/75 transition-opacity duration-500",
+                            live ? "opacity-100" : "opacity-0",
                           )}
                         >
                           {s.short}
                         </p>
                       </div>
-                      <span className="grid size-10 shrink-0 place-items-center rounded-full border border-white/25 bg-bg/40 transition-all duration-500 ease-(--ease-signal) group-hover:rotate-45 group-hover:border-transparent group-hover:bg-white group-hover:text-bg">
+                      <span className="grid size-10 shrink-0 place-items-center rounded-full border border-white/25 bg-bg/40 transition-[rotate,transform,background-color,border-color,color] duration-500 ease-(--ease-signal) group-hover:rotate-45 group-hover:border-transparent group-hover:bg-white group-hover:text-bg">
                         <ArrowUpRight className="size-[18px]" aria-hidden />
                       </span>
                     </div>

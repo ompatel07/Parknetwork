@@ -94,7 +94,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <WhatsAppFloat />
           </PageTransitionProvider>
         </SmoothScroll>
-        <div className="grain" aria-hidden />
       </body>
     </html>
   );

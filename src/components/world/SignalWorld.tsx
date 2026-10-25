@@ -1,7 +1,7 @@
 "use client";
 
 import { motionOff } from "@/lib/motion";
-import { getScrollY } from "@/lib/scroll";
+import { getScrollY, onScrollY } from "@/lib/scroll";
 import { useEffect, useRef } from "react";
 import {
   AdditiveBlending,
@@ -200,6 +200,34 @@ export default function SignalWorld({ count }: { count: number }) {
     };
     window.addEventListener("pointermove", onMove, { passive: true });
 
+    // Rest: while the mouse is over a busy interactive area marked
+    // `data-world-rest` (e.g. the Multiview wall, which covers nearly all of
+    // the particles anyway), keep the last frame instead of redrawing. A
+    // still canvas lets laptop GPUs spend every frame on the hover effects.
+    let resting = false;
+    let px = -1;
+    let py = -1;
+    const restsAt = (t: Element | null) => !!t?.closest?.("[data-world-rest]");
+    const onOver = (e: MouseEvent) => {
+      px = e.clientX;
+      py = e.clientY;
+      resting = restsAt(e.target as Element | null);
+    };
+    const onOut = (e: MouseEvent) => {
+      if (!e.relatedTarget) resting = false; // left the window
+    };
+    // Scrolling (wheel, keys) moves the page under a still mouse: draw while
+    // scrolling, then re-check what's under the pointer once it settles.
+    let settle = 0;
+    const offScroll = onScrollY(() => {
+      resting = false;
+      window.clearTimeout(settle);
+      if (px < 0) return;
+      settle = window.setTimeout(() => (resting = restsAt(document.elementFromPoint(px, py))), 160);
+    });
+    document.addEventListener("mouseover", onOver, { passive: true });
+    document.addEventListener("mouseout", onOut, { passive: true });
+
     let raf = 0;
     let prev = performance.now();
     let lastScroll = getScrollY();
@@ -232,6 +260,8 @@ export default function SignalWorld({ count }: { count: number }) {
         state.my += (target.y - state.my) * 0.1;
       }
 
+      if (resting) return;
+
       // Nothing visible (e.g. behind a solid section) → don't spend GPU time
       const alphaNow = state.alpha;
       if (alphaNow < 0.004 && lastDrawnAlpha < 0.004) return;
@@ -262,6 +292,10 @@ export default function SignalWorld({ count }: { count: number }) {
       gsap.killTweensOf(state);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("mouseover", onOver);
+      document.removeEventListener("mouseout", onOut);
+      offScroll();
+      window.clearTimeout(settle);
       geo.dispose();
       material.dispose();
       renderer.dispose();
