@@ -7,6 +7,7 @@ import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { PageTransitionProvider } from "@/components/motion/PageTransition";
 import { Cursor } from "@/components/motion/Cursor";
 import { RevealObserver } from "@/components/motion/RevealObserver";
+import { ParallaxController } from "@/components/motion/ParallaxController";
 import { WorldLoader } from "@/components/world/WorldLoader";
 import { SceneDirector } from "@/components/world/SceneDirector";
 import { Preloader, preloaderScript } from "@/components/motion/Preloader";
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Footer />
             <Cursor />
             <RevealObserver />
+            <ParallaxController />
           </PageTransitionProvider>
         </SmoothScroll>
         <div className="grain" aria-hidden />

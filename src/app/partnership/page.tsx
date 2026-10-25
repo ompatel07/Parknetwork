@@ -10,6 +10,7 @@ import { Tabs } from "@/components/ui/Tabs";
 import { Button } from "@/components/ui/Button";
 import { TiltCard } from "@/components/motion/TiltCard";
 import { SmartForm } from "@/components/forms/SmartForm";
+import { Frame } from "@/components/ui/Photo";
 
 export const metadata: Metadata = {
   title: "Agency & Partnerships",
@@ -55,9 +56,11 @@ export default function PartnershipPage() {
         accent="together."
         lead="Register your agency or propose a business partnership. Transparent terms, structured onboarding and a dedicated contact."
         scene="rings"
-        align="right"
+        align="left"
+        dim={0.5}
+        photos={["handshake", "team-meeting"]}
       >
-        <div className="flex flex-wrap gap-3 lg:justify-end">
+        <div className="flex flex-wrap gap-3">
           <Button href="#apply" size="lg" magnetic>
             Register your agency
           </Button>
@@ -84,6 +87,21 @@ export default function PartnershipPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Photo band */}
+      <section className="relative pb-(--section-y)">
+        <div className="container-site grid gap-4 md:grid-cols-12 md:gap-5">
+          <div className="flex flex-col justify-end gap-4 md:col-span-5 md:gap-5">
+            <Frame k="stage-speaker" sizes="(min-width: 768px) 40vw, 94vw" className="aspect-[4/3] rounded-[2rem]" />
+            <p className="max-w-sm text-muted" data-reveal>
+              Agencies and partners who share our standards — clear terms, real support and communities that grow.
+            </p>
+          </div>
+          <Frame k="team-table" sizes="(min-width: 768px) 58vw, 94vw" className="aspect-[16/12] rounded-[2rem] md:col-span-7" delay={0.15}>
+            <span className="eyebrow absolute top-5 left-5 rounded-md bg-live px-2 py-1 text-white">Partners · On air</span>
+          </Frame>
         </div>
       </section>
 

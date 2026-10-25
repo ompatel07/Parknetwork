@@ -39,6 +39,18 @@ Other scripts: `npm run build`, `npm run start`, `npm run lint`, `npm run typech
 - `stats.show: false` hides the stats strip.
 - Content rules: no guaranteed-earnings claims, no fake testimonials, no third-party app logos.
 
+## Photography — `src/config/media.ts`
+
+The site uses 22 stock photos from [Pexels](https://www.pexels.com/license/) (free for commercial use, no attribution required). They live in `public/images/`, and their sizes and blur placeholders are in `src/data/photos.ts`. **These are placeholders. The people shown are models, not the client's hosts.**
+
+To use the client's own photos:
+
+1. Put the new files in `public/images/` (JPG, around 2000px on the long side).
+2. Add each one to `src/data/photos.ts` (`width`, `height`, and a tiny `blur` data URL).
+3. Point the slots in `src/config/media.ts` (hero feeds, services, roles, reel and so on) at the new keys, and write alt text in `ALT`.
+
+Photos load through `next/image` (AVIF/WebP, responsive sizes, lazy by default). `<Frame>` wipes each photo open on scroll and adds a slight parallax.
+
 ## Forms
 
 There are six forms: agency registration, host application, coin seller enquiry, business partnership, customer support, and team role applications.
@@ -85,6 +97,7 @@ src/
 ## Before launch checklist
 
 - [ ] Replace every `PLACEHOLDER` in `src/config/site.ts`
+- [ ] Replace the stock photography with the client's own (see `src/config/media.ts`)
 - [ ] Verify the stats, the countries list and the services offered
 - [ ] Have the Privacy Policy and Terms reviewed by the client or a lawyer (both pages carry a review banner)
 - [ ] Set up Resend (verified domain) and Turnstile keys

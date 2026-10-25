@@ -9,6 +9,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ChannelLabel, LiveBadge } from "@/components/ui/Badges";
 import { TiltCard } from "@/components/motion/TiltCard";
 import { ScrubText } from "@/components/motion/ScrubText";
+import { Frame } from "@/components/ui/Photo";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -46,8 +47,9 @@ export default function AboutPage() {
         title="The team"
         accent="behind the signal."
         lead={`${site.name} supports hosts, agencies and partners across live streaming and audio chat — with clear processes and real people behind every step.`}
-        scene="mark"
-        align="right"
+        scene="dust"
+        dim={0.6}
+        photos={["stage-speaker", "crowd-lights"]}
       />
 
       {/* Story + brand mark */}
@@ -83,6 +85,23 @@ export default function AboutPage() {
               </div>
               <LiveBadge className="absolute bottom-[6%] left-1/2 -translate-x-1/2 bg-bg/80 backdrop-blur">Our mark</LiveBadge>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Editorial photo spread */}
+      <section className="relative pb-(--section-y)">
+        <div className="container-site grid gap-4 md:grid-cols-12 md:gap-5">
+          <Frame k="team-table" sizes="(min-width: 768px) 58vw, 94vw" className="aspect-[16/11] rounded-[2rem] md:col-span-7">
+            <span className="eyebrow absolute bottom-5 left-5 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur">
+              The team · Behind the scenes
+            </span>
+          </Frame>
+          <div className="flex flex-col gap-4 md:col-span-5 md:gap-5 md:pt-28">
+            <Frame k="neon-studio" sizes="(min-width: 768px) 40vw, 94vw" className="aspect-[4/3] rounded-[2rem]" delay={0.15} />
+            <p className="max-w-sm text-muted" data-reveal>
+              Hosts, agencies and the people who support them — working to one standard, wherever the signal reaches.
+            </p>
           </div>
         </div>
       </section>

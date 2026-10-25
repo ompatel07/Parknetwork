@@ -1,68 +1,40 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { Mic } from "lucide-react";
 import { site } from "@/config/site";
+import { media, type PhotoKey } from "@/config/media";
+import { Photo } from "@/components/ui/Photo";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { Counter } from "@/components/motion/Counter";
 
-/* Inline media "pills" that sit inside the sentence like words */
-function Pill({ children, className = "" }: { children: ReactNode; className?: string }) {
+/* Real photos that sit inside the sentence like words, and widen on hover */
+function PhotoPill({ k, live = false }: { k: PhotoKey; live?: boolean }) {
   return (
     <span
       aria-hidden
-      className={`mf-w mx-[0.12em] inline-flex h-[0.86em] -translate-y-[0.06em] items-center gap-[0.14em] rounded-full px-[0.28em] align-middle ${className}`}
+      className="mf-w group/pill relative mx-[0.12em] inline-block h-[0.84em] w-[1.75em] -translate-y-[0.07em] overflow-hidden rounded-full align-middle ring-1 ring-white/15 transition-[width] duration-700 ease-(--ease-signal) hover:w-[2.7em]"
     >
-      {children}
+      <Photo k={k} sizes="220px" className="transition-transform duration-700 ease-(--ease-signal) group-hover/pill:scale-110" />
+      {live && (
+        <span className="absolute top-[0.12em] left-[0.18em] flex items-center gap-[0.05em] rounded-full bg-live px-[0.12em] py-[0.02em] font-mono text-[0.16em] font-semibold text-white">
+          ● LIVE
+        </span>
+      )}
     </span>
   );
 }
-
-const MicPill = () => (
-  <Pill className="bg-[linear-gradient(110deg,var(--color-violet),var(--color-signal))]">
-    <Mic className="size-[0.42em] text-white" strokeWidth={2.2} />
-    <span className="pill-eq flex h-[0.42em] items-center gap-[0.06em]">
-      {[0.5, 1, 0.7, 0.9, 0.4].map((h, i) => (
-        <span key={i} style={{ height: `${h * 100}%`, ["--i" as string]: i }} />
-      ))}
-    </span>
-  </Pill>
-);
-
-const AgencyPill = () => (
-  <Pill className="border border-line-strong bg-surface-2 pl-[0.12em]">
-    {["from-violet to-signal", "from-signal to-cyan", "from-cyan to-violet"].map((g, i) => (
-      <span
-        key={g}
-        className={`grid size-[0.6em] place-items-center rounded-full bg-gradient-to-br ${g} ring-[0.04em] ring-surface-2 ${i ? "-ml-[0.22em]" : ""}`}
-      >
-        <span className="text-[0.26em] leading-none font-semibold text-white">{["A", "G", "Y"][i]}</span>
-      </span>
-    ))}
-  </Pill>
-);
-
-const GlobePill = () => (
-  <Pill className="border border-cyan/40 bg-cyan/10 pr-[0.32em]">
-    <svg viewBox="0 0 24 24" className="spin-slow size-[0.56em]" fill="none" stroke="#4FE3FF" strokeWidth="1.4">
-      <circle cx="12" cy="12" r="10" />
-      <ellipse cx="12" cy="12" rx="4.5" ry="10" />
-      <path d="M2 12h20M4 7h16M4 17h16" />
-    </svg>
-    <span className="font-mono text-[0.26em] tracking-wider text-cyan">LIVE</span>
-  </Pill>
-);
 
 type Part = string | ReactNode;
 
 export function Manifesto() {
   const ref = useRef<HTMLDivElement>(null);
   const n = site.regions.length;
+  const m = media.manifesto;
 
   const parts: Part[] = [
-    "We put", <MicPill key="m" />, "hosts on air, give", <AgencyPill key="a" />,
-    "agencies a structure that works, and connect", <GlobePill key="g" />, "communities across",
+    "We put", <PhotoPill key="m" k={m.hosts} live />, "hosts on air, give", <PhotoPill key="a" k={m.agencies} />,
+    "agencies a structure that works, and connect", <PhotoPill key="g" k={m.communities} />, "communities across",
     <span key="n" className="mf-w accent text-beam">{n} countries</span>,
     "— one signal at a time.",
   ];

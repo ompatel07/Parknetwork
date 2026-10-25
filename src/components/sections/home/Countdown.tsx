@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { site } from "@/config/site";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { ChannelLabel } from "@/components/ui/Badges";
+import { Photo } from "@/components/ui/Photo";
+import { media } from "@/config/media";
 
 /**
  * "How it works" as a broadcast countdown: the section pins, the counter
@@ -106,12 +108,18 @@ export function Countdown({ channel = "04" }: { channel?: string }) {
               </span>
             </span>
           </div>
-          <ol className="relative min-h-[11rem] md:min-h-[13rem] lg:col-span-5">
+          <ol className="relative min-h-[11rem] md:min-h-[13rem] lg:col-span-5 lg:min-h-[min(34rem,58svh)]">
             {steps.map((s, i) => (
               <li
                 key={s.title}
-                className="cd-step absolute inset-0 translate-y-6 opacity-0 transition-[opacity,transform] duration-700 ease-(--ease-signal) data-[on]:translate-y-0 data-[on]:opacity-100"
+                className="cd-step group/step absolute inset-0 translate-y-6 opacity-0 transition-[opacity,transform] duration-700 ease-(--ease-signal) data-[on]:translate-y-0 data-[on]:opacity-100 lg:flex lg:flex-col lg:justify-end"
               >
+                <div className="relative mb-7 hidden aspect-[16/10] overflow-hidden rounded-[1.5rem] ring-1 ring-white/10 [clip-path:inset(0_0_100%_0)] transition-[clip-path] duration-1000 ease-(--ease-swift) group-data-[on]/step:[clip-path:inset(0_0_0_0)] lg:block">
+                  <Photo k={media.steps[i] ?? "on-air"} sizes="(min-width: 1024px) 36vw, 1px" />
+                  <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur">
+                    T – {String(n - i).padStart(2, "0")}
+                  </span>
+                </div>
                 <p className="eyebrow text-cyan">Step {String(i + 1).padStart(2, "0")}</p>
                 <h3 className="mt-3 text-d2">{s.title}</h3>
                 <p className="mt-4 max-w-md text-lead text-muted">{s.text}</p>

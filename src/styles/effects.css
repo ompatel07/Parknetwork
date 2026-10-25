@@ -240,6 +240,67 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
   82% { clip-path: inset(0 0 100% 0); }
 }
 
+/* ─── Photo frames: wipe open + zoom settle (see <Frame>) ──────── */
+.frame .frame-img { top: -8%; bottom: -8%; }
+html.js [data-reveal="frame"] { opacity: 1; transform: none; transition: none; }
+html.js [data-reveal="frame"] .frame-clip {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.5s var(--ease-swift);
+  transition-delay: var(--d, 0s);
+}
+html.js [data-reveal="frame"].is-in .frame-clip { clip-path: inset(0 0 0 0); }
+html.js [data-reveal="frame"] .frame-img img {
+  transform: scale(1.28);
+  transition: transform 2.2s var(--ease-signal);
+  transition-delay: var(--d, 0s);
+}
+html.js [data-reveal="frame"].is-in .frame-img img { transform: scale(1); }
+
+/* ─── Hero program monitor: feeds cut like a vision mixer ──────── */
+/* Starting size of the monitor (GSAP opens it to full screen on scroll) */
+.hero-frame { clip-path: inset(26% 6% 32% 6% round 22px); }
+.hero-ui { top: 26%; right: 6%; bottom: 32%; left: 6%; }
+@media (min-width: 768px) {
+  .hero-frame { clip-path: inset(17% 27% 21% 27% round 28px); }
+  .hero-ui { top: 17%; right: 27%; bottom: 21%; left: 27%; }
+}
+.feed-layer { clip-path: inset(0 0 0 100%); transition: clip-path 1s var(--ease-swift); }
+.feed-layer[data-state="on"] { clip-path: inset(0 0 0 0); z-index: 2; }
+.feed-layer[data-state="prev"] { clip-path: inset(0 0 0 0); z-index: 1; }
+.feed-layer[data-state="on"] img { animation: ken-burns 6s linear both; }
+@keyframes ken-burns { from { transform: scale(1.14); } to { transform: scale(1); } }
+.feed-glitch { opacity: 0; }
+.feed-glitch[data-cut] { animation: feed-glitch 0.45s steps(2) 1; }
+@keyframes feed-glitch {
+  0% { opacity: 0.55; transform: translateX(-2%); clip-path: inset(18% 0 62% 0); }
+  25% { opacity: 0.4; transform: translateX(3%); clip-path: inset(58% 0 20% 0); }
+  50% { opacity: 0.5; transform: translateX(-1%); clip-path: inset(40% 0 44% 0); }
+  100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+}
+.scanlines {
+  background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.045) 0 1px, transparent 1px 3px);
+  mix-blend-mode: overlay;
+}
+
+/* Audio meter bars (CSS only) */
+.meter span {
+  display: block;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(to top, #3ddc84 0 60%, #ffd23f 60% 85%, #ff3d6e 85%);
+  transform-origin: bottom;
+  animation: meter 0.9s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -0.23s);
+}
+@keyframes meter { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }
+
+/* Multiview tiles: tally light colours */
+.tally { background: rgb(255 255 255 / 0.18); }
+[data-live] > .tile-ring { box-shadow: inset 0 0 0 2px var(--color-live), 0 0 40px -6px rgb(255 61 110 / 0.55); }
+[data-live] .tally { background: var(--color-live); box-shadow: 0 0 10px var(--color-live); }
+[data-live] .tile-img img { filter: none; transform: scale(1.06); }
+.tile-img img { filter: grayscale(0.85) brightness(0.62); transition: filter 0.8s var(--ease-signal), transform 1.4s var(--ease-signal); }
+
 /* ─── Reduced motion: show the finished state ───────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html.js [data-reveal] { opacity: 1; transform: none; }
@@ -248,4 +309,8 @@ html.js [data-reveal].is-in { opacity: 1; transform: none; }
   .step__live { opacity: 1; transform: none; }
   .hero-pulse { display: none; }
   .neon[data-on] { animation: none; }
+  html.js [data-reveal="frame"] .frame-clip { clip-path: none; }
+  html.js [data-reveal="frame"] .frame-img img { transform: none; }
+  .feed-layer[data-state="on"] img { animation: none; }
+  .meter span { animation: none; transform: scaleY(0.6); }
 }

@@ -3,6 +3,7 @@ import { mailHref, site, whatsappHref } from "@/config/site";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { OrbitButton } from "@/components/ui/OrbitButton";
 import { Button } from "@/components/ui/Button";
+import { ImageTrail } from "@/components/motion/ImageTrail";
 
 /** Closing call to action: giant "GO LIVE" over the reassembled particle logo. */
 export function GoLive({
@@ -24,7 +25,8 @@ export function GoLive({
       className="relative flex min-h-svh flex-col justify-center overflow-hidden py-(--section-y)"
     >
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(50%_50%_at_50%_50%,rgb(7_6_13/0.55),transparent_80%)]" />
-      <div className="container-site relative flex flex-col items-center text-center">
+      <ImageTrail />
+      <div className="container-site pointer-events-none relative z-10 flex flex-col items-center text-center [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
         <ChannelLabel channel={channel} data-reveal>
           Your move
         </ChannelLabel>

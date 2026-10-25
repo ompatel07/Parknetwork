@@ -8,7 +8,9 @@ import { ServiceVisual } from "@/components/sections/home/ServiceVisual";
 import { LiveRoom } from "@/components/sections/home/LiveRoom";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { TiltCard } from "@/components/motion/TiltCard";
+import { Frame } from "@/components/ui/Photo";
+import { Meter } from "@/components/ui/Meter";
+import { media } from "@/config/media";
 import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = {
@@ -28,40 +30,47 @@ const NEXT: Record<string, { label: string; href: string }> = {
   "bd-partnerships": { label: "Propose a partnership", href: "/partnership" },
 };
 
-const MESH = [
-  "radial-gradient(70% 70% at 80% 10%, rgb(124 92 255 / 0.4), transparent 70%)",
-  "radial-gradient(70% 70% at 20% 90%, rgb(61 139 255 / 0.38), transparent 70%)",
-  "radial-gradient(70% 70% at 50% 0%, rgb(79 227 255 / 0.22), transparent 70%)",
-];
-
 function ServiceBlock({ s, i }: { s: Service; i: number }) {
   const flip = i % 2 === 1;
   const next = NEXT[s.slug] ?? { label: "Get in touch", href: "/contact" };
   return (
     <section id={s.slug} className="scroll-mt-28 border-t border-line py-16 md:py-28">
       <div className="container-site grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
-        <div className={cn("lg:col-span-6", flip && "lg:order-2 lg:col-start-7")} data-reveal="scale">
+        <div className={cn("relative lg:col-span-6", flip && "lg:order-2 lg:col-start-7")}>
+          <Frame
+            k={media.services[s.slug as keyof typeof media.services]}
+            sizes="(min-width: 1024px) 46vw, 94vw"
+            className="aspect-[5/4] rounded-[2rem] ring-1 ring-white/10"
+          >
+            <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(7_6_13/0.6),transparent_45%)]" />
+            <div aria-hidden className="viewfinder absolute inset-4" />
+            <span className="absolute top-6 left-6 rounded-md bg-live px-2 py-1 font-mono text-[0.62rem] font-semibold tracking-wider text-white">
+              LIVE · CH.{String(i + 1).padStart(2, "0")}
+            </span>
+            <Meter className="absolute right-6 bottom-6" />
+          </Frame>
+          {/* Floating detail card overlapping the photo */}
           {s.icon === "audio" ? (
-            <LiveRoom className="mx-auto max-w-lg" />
+            <div className={cn("absolute -bottom-14 hidden w-[min(22rem,62%)] lg:block", flip ? "-left-8" : "-right-8")} data-reveal="scale" style={{ ["--d" as string]: "0.3s" }}>
+              <LiveRoom className="p-4! [&_.text-h4]:text-lg" />
+            </div>
           ) : (
-            <TiltCard
-              max={4}
-              className="overflow-hidden rounded-[2rem] border border-line-strong bg-surface"
-              style={{ backgroundImage: MESH[i % MESH.length] }}
+            <div
+              className={cn(
+                "glass absolute -bottom-8 flex items-center gap-4 rounded-[1.4rem] p-3 pr-6 shadow-[0_30px_80px_-20px_rgb(0_0_0/0.8)]",
+                flip ? "left-4 lg:-left-8" : "right-4 lg:-right-8",
+              )}
+              data-reveal="scale"
+              style={{ ["--d" as string]: "0.3s" }}
             >
-              <svg aria-hidden className="absolute inset-0 size-full opacity-40" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" fill="none">
-                {[40, 80, 120, 160, 200].map((r) => (
-                  <circle key={r} cx="200" cy="150" r={r} stroke="white" strokeOpacity="0.08" />
-                ))}
-              </svg>
-              <div className="relative grid aspect-[4/3] place-items-center p-8">
-                <ServiceVisual kind={s.icon} className="w-[min(18rem,60%)]" />
-              </div>
-              <span className="eyebrow absolute top-6 left-6 text-ink/70">CH.{String(i + 1).padStart(2, "0")}</span>
-              <span className="eyebrow absolute right-6 bottom-6 flex items-center gap-2 text-ink/70">
-                <span className="size-1.5 rounded-full bg-live animate-live-pulse" /> On air
+              <span className="grid size-16 place-items-center rounded-2xl bg-bg/70">
+                <ServiceVisual kind={s.icon} className="w-12" />
               </span>
-            </TiltCard>
+              <span>
+                <span className="eyebrow block text-cyan">Channel {String(i + 1).padStart(2, "0")}</span>
+                <span className="mt-1 block font-display font-semibold">{s.points[0]}</span>
+              </span>
+            </div>
           )}
         </div>
 
@@ -72,7 +81,7 @@ function ServiceBlock({ s, i }: { s: Service; i: number }) {
             </span>
             <span className="eyebrow text-cyan">Channel {String(i + 1).padStart(2, "0")}</span>
           </div>
-          <h2 className="mt-7 text-d1 uppercase" data-reveal style={{ ["--d" as string]: "0.05s" }}>
+          <h2 className="mt-7 font-display text-[clamp(2.1rem,1rem+3.2vw,4.3rem)] leading-[0.92] font-semibold tracking-[-0.03em] uppercase" data-reveal style={{ ["--d" as string]: "0.05s" }}>
             {s.title}
           </h2>
           <p className="mt-6 text-lead text-muted" data-reveal style={{ ["--d" as string]: "0.1s" }}>
@@ -110,10 +119,12 @@ export default function ServicesPage() {
         accent="put on air."
         lead="From audio chat rooms to agency coordination — the structure and support that keep live communities running smoothly."
         scene="rings"
-        align="right"
+        align="left"
+        dim={0.5}
+        photos={["neon-studio", "mixer-dark"]}
       >
         <nav aria-label="Jump to a service">
-          <ul className="flex flex-wrap gap-2 lg:justify-end">
+          <ul className="flex flex-wrap gap-2">
             {site.services.map((s, i) => (
               <li key={s.slug}>
                 <a

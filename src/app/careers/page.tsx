@@ -10,6 +10,8 @@ import { GoLive } from "@/components/sections/home/GoLive";
 import { RoleSheet } from "@/components/sections/careers/RoleSheet";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Accordion } from "@/components/ui/Accordion";
+import { Frame } from "@/components/ui/Photo";
+import type { PhotoKey } from "@/config/media";
 
 export const metadata: Metadata = {
   title: "Careers — Join Our Team",
@@ -18,10 +20,10 @@ export const metadata: Metadata = {
 };
 
 /* PLACEHOLDER copy — client to confirm */
-const WHY = [
-  { icon: ShieldCheck, title: "A safe, verified community", text: "Every member is a verified adult, with clear guidelines and active moderation." },
-  { icon: Headphones, title: "Real people behind you", text: "A dedicated contact who answers your questions — on WhatsApp, email or call." },
-  { icon: GraduationCap, title: "Training & clear rules", text: "Onboarding, written guidelines and feedback so you always know where you stand." },
+const WHY: { icon: typeof ShieldCheck; title: string; text: string; photo: PhotoKey }[] = [
+  { icon: ShieldCheck, title: "A safe, verified community", text: "Every member is a verified adult, with clear guidelines and active moderation.", photo: "neon-laptop" },
+  { icon: Headphones, title: "Real people behind you", text: "A dedicated contact who answers your questions — on WhatsApp, email or call.", photo: "phone-stand" },
+  { icon: GraduationCap, title: "Training & clear rules", text: "Onboarding, written guidelines and feedback so you always know where you stand.", photo: "stage-speaker" },
 ];
 
 export default function CareersPage() {
@@ -33,10 +35,11 @@ export default function CareersPage() {
         title="Your voice,"
         accent="our network."
         lead="Hosts, coin sellers, agency admins and super admins — choose a role, check the requirements and apply in minutes. Applying is always free."
-        scene="mark"
-        align="right"
+        scene="dust"
+        dim={0.6}
+        photos={["ringlight-man", "headphones-night"]}
       >
-        <ul className="flex flex-wrap gap-2 lg:justify-end">
+        <ul className="flex flex-wrap gap-2">
           {site.roles.map((r) => (
             <li key={r.slug}>
               <Link
@@ -59,18 +62,19 @@ export default function CareersPage() {
             {WHY.map((w, i) => (
               <li
                 key={w.title}
-                className="group rounded-[2rem] border border-line bg-surface/70 p-8 backdrop-blur-sm transition-colors duration-500 hover:border-line-strong md:p-10"
-                data-reveal
-                style={{ ["--d" as string]: `${i * 0.08}s` }}
+                className="group rounded-[2rem] border border-line bg-surface/70 p-2.5 backdrop-blur-sm transition-colors duration-500 hover:border-line-strong"
               >
+                <Frame k={w.photo} sizes="(min-width: 768px) 31vw, 94vw" className="aspect-[4/3] rounded-[1.5rem]" delay={i * 0.1} />
+                <div className="p-5 md:p-7">
                 <div className="flex items-center justify-between">
                   <span className="grid size-14 place-items-center rounded-2xl bg-[linear-gradient(135deg,rgb(124_92_255/0.35),rgb(79_227_255/0.1))] transition-transform duration-700 ease-(--ease-signal) group-hover:scale-110 group-hover:-rotate-6">
                     <w.icon className="size-6 text-cyan" aria-hidden />
                   </span>
                   <span className="eyebrow text-muted">0{i + 1}</span>
                 </div>
-                <h3 className="mt-16 text-h4 font-semibold">{w.title}</h3>
+                <h3 className="mt-8 text-h4 font-semibold">{w.title}</h3>
                 <p className="mt-3 text-muted">{w.text}</p>
+                </div>
               </li>
             ))}
           </ul>

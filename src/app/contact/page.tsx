@@ -7,6 +7,7 @@ import { Accordion } from "@/components/ui/Accordion";
 import { SocialIcon } from "@/components/ui/SocialIcon";
 import { TiltCard } from "@/components/motion/TiltCard";
 import { SmartForm } from "@/components/forms/SmartForm";
+import { Frame } from "@/components/ui/Photo";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -26,7 +27,8 @@ export default function ContactPage() {
         lead="Message us on WhatsApp, send an email or use the support form. Real people read every message."
         scene="wave"
         align="center"
-        dim={0.9}
+        dim={0.7}
+        photos={["india-phone", "mic-podcast"]}
       />
 
       <section className="relative bg-bg py-(--section-y)">
@@ -134,6 +136,11 @@ export default function ContactPage() {
                   report it to us right away.
                 </p>
               </div>
+              <Frame k="neon-laptop" sizes="(min-width: 1024px) 30vw, 94vw" className="mt-6 hidden aspect-[4/3] rounded-[1.75rem] lg:block">
+                <span className="eyebrow absolute bottom-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur">
+                  Real people read every message
+                </span>
+              </Frame>
             </div>
           </div>
           <div className="lg:col-span-8" data-reveal>

@@ -8,6 +8,8 @@ import { ChannelLabel } from "@/components/ui/Badges";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SignalMark } from "@/components/ui/SignalMark";
+import { Photo } from "@/components/ui/Photo";
+import { media } from "@/config/media";
 
 const MESH = [
   "radial-gradient(60% 70% at 85% 15%, rgb(124 92 255 / 0.5), transparent 70%), radial-gradient(50% 60% at 5% 95%, rgb(61 139 255 / 0.28), transparent 70%)",
@@ -64,45 +66,51 @@ export function RolesStack() {
           {roles.map((r, i) => (
             <article
               key={r.slug}
-              className="role-card sticky mb-[6vh] last:mb-0"
+              className="role-card group/role sticky mb-[6vh] last:mb-0"
               style={{ top: `calc(var(--header-h) + 1rem + ${i * 1.1}rem)` }}
             >
               <div
-                className="role-inner relative isolate flex min-h-[min(80svh,46rem)] origin-top flex-col overflow-hidden rounded-[1.75rem] border border-line-strong bg-surface p-6 md:rounded-[2.5rem] md:p-12"
+                className="role-inner relative isolate grid min-h-[min(82svh,48rem)] origin-top overflow-hidden rounded-[1.75rem] border border-line-strong bg-surface p-2.5 md:rounded-[2.5rem] md:p-3.5 lg:grid-cols-12 lg:gap-4"
                 style={{ backgroundImage: MESH[i % MESH.length] }}
               >
-                {/* giant ghost number */}
-                <span
-                  aria-hidden
-                  className="text-outline pointer-events-none absolute -right-4 -bottom-[0.18em] -z-10 font-display text-[clamp(12rem,30vw,30rem)] leading-none font-bold"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <SignalMark className="pointer-events-none absolute top-8 right-8 -z-10 size-24 opacity-20 md:size-40" animated />
-
-                <div className="flex items-center gap-3">
-                  <span className="grid size-12 place-items-center rounded-2xl border border-line-strong bg-bg/40 backdrop-blur">
-                    <Icon name={r.icon} className="size-5" />
-                  </span>
-                  <span className="eyebrow text-ink/80">
+                {/* Photo */}
+                <div className="relative overflow-hidden rounded-[1.4rem] max-lg:aspect-[16/9] md:rounded-[2rem] lg:order-2 lg:col-span-5">
+                  <Photo
+                    k={media.roles[r.slug as keyof typeof media.roles]}
+                    sizes="(min-width: 1024px) 38vw, 94vw"
+                    position={r.slug === "coin-seller" ? "30% 40%" : undefined}
+                    className="transition-transform duration-[1.6s] ease-(--ease-signal) group-hover/role:scale-105"
+                  />
+                  <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(7_6_13/0.55),transparent_45%)]" />
+                  <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur md:top-5 md:left-5">
                     Role {String(i + 1).padStart(2, "0")} / {String(roles.length).padStart(2, "0")}
                   </span>
-                  <span className="eyebrow rounded-full border border-line-strong px-2.5 py-1 text-ink/80">18+</span>
+                  <span className="eyebrow absolute top-4 right-4 rounded-md bg-live px-2 py-1 text-white md:top-5 md:right-5">18+</span>
                 </div>
 
-                <div className="mt-auto grid gap-10 pt-16 lg:grid-cols-12 lg:items-end">
-                  <div className="lg:col-span-7">
-                    <h3 className="font-display text-[clamp(2.6rem,1rem+6.4vw,8rem)] leading-[0.86] font-semibold tracking-[-0.04em] uppercase">
+                {/* Content */}
+                <div className="relative flex flex-col p-4 md:p-8 lg:col-span-7 lg:p-10">
+                  {/* giant ghost number */}
+                  <span
+                    aria-hidden
+                    className="text-outline pointer-events-none absolute -right-2 -bottom-[0.2em] -z-10 font-display text-[clamp(10rem,24vw,24rem)] leading-none font-bold"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="hidden items-center gap-3 md:flex">
+                    <span className="grid size-12 place-items-center rounded-2xl border border-line-strong bg-bg/40 backdrop-blur">
+                      <Icon name={r.icon} className="size-5" />
+                    </span>
+                    <SignalMark className="size-8 opacity-70" animated />
+                  </div>
+
+                  <div className="mt-2 md:mt-8 lg:mt-auto">
+                    <h3 className="font-display text-[clamp(2.1rem,1rem+5vw,6.5rem)] leading-[0.86] font-semibold tracking-[-0.04em] uppercase">
                       {r.title}
                     </h3>
-                    <p className="mt-6 max-w-lg text-lead text-ink/80">{r.summary}</p>
-                    <div className="mt-8">
-                      <Button href={`/careers?apply=${r.slug}`} size="lg" magnetic cursor="Apply">
-                        Apply for this role
-                      </Button>
-                    </div>
+                    <p className="mt-5 max-w-lg text-lead text-ink/80">{r.summary}</p>
                   </div>
-                  <div className="grid gap-3 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
+                  <div className="mt-8 grid gap-3 sm:grid-cols-2">
                     <div className="hidden rounded-2xl border border-line bg-bg/50 p-5 backdrop-blur-md sm:block">
                       <p className="eyebrow text-muted">You&apos;ll</p>
                       <ul className="mt-3 space-y-2">
@@ -125,6 +133,11 @@ export function RolesStack() {
                         ))}
                       </ul>
                     </div>
+                  </div>
+                  <div className="mt-8">
+                    <Button href={`/careers?apply=${r.slug}`} size="lg" magnetic cursor="Apply">
+                      Apply for this role
+                    </Button>
                   </div>
                 </div>
               </div>

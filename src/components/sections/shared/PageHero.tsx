@@ -1,12 +1,34 @@
 import type { ReactNode } from "react";
 import type { SceneAlign, SceneName } from "@/components/world/store";
+import type { PhotoKey } from "@/config/media";
 import { ChannelLabel, LiveBadge } from "@/components/ui/Badges";
 import { SplitChars } from "@/components/ui/SplitChars";
+import { Frame } from "@/components/ui/Photo";
+import { Meter } from "@/components/ui/Meter";
 import { Timecode } from "@/components/motion/Timecode";
+import { cn } from "@/lib/cn";
+
+/** Monitor-style overlay for framed photos: corner brackets, cam label, tally. */
+function MonitorUI({ cam, live = false }: { cam: string; live?: boolean }) {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0">
+      <div className="viewfinder absolute inset-3" />
+      <span
+        className={cn(
+          "absolute top-4 left-4 rounded-md px-2 py-1 font-mono text-[0.6rem] font-semibold tracking-wider",
+          live ? "bg-live text-white" : "bg-bg/60 text-white/85 backdrop-blur",
+        )}
+      >
+        {live ? "PGM" : "PVW"} · {cam}
+      </span>
+      {live && <Meter bars={5} className="absolute right-4 bottom-4" />}
+    </div>
+  );
+}
 
 /**
- * Inner-page hero: giant grotesk title + serif italic accent line,
- * over a particle scene chosen per page.
+ * Inner-page hero: giant grotesk title + serif italic accent line, and
+ * (optionally) a pair of framed photos styled as camera monitors.
  */
 export function PageHero({
   channel,
@@ -17,6 +39,7 @@ export function PageHero({
   scene = "dust",
   align = "right",
   dim = 1,
+  photos,
   children,
 }: {
   channel: string;
@@ -27,8 +50,11 @@ export function PageHero({
   scene?: SceneName;
   align?: SceneAlign;
   dim?: number;
+  /** [main portrait, secondary landscape] */
+  photos?: [PhotoKey, PhotoKey?];
   children?: ReactNode;
 }) {
+  const [main, second] = photos ?? [];
   return (
     <section
       data-scene={scene}
@@ -40,18 +66,37 @@ export function PageHero({
 
       <div
         aria-hidden
-        className="fade-up absolute inset-x-(--gutter) top-[calc(var(--header-h)+0.75rem)] flex items-center justify-between text-muted lg:top-28"
+        className="fade-up absolute inset-x-(--gutter) top-[calc(var(--header-h)+0.75rem)] z-10 flex items-center justify-between text-muted lg:top-28"
         style={{ ["--d" as string]: "0.4s" }}
       >
         <LiveBadge>Live</LiveBadge>
         <Timecode className="eyebrow text-ink/70" />
       </div>
 
+      {/* Photo pair (desktop) */}
+      {main && (
+        <div aria-hidden className="pointer-events-none absolute top-[calc(var(--header-h)+4.5rem)] right-(--gutter) bottom-20 hidden w-[30vw] max-w-[30rem] lg:block">
+          <Frame k={main} sizes="30vw" className="absolute top-0 right-0 aspect-[4/5] w-[78%] rounded-[1.75rem]" delay={0.5}>
+            <MonitorUI cam="CAM 01" live />
+          </Frame>
+          {second && (
+            <Frame k={second} sizes="20vw" className="absolute bottom-0 left-0 aspect-[16/11] w-[62%] rounded-[1.4rem] border-4 border-bg" delay={0.75}>
+              <MonitorUI cam="CAM 02" />
+            </Frame>
+          )}
+        </div>
+      )}
+
       <div className="container-site relative">
         <ChannelLabel channel={channel} className="fade-up">
           {label}
         </ChannelLabel>
-        <h1 className="mt-8 font-display text-[clamp(2.9rem,0.4rem+8.6vw,10rem)] leading-[0.86] font-semibold tracking-[-0.045em] uppercase md:mt-10">
+        <h1
+          className={cn(
+            "mt-8 font-display leading-[0.86] font-semibold tracking-[-0.045em] uppercase md:mt-10",
+            main ? "text-[clamp(2.9rem,0.4rem+7.6vw,8.6rem)] lg:max-w-[58vw]" : "text-[clamp(2.9rem,0.4rem+8.6vw,10rem)]",
+          )}
+        >
           <span className="block">
             <SplitChars text={title} />
           </span>
@@ -61,15 +106,23 @@ export function PageHero({
             </span>
           )}
         </h1>
+
+        {/* Photo (phones/tablets) */}
+        {main && (
+          <Frame k={main} sizes="94vw" className="mt-10 aspect-[16/10] rounded-[1.5rem] lg:hidden" delay={0.4}>
+            <MonitorUI cam="CAM 01" live />
+          </Frame>
+        )}
+
         {(lead || children) && (
-          <div className="mt-10 grid gap-8 md:mt-14 lg:grid-cols-12">
+          <div className={cn("mt-10 grid gap-8 md:mt-14", main ? "lg:max-w-[58vw]" : "lg:grid-cols-12")}>
             {lead && (
-              <p className="fade-up max-w-xl text-lead text-muted lg:col-span-6" style={{ ["--d" as string]: "0.35s" }}>
+              <p className={cn("fade-up max-w-xl text-lead text-muted", !main && "lg:col-span-6")} style={{ ["--d" as string]: "0.35s" }}>
                 {lead}
               </p>
             )}
             {children && (
-              <div className="fade-up lg:col-span-6 lg:flex lg:justify-end" style={{ ["--d" as string]: "0.5s" }}>
+              <div className={cn("fade-up", !main && "lg:col-span-6 lg:flex lg:justify-end")} style={{ ["--d" as string]: "0.5s" }}>
                 {children}
               </div>
             )}

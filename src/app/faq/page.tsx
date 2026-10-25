@@ -32,7 +32,8 @@ export default function FaqPage() {
         accent="answered."
         lead="Everything you might want to know about applying, verification, agencies and support."
         scene="dust"
-        dim={0.8}
+        dim={0.6}
+        photos={["mic-pink", "on-air-side"]}
       />
 
       <section className="relative bg-bg py-(--section-y)">
