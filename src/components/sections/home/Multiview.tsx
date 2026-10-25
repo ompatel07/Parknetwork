@@ -57,11 +57,11 @@ export function Multiview() {
             <ChannelLabel channel="02" data-reveal>
               Multiview
             </ChannelLabel>
-            <RevealHeading title="Six channels." accent="One network." breakAccent delay={0.05} className="mt-8 text-d1 uppercase" />
+            <RevealHeading title="Five channels." accent="One network." breakAccent delay={0.05} className="mt-8 text-d1 uppercase" />
           </div>
           <div className="lg:col-span-4 lg:col-start-9" data-reveal style={{ ["--d" as string]: "0.1s" }}>
             <p className="text-lead text-muted">
-              Everything a live community needs to run well — from the first audio room to long-term partnerships.
+              From live streaming to short video — the management, networks and growth strategies digital platforms need.
             </p>
             <div className="mt-6">
               <Button href="/services" variant="link">
@@ -89,11 +89,11 @@ export function Multiview() {
               <Timecode className="text-ink/80" />
             </span>
           </div>
-          <ul data-vskew className="grid gap-2 md:grid-cols-2 md:gap-2.5 lg:grid-cols-3">
+          <ul data-vskew className="grid gap-2 md:grid-cols-2 md:gap-2.5 lg:grid-cols-6">
             {services.map((s, i) => {
               const live = i === active;
               return (
-                <li key={s.slug}>
+                <li key={s.slug} className={cn(i < 2 ? "lg:col-span-3" : "lg:col-span-2", i === 4 && "md:col-span-2 lg:col-span-2")}>
                   <TransitionLink
                     href={`/services#${s.slug}`}
                     data-tile={i}
@@ -103,10 +103,10 @@ export function Multiview() {
                     onPointerEnter={() => fine && setHover(i)}
                     onFocus={() => setHover(i)}
                     onBlur={() => setHover(null)}
-                    className="group relative block aspect-[16/10] overflow-hidden rounded-[1.1rem] bg-surface md:rounded-[1.25rem]"
+                    className={cn("group relative block overflow-hidden rounded-[1.1rem] bg-surface md:rounded-[1.25rem]", i < 2 ? "aspect-[16/10] lg:aspect-[16/9]" : i === 4 ? "aspect-[16/10] md:aspect-[16/7] lg:aspect-[4/3.1]" : "aspect-[16/10] lg:aspect-[4/3.1]")}
                   >
                     <div className="tile-img absolute inset-0">
-                      <Photo k={media.services[s.slug as keyof typeof media.services]} sizes="(min-width: 1024px) 31vw, (min-width: 768px) 48vw, 94vw" />
+                      <Photo k={media.services[s.slug as keyof typeof media.services]} sizes={i < 2 ? "(min-width: 1024px) 47vw, (min-width: 768px) 48vw, 94vw" : "(min-width: 1024px) 31vw, (min-width: 768px) 48vw, 94vw"} />
                     </div>
                     <div aria-hidden className="scanlines absolute inset-0" />
                     <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(5_4_9/0.92),rgb(5_4_9/0.15)_55%,rgb(5_4_9/0.35))]" />

@@ -20,7 +20,7 @@ const MESH = [
 ];
 
 /** Roles as full-height cards that stack on top of each other while scrolling. */
-export function RolesStack() {
+export function RolesStack({ channel = "06" }: { channel?: string }) {
   const root = useRef<HTMLElement>(null);
   const roles = site.roles;
 
@@ -49,13 +49,13 @@ export function RolesStack() {
       <div className="container-site">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
-            <ChannelLabel channel="03" data-reveal>
-              Join the team
+            <ChannelLabel channel={channel} data-reveal>
+              Join our network
             </ChannelLabel>
             <RevealHeading title="Find your seat" accent="in the control room." breakAccent delay={0.05} className="mt-8 text-d1 uppercase" />
           </div>
           <p className="text-muted lg:col-span-4" data-reveal style={{ ["--d" as string]: "0.1s" }}>
-            Four ways to work with us. Every role is for adults aged 18+, and applying is always free.
+            Four ways to join a network of 5,000 professionals. Every role is for adults aged 18+, and applying is always free.
           </p>
         </div>
 

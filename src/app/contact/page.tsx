@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, Clock, LifeBuoy, Mail, MapPin, MessageCircle, ShieldAlert } from "lucide-react";
+import { ArrowUpRight, Clock, LifeBuoy, Mail, MapPin, MessageCircle, Phone, ShieldAlert } from "lucide-react";
 import { mailHref, site, whatsappHref } from "@/config/site";
 import { PageHero } from "@/components/sections/shared/PageHero";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -24,7 +24,7 @@ export default function ContactPage() {
         label="Contact"
         title="Let's get"
         accent="you on air."
-        lead="Message us on WhatsApp, send an email or use the support form. Real people read every message."
+        lead="Call or WhatsApp our customer support team, send an email or use the support form. Real people read every message."
         scene="wave"
         align="center"
         dim={0.7}
@@ -45,7 +45,7 @@ export default function ContactPage() {
               >
                 <div className="flex items-center justify-between">
                   <span className="eyebrow flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-white animate-live-pulse" /> Fastest reply
+                    <span className="size-1.5 rounded-full bg-white animate-live-pulse" /> Customer support · Fastest reply
                   </span>
                   <ArrowUpRight className="size-8 transition-transform duration-700 ease-(--ease-signal) group-hover:rotate-45" aria-hidden />
                 </div>
@@ -61,12 +61,13 @@ export default function ContactPage() {
           </div>
 
           {[
+            { icon: Phone, label: "Call support", value: c.phone.display, href: c.phone.href, cursor: "Call" },
             { icon: Mail, label: "General enquiries", value: c.email, href: mailHref(c.email), cursor: "Write" },
-            { icon: LifeBuoy, label: "Support", value: c.supportEmail, href: mailHref(c.supportEmail, "Support request"), cursor: "Write" },
+            { icon: LifeBuoy, label: "Support email", value: c.supportEmail, href: mailHref(c.supportEmail, "Support request"), cursor: "Write" },
             { icon: Clock, label: "Support hours", value: c.supportHours, note: c.responseTime },
             ...(c.address ? [{ icon: MapPin, label: "Office", value: c.address }] : []),
           ].map((t, i) => (
-            <div key={t.label} data-reveal style={{ ["--d" as string]: `${0.06 + i * 0.06}s` }} className={c.address ? "" : i === 2 ? "md:col-span-2" : ""}>
+            <div key={t.label} data-reveal style={{ ["--d" as string]: `${0.06 + i * 0.06}s` }} className="">
               {"href" in t && t.href ? (
                 <a
                   href={t.href}
@@ -79,7 +80,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="eyebrow text-muted">{t.label}</p>
-                    <p className="mt-2 font-display text-base font-medium [overflow-wrap:anywhere] xl:text-lg">{t.value}</p>
+                    <p className="mt-2 font-display text-[0.95rem] font-medium [overflow-wrap:anywhere] 2xl:text-lg">{t.value}</p>
                   </div>
                 </a>
               ) : (
@@ -98,7 +99,7 @@ export default function ContactPage() {
 
         <div className="container-site mt-4" data-reveal>
           <div className="flex flex-col gap-6 rounded-[2rem] border border-line bg-surface p-7 md:flex-row md:items-center md:justify-between">
-            <p className="eyebrow text-muted">Follow the signal</p>
+            <p className="eyebrow text-muted">Official social accounts</p>
             <ul className="flex flex-wrap gap-2">
               {site.socials.map((s) => (
                 <li key={s.platform}>
@@ -109,7 +110,9 @@ export default function ContactPage() {
                     className="flex items-center gap-2.5 rounded-full border border-line px-4 py-2.5 text-sm text-muted transition-colors hover:border-cyan/40 hover:text-ink"
                   >
                     <SocialIcon platform={s.platform} className="size-4" />
-                    {s.label}
+                    <span>
+                      {s.label} <span className="text-muted/70">{s.handle}</span>
+                    </span>
                   </a>
                 </li>
               ))}

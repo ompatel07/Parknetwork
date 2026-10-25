@@ -6,7 +6,8 @@ import { media, type PhotoKey } from "@/config/media";
 import { Photo } from "@/components/ui/Photo";
 import { gsap, motionQuery, useGSAP } from "@/lib/gsap";
 import { ChannelLabel } from "@/components/ui/Badges";
-import { Counter } from "@/components/motion/Counter";
+import { Button } from "@/components/ui/Button";
+import { GlanceStats } from "@/components/sections/shared/GlanceStats";
 
 /* Real photos that sit inside the sentence like words, and widen on hover */
 function PhotoPill({ k, live = false }: { k: PhotoKey; live?: boolean }) {
@@ -30,14 +31,14 @@ type Part = string | ReactNode;
 
 export function Manifesto() {
   const ref = useRef<HTMLDivElement>(null);
-  const n = site.regions.length;
   const m = media.manifesto;
 
   const parts: Part[] = [
-    "We put", <PhotoPill key="m" k={m.hosts} live />, "hosts on air, give", <PhotoPill key="a" k={m.agencies} />,
-    "agencies a structure that works, and connect", <PhotoPill key="g" k={m.communities} />, "communities across",
-    <span key="n" className="mf-w accent text-beam">{n} countries</span>,
-    "— one signal at a time.",
+    "We manage", <PhotoPill key="a" k={m.apps} live />,
+    <span key="n1" className="mf-w accent text-beam">70+ apps</span>,
+    "across live streaming, audio chat, dating and short video — connecting", <PhotoPill key="u" k={m.users} />,
+    <span key="n2" className="mf-w accent text-beam">500,000+ users</span>,
+    "with a", <PhotoPill key="t" k={m.team} />, "network of 5,000 professionals worldwide.",
   ];
 
   useGSAP(
@@ -66,8 +67,8 @@ export function Manifesto() {
           Who we are
         </ChannelLabel>
         <p className="sr-only">
-          We put hosts on air, give agencies a structure that works, and connect communities across {n} countries — one
-          signal at a time.
+          We manage 70+ apps across live streaming, audio chat, dating and short video — connecting 500,000+ users with a
+          network of 5,000 professionals worldwide.
         </p>
         <p
           aria-hidden
@@ -88,32 +89,20 @@ export function Manifesto() {
           )}
         </p>
 
-        {site.stats.show && (
-          <dl
-            data-reveal
-            className="mt-24 grid grid-cols-2 gap-px overflow-hidden rounded-panel border border-line bg-line md:mt-32 lg:grid-cols-4"
-          >
-            {site.stats.items.map((s, i) => (
-              <div
-                key={s.label}
-                className="group relative flex flex-col-reverse gap-6 bg-bg/80 p-6 backdrop-blur-sm md:p-9"
-              >
-                <dt className="eyebrow flex items-center justify-between text-muted">
-                  {s.label}
-                  <span className="text-cyan/70">0{i + 1}</span>
-                </dt>
-                <dd className="font-display text-[clamp(2.6rem,1.4rem+4vw,6rem)] leading-none font-semibold tracking-[-0.03em]">
-                  <Counter value={s.value} suffix="" />
-                  <span className="accent text-beam">{s.suffix}</span>
-                </dd>
-                <span
-                  aria-hidden
-                  className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[linear-gradient(90deg,var(--color-violet),var(--color-cyan))] transition-transform duration-700 ease-(--ease-signal) group-hover:scale-x-100"
-                />
-              </div>
-            ))}
-          </dl>
-        )}
+        <div className="mt-12 grid gap-8 md:mt-16 lg:grid-cols-12">
+          <p className="max-w-xl text-lead text-muted lg:col-span-6" data-reveal>
+            {site.about.paragraphs[1]}
+          </p>
+          <div className="flex flex-wrap items-start gap-6 lg:col-span-5 lg:col-start-8 lg:justify-end" data-reveal style={{ ["--d" as string]: "0.1s" }}>
+            <Button href="/about" variant="ghost">
+              About Park Live
+            </Button>
+            <Button href="/services" variant="link">
+              Our services
+            </Button>
+          </div>
+        </div>
+        <GlanceStats className="mt-16 md:mt-24" />
       </div>
     </section>
   );

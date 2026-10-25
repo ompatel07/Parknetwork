@@ -40,6 +40,7 @@ export function PageHero({
   align = "right",
   dim = 1,
   photos,
+  compact = false,
   children,
 }: {
   channel: string;
@@ -52,6 +53,8 @@ export function PageHero({
   dim?: number;
   /** [main portrait, secondary landscape] */
   photos?: [PhotoKey, PhotoKey?];
+  /** Smaller title for long headlines */
+  compact?: boolean;
   children?: ReactNode;
 }) {
   const [main, second] = photos ?? [];
@@ -94,7 +97,11 @@ export function PageHero({
         <h1
           className={cn(
             "mt-8 font-display leading-[0.86] font-semibold tracking-[-0.045em] uppercase md:mt-10",
-            main ? "text-[clamp(2.9rem,0.4rem+7.6vw,8.6rem)] lg:max-w-[58vw]" : "text-[clamp(2.9rem,0.4rem+8.6vw,10rem)]",
+            compact
+              ? "text-[clamp(2.3rem,0.5rem+5vw,6rem)] lg:max-w-[60vw]"
+              : main
+                ? "text-[clamp(2.9rem,0.4rem+7.6vw,8.6rem)] lg:max-w-[58vw]"
+                : "text-[clamp(2.9rem,0.4rem+8.6vw,10rem)]",
           )}
         >
           <span className="block">

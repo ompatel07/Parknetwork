@@ -2,12 +2,21 @@ import {
   AudioLines,
   BriefcaseBusiness,
   Building2,
+  Clapperboard,
   Coins,
   Crown,
+  Globe,
   Handshake,
+  Heart,
+  Lock,
   Mic,
+  Network,
   Radio,
+  Scale,
   ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  Users,
   type LucideProps,
 } from "lucide-react";
 import type { IconName } from "@/config/site";
@@ -23,6 +32,15 @@ const map = {
   crown: Crown,
   briefcase: BriefcaseBusiness,
   mic: Mic,
+  heart: Heart,
+  video: Clapperboard,
+  network: Network,
+  globe: Globe,
+  trend: TrendingUp,
+  lock: Lock,
+  scale: Scale,
+  users: Users,
+  spark: Sparkles,
 } satisfies Record<IconName, React.ComponentType<LucideProps>>;
 
 /** Renders a config icon name as a lucide icon. */

@@ -38,6 +38,7 @@ export function LiquidController() {
       tl?.kill();
       release();
       if (!next) return;
+      if (next.getBoundingClientRect().width > 760) return;
       img = next.querySelector<HTMLElement>("img");
       if (!img) return;
       img.style.filter = "url(#liquid)";

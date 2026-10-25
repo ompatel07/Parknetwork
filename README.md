@@ -43,6 +43,9 @@ Other scripts: `npm run build`, `npm run start`, `npm run lint`, `npm run typech
 **All** brand and contact data lives in one file: name, tagline, WhatsApp, emails, socials, countries, stats, services, roles, steps and FAQs. Search the file for `PLACEHOLDER`. Every value marked that way must be confirmed by the client before launch.
 
 - `contact.formRecipient` is the inbox that receives every form submission.
+- `team`: leadership shown as "backstage passes" on the homepage and About page. Photos live in `public/team/` (720×900 JPG). After swapping a photo, regenerate its blur placeholder in `src/data/team-blur.ts`, or delete that entry.
+- `platforms`: the platform logos in the "Platform ecosystem" section, stored in `public/platforms/` (480×480). Set `platforms.show: false` to hide all logos. Only list platforms the client has worked with and may show.
+- `stats`, `about`, `services`, `whyChoose`, `trust`, `values` and `audiences` hold the client-supplied copy. Values marked `// CLIENT` came from the client.
 - `regions[0]` is treated as headquarters (red pin on the globe, centre of the map arcs).
 - `stats.show: false` hides the stats strip.
 - Content rules: no guaranteed-earnings claims, no fake testimonials, no third-party app logos.

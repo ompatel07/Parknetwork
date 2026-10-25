@@ -8,13 +8,14 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Accordion } from "@/components/ui/Accordion";
 import { Tabs } from "@/components/ui/Tabs";
 import { Button } from "@/components/ui/Button";
-import { TiltCard } from "@/components/motion/TiltCard";
 import { SmartForm } from "@/components/forms/SmartForm";
+import { Ecosystem } from "@/components/sections/shared/Ecosystem";
+import { media } from "@/config/media";
 import { Frame } from "@/components/ui/Photo";
 
 export const metadata: Metadata = {
   title: "Agency & Partnerships",
-  description: "Register your agency or propose a business partnership with Park Live Network. Transparent terms and structured onboarding.",
+  description: "Partnership opportunities with Park Live Network for application owners, agencies, investors and creators. Transparent terms and structured onboarding.",
   alternates: { canonical: "/partnership" },
 };
 
@@ -52,9 +53,9 @@ export default function PartnershipPage() {
       <PageHero
         channel="04"
         label="Agency & partnerships"
-        title="Build it"
-        accent="together."
-        lead="Register your agency or propose a business partnership. Transparent terms, structured onboarding and a dedicated contact."
+        title="Partner"
+        accent="with us."
+        lead="For application owners, platform operators, agencies, investors and creators — transparent terms, structured onboarding and a dedicated contact."
         scene="rings"
         align="left"
         dim={0.5}
@@ -62,52 +63,58 @@ export default function PartnershipPage() {
       >
         <div className="flex flex-wrap gap-3">
           <Button href="#apply" size="lg" magnetic>
-            Register your agency
+            Propose a partnership
           </Button>
           <Button href="#apply" size="lg" variant="ghost">
-            Propose a partnership
+            Register your agency
           </Button>
         </div>
       </PageHero>
 
+      {/* Partnership opportunities */}
       <section data-scene="dust" data-scene-dim="0.3" className="relative py-(--section-y)">
         <div className="container-site">
-          <SectionHeading channel="01" label="Why partner with us" title="Less chaos," accent="more signal." />
+          <SectionHeading
+            channel="01"
+            label="Partnership opportunities"
+            title="Who we"
+            accent="partner with."
+            lead="Long-term relationships with the people who build, run and grow digital platforms."
+          />
           <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {BENEFITS.map((b, i) => (
-              <li key={b.title} data-reveal style={{ ["--d" as string]: `${i * 0.08}s` }}>
-                <TiltCard max={5} className="h-full rounded-[1.75rem] border border-line bg-surface/80 p-7 backdrop-blur-sm md:p-8">
-                  <span className="eyebrow text-cyan">0{i + 1}</span>
-                  <span className="mt-10 grid size-14 place-items-center rounded-2xl bg-[linear-gradient(135deg,rgb(124_92_255/0.35),rgb(79_227_255/0.1))]">
-                    <b.icon className="size-6 text-cyan" aria-hidden />
-                  </span>
-                  <h3 className="mt-8 text-h4 font-semibold">{b.title}</h3>
-                  <p className="mt-3 text-muted">{b.text}</p>
-                </TiltCard>
+            {site.audiences.map((au, i) => (
+              <li key={au.title} className="group rounded-[1.9rem] border border-line bg-surface/80 p-2.5 backdrop-blur-sm transition-colors duration-500 hover:border-line-strong">
+                <Frame k={media.audiences[i] ?? "team-table"} sizes="(min-width: 1024px) 24vw, (min-width: 640px) 48vw, 94vw" className="aspect-[4/3] rounded-[1.5rem]" delay={i * 0.08}>
+                  <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur">0{i + 1}</span>
+                </Frame>
+                <div className="p-5">
+                  <h3 className="text-h4 font-semibold">{au.title}</h3>
+                  <p className="mt-2 text-muted">{au.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <ul className="mt-4 grid gap-px overflow-hidden rounded-[1.75rem] border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+            {BENEFITS.map((bn, i) => (
+              <li key={bn.title} className="flex gap-4 bg-bg/90 p-6" data-reveal style={{ ["--d" as string]: `${i * 0.06}s` }}>
+                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-[linear-gradient(135deg,rgb(124_92_255/0.35),rgb(79_227_255/0.1))]">
+                  <bn.icon className="size-5 text-cyan" aria-hidden />
+                </span>
+                <span>
+                  <span className="block font-semibold">{bn.title}</span>
+                  <span className="mt-1 block text-sm text-muted">{bn.text}</span>
+                </span>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* Photo band */}
-      <section className="relative pb-(--section-y)">
-        <div className="container-site grid gap-4 md:grid-cols-12 md:gap-5">
-          <div className="flex flex-col justify-end gap-4 md:col-span-5 md:gap-5">
-            <Frame k="stage-speaker" sizes="(min-width: 768px) 40vw, 94vw" className="aspect-[4/3] rounded-[2rem]" />
-            <p className="max-w-sm text-muted" data-reveal>
-              Agencies and partners who share our standards — clear terms, real support and communities that grow.
-            </p>
-          </div>
-          <Frame k="team-table" sizes="(min-width: 768px) 58vw, 94vw" className="aspect-[16/12] rounded-[2rem] md:col-span-7" delay={0.15}>
-            <span className="eyebrow absolute top-5 left-5 rounded-md bg-live px-2 py-1 text-white">Partners · On air</span>
-          </Frame>
-        </div>
-      </section>
+      <Ecosystem channel="02" />
 
       <section className="relative bg-bg py-(--section-y)">
         <div className="container-site">
-          <SectionHeading channel="02" label="The process" title="From hello" accent="to launch." />
+          <SectionHeading channel="03" label="The process" title="From hello" accent="to launch." />
           <StepsRow steps={STEPS} className="mt-16" />
         </div>
       </section>
@@ -144,7 +151,7 @@ export default function PartnershipPage() {
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-32">
               <SectionHeading
-                channel="03"
+                channel="04"
                 label="Start here"
                 title="Tell us"
                 accent="about you."
@@ -168,7 +175,7 @@ export default function PartnershipPage() {
       <section className="relative bg-bg py-(--section-y)">
         <div className="container-site grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <SectionHeading channel="04" label="Partner FAQ" title="Fair" accent="questions." />
+            <SectionHeading channel="05" label="Partner FAQ" title="Fair" accent="questions." />
           </div>
           <div className="lg:col-span-7 lg:col-start-6" data-reveal>
             <Accordion items={site.faqs.filter((f) => f.category === "Agencies & partners")} />
@@ -176,7 +183,7 @@ export default function PartnershipPage() {
         </div>
       </section>
 
-      <GoLive title="Let's" accent="build" lead="Prefer to talk first? Message us on WhatsApp and we'll set up a call." channel="05" />
+      <GoLive title="Let's" accent="build" lead="Prefer to talk first? Message us on WhatsApp and we'll set up a call." channel="06" />
     </>
   );
 }

@@ -34,7 +34,7 @@ export default function CareersPage() {
         label="Join our team"
         title="Your voice,"
         accent="our network."
-        lead="Hosts, coin sellers, agency admins and super admins — choose a role, check the requirements and apply in minutes. Applying is always free."
+        lead="Join a network of 5,000 professionals. Hosts, coin sellers, agency admins and super admins — choose a role, check the requirements and apply in minutes. Applying is always free."
         scene="dust"
         dim={0.6}
         photos={["ringlight-man", "headphones-night"]}
@@ -81,7 +81,7 @@ export default function CareersPage() {
         </div>
       </section>
 
-      <RolesStack />
+      <RolesStack channel="02" />
 
       <section className="relative bg-bg py-(--section-y)">
         <div className="container-site">

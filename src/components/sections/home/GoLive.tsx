@@ -1,5 +1,5 @@
-import { Mail, MessageCircle } from "lucide-react";
-import { mailHref, site, whatsappHref } from "@/config/site";
+import { MessageCircle } from "lucide-react";
+import { site, whatsappHref } from "@/config/site";
 import { ChannelLabel } from "@/components/ui/Badges";
 import { OrbitButton } from "@/components/ui/OrbitButton";
 import { Button } from "@/components/ui/Button";
@@ -10,7 +10,7 @@ import { PHOTOS } from "@/data/photos";
 export function GoLive({
   title = "Go",
   accent = "live",
-  lead = "Apply for a role, register your agency or just say hello. Real people reply.",
+  lead = `${site.slogan} Apply for a role, register your agency or partner with us — real people reply.`,
   channel = "07",
 }: {
   title?: string;
@@ -32,7 +32,7 @@ export function GoLive({
           Your move
         </ChannelLabel>
         <h2
-          className="mt-8 font-display text-[clamp(5rem,1rem+19vw,22rem)] leading-[0.78] font-semibold tracking-[-0.05em] uppercase"
+          className="mt-8 font-display text-[min(clamp(5rem,1rem+19vw,22rem),38svh)] leading-[0.78] font-semibold tracking-[-0.05em] uppercase"
           data-reveal="scale"
         >
           {/* The word is filled with a live crowd photo that slowly pans inside the letters */}
@@ -51,17 +51,17 @@ export function GoLive({
           {lead}
         </p>
         <div className="mt-12" data-reveal style={{ ["--d" as string]: "0.15s" }}>
-          <OrbitButton href="/careers" label="Join our team" />
+          <OrbitButton href="/careers" label="Join our network" orbit="Join our network · Apply now · " />
         </div>
         <div className="mt-12 flex flex-wrap justify-center gap-3" data-reveal style={{ ["--d" as string]: "0.2s" }}>
           <Button href="/partnership" variant="ghost">
-            Become a partner
+            Partner With Us
+          </Button>
+          <Button href="/contact" variant="ghost">
+            Contact Our Team
           </Button>
           <Button href={whatsappHref()} variant="ghost" icon={<MessageCircle className="size-[18px]" />}>
-            WhatsApp
-          </Button>
-          <Button href={mailHref()} variant="ghost" icon={<Mail className="size-[18px]" />}>
-            {site.contact.email}
+            WhatsApp {site.contact.whatsapp.display}
           </Button>
         </div>
       </div>

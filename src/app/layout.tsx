@@ -14,6 +14,7 @@ import { Preloader } from "@/components/motion/Preloader";
 import { preloaderScript } from "@/lib/boot";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { MotionNotice } from "@/components/motion/MotionControls";
 import { LiquidController } from "@/components/motion/LiquidController";
 import { motionScript } from "@/lib/motion";
@@ -60,6 +61,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               logo: `${site.url}/brand/logo-badge.jpeg`,
               description: site.description,
               email: site.contact.email,
+              telephone: site.contact.phone.href.replace("tel:", ""),
+              founder: { "@type": "Person", name: site.team[0]?.name },
+              slogan: site.slogan,
               sameAs: site.socials.map((s) => s.href),
               areaServed: site.regions.map((r) => r.name),
             }),
@@ -89,6 +93,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ParallaxController />
             <LiquidController />
             <MotionNotice />
+            <WhatsAppFloat />
           </PageTransitionProvider>
         </SmoothScroll>
         <div className="grain" aria-hidden />

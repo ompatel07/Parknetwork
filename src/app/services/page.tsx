@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 import { site, type Service } from "@/config/site";
 import { PageHero } from "@/components/sections/shared/PageHero";
 import { Countdown } from "@/components/sections/home/Countdown";
+import { Ecosystem } from "@/components/sections/shared/Ecosystem";
 import { GoLive } from "@/components/sections/home/GoLive";
 import { ServiceVisual } from "@/components/sections/home/ServiceVisual";
 import { LiveRoom } from "@/components/sections/home/LiveRoom";
@@ -16,18 +17,17 @@ import { cn } from "@/lib/cn";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Audio chat rooms, live streaming management, agency management, host recruitment, coin seller services and BD partnerships.",
+    "Live streaming platform management, audio chat & group voice rooms, dating & social networking apps, short-video platforms, and application & agency network management.",
   alternates: { canonical: "/services" },
 };
 
 /** Where each service's main call-to-action should lead */
 const NEXT: Record<string, { label: string; href: string }> = {
-  "audio-chat-rooms": { label: "Become a host", href: "/careers?apply=live-host" },
-  "live-streaming-management": { label: "Become a host", href: "/careers?apply=live-host" },
-  "agency-management": { label: "Register your agency", href: "/partnership" },
-  "host-recruitment": { label: "Apply as a host", href: "/careers?apply=live-host" },
-  "coin-seller-services": { label: "Coin seller enquiry", href: "/careers?apply=coin-seller" },
-  "bd-partnerships": { label: "Propose a partnership", href: "/partnership" },
+  "live-streaming": { label: "Partner with us", href: "/partnership" },
+  "audio-chat": { label: "Become a host", href: "/careers?apply=live-host" },
+  "dating-social": { label: "Partner with us", href: "/partnership" },
+  "short-video": { label: "Partner with us", href: "/partnership" },
+  "app-agency-network": { label: "Register your agency", href: "/partnership" },
 };
 
 function ServiceBlock({ s, i }: { s: Service; i: number }) {
@@ -115,9 +115,9 @@ export default function ServicesPage() {
       <PageHero
         channel="02"
         label="Services"
-        title="What we"
-        accent="put on air."
-        lead="From audio chat rooms to agency coordination — the structure and support that keep live communities running smoothly."
+        title="Platform"
+        accent="management services."
+        lead="We manage live streaming, audio chat, dating, social and short-video applications — with recruitment, agency networks and growth strategies that scale."
         scene="rings"
         align="left"
         dim={0.5}
@@ -146,8 +146,9 @@ export default function ServicesPage() {
         ))}
       </div>
 
-      <Countdown channel="03" />
-      <GoLive title="Need" accent="more" lead="Tell us what your community needs and we'll tell you honestly how we can help." channel="04" />
+      <Ecosystem channel="03" />
+      <Countdown channel="04" />
+      <GoLive title="Need" accent="more" lead="Tell us about your platform and goals — we'll tell you honestly how our teams can help it grow." channel="05" />
     </>
   );
 }

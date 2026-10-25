@@ -3,13 +3,14 @@
  *  PARK LIVE NETWORK — SITE CONFIG
  * ─────────────────────────────────────────────────────────────────────
  *  This is the ONLY file that holds brand, contact and business data.
- *  Every value marked  // PLACEHOLDER  must be confirmed by the client
- *  before launch. Search this file for "PLACEHOLDER" to find them all.
+ *  Values marked  // PLACEHOLDER  still need the client's confirmation.
+ *  Values marked  // CLIENT  were supplied by the client.
  *
- *  Content rules (from the client brief):
+ *  Content rules:
  *   - No guaranteed earnings / income claims.
  *   - No testimonials unless genuine and approved.
- *   - No third-party app names or logos without written permission.
+ *   - Platform logos only where the client has worked with / is
+ *     authorised to show that platform (see `platforms`).
  * ─────────────────────────────────────────────────────────────────────
  */
 
@@ -23,30 +24,65 @@ export type IconName =
   | "shield"
   | "crown"
   | "briefcase"
-  | "mic";
+  | "mic"
+  | "heart"
+  | "video"
+  | "network"
+  | "globe"
+  | "trend"
+  | "lock"
+  | "scale"
+  | "users"
+  | "spark";
 
-export type SocialPlatform = "instagram" | "facebook" | "youtube" | "telegram" | "x";
+export type SocialPlatform = "instagram" | "linkedin" | "youtube" | "facebook" | "telegram" | "x";
 
 export type FaqCategory = "General" | "Applying" | "Agencies & partners" | "Support & safety";
 
-export type FormType ="agency" | "host" | "coin-seller" | "partnership" | "support" | "team";
+export type FormType = "agency" | "host" | "coin-seller" | "partnership" | "support" | "team";
 
 export const site = {
   name: "Park Live Network",
   shortName: "Park Live",
-  /** PLACEHOLDER — client to approve or replace the tagline */
-  tagline: "Connecting Communities Through Live Streaming & Audio Chat",
-  /** PLACEHOLDER — short description used for SEO and social sharing */
-  /** Hero headline split for display — keep in sync with the tagline. PLACEHOLDER */
-  hero: {
-    lines: ["Connecting", "communities"],
-    tail: "through live streaming & audio chat.",
-    intro:
-      "We recruit and support hosts, coordinate agencies and build partnerships — so every live room and audio chat runs with care.",
-  },
+  tagline: "Connecting Digital Platforms. Empowering Global Communities.", // CLIENT
+  slogan: "Connecting Platforms. Empowering People. Growing Globally.", // CLIENT
   description:
-    "Park Live Network supports live-streaming and audio chat communities through host support, agency coordination, coin seller services and business partnerships.",
+    "Park Live Network is a digital platform management and network development company for live streaming, audio chat, dating, social and short-video applications — 70+ apps managed and 500,000+ active users across our network.", // CLIENT
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.parklivenetwork.com", // PLACEHOLDER domain
+
+  /** Homepage banner — CLIENT */
+  hero: {
+    eyebrow: "Global digital network",
+    title: "Your global partner in",
+    accent: "digital platform management.",
+    intro: "Managing 70+ applications. Connecting 500,000+ active users. Building a global professional network.",
+    categories: ["Live Streaming", "Audio Chat", "Social Networking", "Dating Apps", "Short Videos"],
+  },
+
+  /** About copy — CLIENT */
+  about: {
+    headline: "Connecting digital platforms.",
+    accent: "Empowering global communities.",
+    paragraphs: [
+      "Park Live Network is a digital platform management and network development company specializing in live streaming applications, audio chat rooms, group voice chat platforms, dating applications and short-video platforms.",
+      "With experience managing and supporting more than 70 applications, we focus on accelerating platform growth, developing strong management networks, expanding user communities and building sustainable digital ecosystems.",
+      "Our network reports a community of 500,000 active users and a team of 5,000 professional employees and network members operating across multiple countries. Through our global presence, dedicated teams and platform-focused management strategies, we aim to connect people, empower creators, support agencies and help digital platforms grow in competitive international markets.",
+    ],
+    commitment:
+      "Park Live Network is committed to innovation, operational excellence, professional management and long-term partnerships across the digital entertainment industry.",
+    vision: "To become a leading global partner for digital entertainment and social communication platforms.",
+    mission:
+      "To empower platforms, creators, agencies and communities through effective management, international collaboration and scalable growth strategies.",
+    globalVision: {
+      title: "Building the future of",
+      accent: "digital entertainment.",
+      paragraphs: [
+        "Park Live Network believes the future of digital entertainment lies in meaningful connections, innovative technology and strong global communities.",
+        "Our goal is to expand our international network, strengthen platform management capabilities, empower creators and agencies, and help digital applications achieve sustainable growth.",
+        "From live streaming and audio chat communities to social networking and short-video platforms, we work toward an interconnected digital ecosystem that creates opportunities for users, creators, business partners and platform owners.",
+      ],
+    },
+  },
 
   /**
    * Animations. "system" respects the visitor's device setting
@@ -60,13 +96,15 @@ export const site = {
 
   contact: {
     whatsapp: {
-      display: "+91 00000 00000", // PLACEHOLDER
+      display: "+91 72041 45912", // CLIENT — customer support number
       /** Digits only, with country code, no "+" — used for wa.me links */
-      number: "910000000000", // PLACEHOLDER
+      number: "917204145912", // CLIENT
       greeting: "Hi Park Live Network, I would like to know more.",
     },
-    email: "hello@parklivenetwork.com", // PLACEHOLDER
-    supportEmail: "support@parklivenetwork.com", // PLACEHOLDER
+    /** Customer support phone (tel: link) */
+    phone: { display: "+91 72041 45912", href: "tel:+917204145912" }, // CLIENT
+    email: "hello@parklivenetwork.com", // PLACEHOLDER — client to provide
+    supportEmail: "support@parklivenetwork.com", // PLACEHOLDER — client to provide
     /** Where every form submission is delivered */
     formRecipient: "hello@parklivenetwork.com", // PLACEHOLDER
     supportHours: "Mon – Sat · 10:00 – 19:00 IST", // PLACEHOLDER
@@ -75,12 +113,12 @@ export const site = {
     address: null as string | null, // PLACEHOLDER
   },
 
+  /** CLIENT — official social accounts */
   socials: [
-    { platform: "instagram", label: "Instagram", href: "https://instagram.com/PLACEHOLDER" },
-    { platform: "facebook", label: "Facebook", href: "https://facebook.com/PLACEHOLDER" },
-    { platform: "youtube", label: "YouTube", href: "https://youtube.com/@PLACEHOLDER" },
-    { platform: "telegram", label: "Telegram", href: "https://t.me/PLACEHOLDER" },
-  ] satisfies { platform: SocialPlatform; label: string; href: string }[], // PLACEHOLDER URLs
+    { platform: "instagram", label: "Instagram", handle: "@park_liv_enetwork", href: "https://www.instagram.com/park_liv_enetwork/" },
+    { platform: "linkedin", label: "LinkedIn", handle: "Park Live Network", href: "https://www.linkedin.com/company/higo-live-stream-group-chat/" },
+    { platform: "youtube", label: "YouTube", handle: "@bm_sgamer", href: "https://www.youtube.com/@bm_sgamer" },
+  ] satisfies { platform: SocialPlatform; label: string; handle: string; href: string }[],
 
   legal: {
     companyName: "Park Live Network", // PLACEHOLDER — registered legal entity name
@@ -114,17 +152,47 @@ export const site = {
   },
 
   /**
-   * PLACEHOLDER — every number here must be verified by the client.
-   * Set `show: false` to hide the stats strip entirely.
+   * Company at a glance — CLIENT reported figures.
+   * Client to confirm they reflect current reporting data.
+   * `text` replaces the animated number (e.g. "Global").
    */
   stats: {
     show: true,
     items: [
-      { value: 1200, suffix: "+", label: "Hosts supported" }, // PLACEHOLDER
-      { value: 80, suffix: "+", label: "Partner agencies" }, // PLACEHOLDER
-      { value: 12, suffix: "", label: "Countries reached" }, // PLACEHOLDER
-      { value: 24, suffix: "/7", label: "Live operations" }, // PLACEHOLDER
+      { value: 70, suffix: "+", label: "Applications managed", note: "Platform management and growth support" },
+      { value: 500, suffix: "K+", label: "Active users", note: "Across the network" },
+      { value: 5000, suffix: "", label: "Professionals", note: "Employees and network members" },
+      { value: 0, suffix: "", text: "Global", label: "International network", note: "Teams operating across countries" },
+    ] as { value: number; suffix: string; text?: string; label: string; note: string }[],
+  },
+
+  /** Leadership — CLIENT. Photos live in /public/team. */
+  team: [
+    { name: "N Karthik Naidu", role: "Founder & CEO", code: "CEO", photo: "/team/karthik-naidu.jpg" },
+    { name: "Malik", role: "Co-founder", code: "CO-FOUNDER", photo: "/team/malik.jpg" },
+    { name: "Jalal", role: "Managing Director", code: "MD", photo: "/team/jalal.jpg" },
+    { name: "Dev", role: "Chief Operating Officer", code: "COO", photo: "/team/dev.jpg" },
+    { name: "Danshka", role: "General Manager", code: "GM", photo: "/team/danshka.jpg" },
+  ],
+
+  /**
+   * Platform ecosystem — CLIENT: platforms the team has worked with.
+   * Client must confirm each relationship is accurate and that showing
+   * the logo is permitted. Set `show: false` to hide every logo.
+   */
+  platforms: {
+    show: true,
+    total: 70,
+    items: [
+      { name: "BIGO LIVE", category: "Live streaming platform", logo: "/platforms/bigo-live.jpg" },
+      { name: "TikTok", category: "Short-video platform", logo: "/platforms/tiktok.jpg" },
+      { name: "Likee", category: "Short-video & creator platform", logo: "/platforms/likee.jpg" },
+      { name: "ShareChat", category: "Social networking platform", logo: "/platforms/sharechat.jpg" },
+      { name: "YoYo", category: "Social & voice chat platform", logo: "/platforms/yoyo.jpg" },
     ],
+    categories: ["Live streaming", "Audio chat rooms", "Group voice chat", "Dating apps", "Social networking", "Short video"],
+    disclaimer:
+      "Platform names and logos are trademarks of their respective owners, shown to identify platforms our teams have worked with.",
   },
 
   /** PLACEHOLDER — confirm every region served. lat/lng drive the world map pings. */
@@ -143,61 +211,52 @@ export const site = {
     { name: "Nigeria", code: "NG", lat: 9.1, lng: 8.7 },
   ],
 
-  /** PLACEHOLDER — keep only the services the business actually provides. */
+  /** Core services — CLIENT */
   services: [
     {
-      slug: "audio-chat-rooms",
-      icon: "audio",
-      title: "Audio Chat Rooms",
-      short: "Voice-first rooms where communities gather, talk and stay.",
-      description:
-        "We help set up and run audio chat rooms with clear room rules, trained hosts and active moderation, so conversations stay friendly and engaging.",
-      points: ["Room setup & themes", "Host scheduling", "Moderation guidelines", "Community engagement"],
-    },
-    {
-      slug: "live-streaming-management",
+      slug: "live-streaming",
       icon: "stream",
-      title: "Live Streaming Management",
-      short: "Planning, scheduling and day-to-day support for live hosts.",
+      title: "Live Streaming Platform Management",
+      short: "Hosts, agencies and growth strategies for live-streaming apps.",
       description:
-        "From show planning to on-air etiquette, we support hosts with schedules, content guidance and quality checks so every stream feels professional.",
-      points: ["Stream planning", "Quality checks", "Content guidance", "Performance reviews"],
+        "We support live-streaming platforms through creator and host recruitment, agency development, performance monitoring and community growth strategies.",
+      points: ["Creator & host recruitment", "Agency development", "Performance monitoring", "Community growth"],
     },
     {
-      slug: "agency-management",
-      icon: "agency",
-      title: "Agency Management",
-      short: "Structured onboarding and coordination for partner agencies.",
+      slug: "audio-chat",
+      icon: "audio",
+      title: "Audio Chat & Group Voice Rooms",
+      short: "Active voice communities with well-run rooms and hosts.",
       description:
-        "We coordinate with partner agencies on onboarding, host rosters, reporting and communication, with clear processes at every step.",
-      points: ["Agency onboarding", "Roster coordination", "Regular reporting", "Dedicated contact"],
+        "We help develop active voice communities, manage room operations, coordinate hosts and support agency networks.",
+      points: ["Voice community building", "Room operations", "Host coordination", "Agency network support"],
     },
     {
-      slug: "host-recruitment",
-      icon: "host",
-      title: "Host Recruitment & Support",
-      short: "Finding, training and supporting new on-air talent.",
+      slug: "dating-social",
+      icon: "heart",
+      title: "Dating & Social Networking Apps",
+      short: "Engaged users, healthy communities and sustainable growth.",
       description:
-        "We recruit eligible adult hosts, walk them through verification and training, and stay available for support once they are live.",
-      points: ["Eligibility checks", "Onboarding training", "Ongoing support", "Safety guidance"],
+        "We focus on user engagement, community development, onboarding support and sustainable platform growth.",
+      points: ["User engagement", "Community development", "Onboarding support", "Sustainable growth"],
     },
     {
-      slug: "coin-seller-services",
-      icon: "coins",
-      title: "Coin Seller Services",
-      short: "Authorised coin seller coordination in supported regions.",
+      slug: "short-video",
+      icon: "video",
+      title: "Short-Video Platforms",
+      short: "Creators, content communities and audience growth.",
       description:
-        "We work with approved coin sellers in supported regions, following platform rules and only using permitted payment methods.",
-      points: ["Seller verification", "Approved regions only", "Clear seller rules", "Support channel"],
+        "We support creator acquisition, content community development, audience engagement and network expansion.",
+      points: ["Creator acquisition", "Content communities", "Audience engagement", "Network expansion"],
     },
     {
-      slug: "bd-partnerships",
-      icon: "handshake",
-      title: "BD Partnerships",
-      short: "Business development partnerships that grow the network.",
+      slug: "app-agency-network",
+      icon: "network",
+      title: "Application & Agency Network Management",
+      short: "Teams, agencies and workflows coordinated at scale.",
       description:
-        "We partner with business development teams and organisations that share our standards for transparent, responsible growth.",
-      points: ["Partnership review", "Transparent terms", "Joint planning", "Dedicated manager"],
+        "We coordinate management teams, agency partners, recruitment initiatives, operational workflows and performance-based growth programmes.",
+      points: ["Management teams", "Agency partners", "Recruitment initiatives", "Performance programmes"],
     },
   ] satisfies {
     slug: string;
@@ -207,6 +266,39 @@ export const site = {
     description: string;
     points: string[];
   }[],
+
+  /** Why choose Park Live Network — CLIENT */
+  whyChoose: [
+    { title: "Proven management experience", text: "Experience managing more than 70 applications across the digital entertainment ecosystem." },
+    { title: "Large professional network", text: "A reported network of 5,000 professionals and 500,000 active users." },
+    { title: "International operations", text: "Teams and network relationships spanning multiple countries, supporting cross-border collaboration." },
+    { title: "Growth-focused strategies", text: "Structured recruitment, agency development, community engagement and operational support." },
+    { title: "Long-term partnerships", text: "Lasting relationships with application owners, platform operators, agencies and creators." },
+  ],
+
+  /** Values — from the client's commitment statement */
+  values: [
+    { title: "Innovation", text: "New ideas, tools and formats that keep platforms and communities ahead." },
+    { title: "Operational excellence", text: "Clear processes, reliable teams and steady day-to-day execution." },
+    { title: "Professional management", text: "Structured, accountable management for every platform we support." },
+    { title: "Long-term partnerships", text: "Relationships built to last with owners, agencies and creators." },
+  ],
+
+  /** Trust & compliance */
+  trust: [
+    { icon: "lock", title: "Data protection", text: "Personal details are collected only when needed and handled securely." },
+    { icon: "scale", title: "Platform rules", text: "Our teams follow each platform's policies and local regulations." },
+    { icon: "shield", title: "Creator safety", text: "Verified adults only, clear guidelines and fast action on reports." },
+    { icon: "handshake", title: "Business transparency", text: "Roles, responsibilities and any commercial terms agreed in writing." },
+  ] satisfies { icon: IconName; title: string; text: string }[],
+
+  /** Partnership opportunities — who we partner with */
+  audiences: [
+    { title: "Application owners", text: "Grow your app's community, hosts and agency network with an experienced management partner." },
+    { title: "Agencies", text: "Join a structured network with clear onboarding, reporting and a dedicated contact." },
+    { title: "Investors", text: "Explore opportunities across live streaming, audio, social and short-video platforms." },
+    { title: "Creators", text: "Find the right platform, training and support to build an audience." },
+  ],
 
   /** PLACEHOLDER — confirm roles, duties and eligibility. `form` picks the application form. */
   roles: [
@@ -281,24 +373,24 @@ export const site = {
   ],
 
   /**
-   * PLACEHOLDER — confirm every answer with the client.
+   * PLACEHOLDER — client to confirm every answer.
    * The first five are shown on the homepage.
    */
   faqs: [
     {
+      category: "General",
+      q: "What does Park Live Network do?",
+      a: "We're a digital platform management and network development company. We manage and support live streaming, audio chat, group voice chat, dating and short-video applications — more than 70 so far — through creator and host recruitment, agency development and community growth strategies.",
+    },
+    {
+      category: "Agencies & partners",
+      q: "I own an app — can you help it grow?",
+      a: "Yes. Send the business partnership form on the Partnership page with a short summary of your platform and goals. Our team will review it and arrange a call.",
+    },
+    {
       category: "Applying",
       q: "Who can apply to join Park Live Network?",
       a: "Anyone aged 18 or older who meets the eligibility requirements for the role. Each role lists its own requirements on the Careers page.",
-    },
-    {
-      category: "Applying",
-      q: "Is there a fee to apply?",
-      a: "Applying is free. If any role ever involves fees or commercial terms, they will be clearly explained in writing before you agree to anything.",
-    },
-    {
-      category: "Applying",
-      q: "How long does verification take?",
-      a: "Most applications are reviewed within a few working days. We contact you through the method you choose in the form.",
     },
     {
       category: "Agencies & partners",
@@ -311,19 +403,24 @@ export const site = {
       a: "No. We do not promise or guarantee any income. Outcomes depend on many factors, and we are always transparent about how things work.",
     },
     {
-      category: "Support & safety",
-      q: "Will you ever ask for my password or OTP?",
-      a: "Never. Park Live Network will never ask for passwords, one-time codes or card details. If someone does, please report it to our support team.",
-    },
-    {
       category: "General",
-      q: "What does Park Live Network do?",
-      a: "We support live-streaming and audio chat communities — recruiting and supporting hosts, coordinating agencies, working with approved coin sellers and building business partnerships.",
+      q: "Which platforms do you work with?",
+      a: "Our teams have managed and supported more than 70 applications across live streaming, audio chat, social networking, dating and short video. Contact us to discuss a specific platform.",
     },
     {
       category: "General",
       q: "Which countries do you work in?",
-      a: "We currently support communities in the countries listed on our About page. If your country isn't listed, contact us — we may still be able to help.",
+      a: "Our teams and network members operate across multiple countries. If you're unsure whether we support your region, contact us — we'll let you know.",
+    },
+    {
+      category: "Applying",
+      q: "Is there a fee to apply?",
+      a: "Applying is free. If any role ever involves fees or commercial terms, they will be clearly explained in writing before you agree to anything.",
+    },
+    {
+      category: "Applying",
+      q: "How long does verification take?",
+      a: "Most applications are reviewed within a few working days. We contact you through the method you choose in the form.",
     },
     {
       category: "Applying",
@@ -347,8 +444,13 @@ export const site = {
     },
     {
       category: "Support & safety",
+      q: "Will you ever ask for my password or OTP?",
+      a: "Never. Park Live Network will never ask for passwords, one-time codes or card details. If someone does, please report it to our support team.",
+    },
+    {
+      category: "Support & safety",
       q: "How do I contact support?",
-      a: "Message us on WhatsApp, send an email or use the support form on the Contact page. Include a reference ID if you have one so we can help faster.",
+      a: "Call or WhatsApp our customer support number, send an email or use the support form on the Contact page. Include a reference ID if you have one so we can help faster.",
     },
     {
       category: "Support & safety",

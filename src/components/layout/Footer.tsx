@@ -1,4 +1,4 @@
-import { Mail, MessageCircle } from "lucide-react";
+import { Mail, MessageCircle, Phone } from "lucide-react";
 import { mailHref, site, whatsappHref } from "@/config/site";
 import { TransitionLink } from "@/components/motion/TransitionLink";
 import { Logo } from "@/components/ui/Logo";
@@ -42,8 +42,8 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-5 lg:col-span-4">
             <Logo />
-            <p className="mt-6 max-w-sm text-muted">{site.tagline}.</p>
-            <LiveBadge className="mt-6">Broadcasting across {site.regions.length} countries</LiveBadge>
+            <p className="mt-6 max-w-sm text-muted">{site.tagline}</p>
+            <LiveBadge className="mt-6">70+ apps · 500K+ users · Global</LiveBadge>
           </div>
 
           <div className="grid grid-cols-2 gap-8 md:col-span-7 lg:col-span-4 lg:col-start-6">
@@ -68,6 +68,10 @@ export function Footer() {
             >
               <MessageCircle className="size-5 shrink-0 text-cyan" aria-hidden />
               WhatsApp {site.contact.whatsapp.display}
+            </a>
+            <a href={site.contact.phone.href} className="mt-3 flex items-center gap-3 text-ink/85 transition-colors hover:text-ink">
+              <Phone className="size-5 shrink-0 text-cyan" aria-hidden />
+              Support {site.contact.phone.display}
             </a>
             <p className="mt-3 text-sm text-muted">{site.contact.supportHours}</p>
             <ul className="mt-6 flex gap-2">

@@ -71,7 +71,7 @@ export default function SignalWorld({ count }: { count: number }) {
     } catch {
       return; // no WebGL — the page still works without the particles
     }
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     renderer.setPixelRatio(dpr);
     renderer.setClearColor(0x000000, 0);
     el.appendChild(renderer.domElement);
@@ -203,6 +203,7 @@ export default function SignalWorld({ count }: { count: number }) {
     let prev = performance.now();
     let lastScroll = window.scrollY;
     let velChaos = 0;
+    let lastDrawnAlpha = 1;
     const start = prev;
 
     const frame = (now: number) => {
@@ -229,6 +230,11 @@ export default function SignalWorld({ count }: { count: number }) {
         state.mx += (target.x - state.mx) * 0.1;
         state.my += (target.y - state.my) * 0.1;
       }
+
+      // Nothing visible (e.g. behind a solid section) → don't spend GPU time
+      const alphaNow = state.alpha;
+      if (alphaNow < 0.004 && lastDrawnAlpha < 0.004) return;
+      lastDrawnAlpha = alphaNow;
 
       uniforms.uW0.value = state.w0;
       uniforms.uW1.value = state.w1;

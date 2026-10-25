@@ -259,8 +259,8 @@
 
 /* ════════════════════════════════════════════════════════════════════
    PRELOADER — pure CSS so it starts on first paint (no JS wait).
-   A monitor in the exact position of the hero monitor flickers through
-   feeds while a counter runs to 100, then fades into the live hero.
+   The signal mark pulses while a counter runs to 100%, then the curtain
+   lifts away (rounded edge) to reveal the hero.
    ════════════════════════════════════════════════════════════════════ */
 @property --pct {
   syntax: "<integer>";
@@ -272,61 +272,89 @@
   position: fixed;
   inset: 0;
   z-index: 100;
-  animation: preloader-done 2.15s linear forwards;
+  pointer-events: none;
+  animation: preloader-done 2.3s linear forwards;
 }
 .preloader__curtain {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(60% 50% at 50% 50%, rgb(124 92 255 / 0.14), transparent 70%), var(--color-bg);
-  animation: pl-fade 0.55s var(--ease-swift) 1.55s forwards;
+  inset: 0 0 -12vh;
+  background: radial-gradient(50% 45% at 50% 45%, rgb(124 92 255 / 0.2), transparent 70%), var(--color-bg);
+  border-bottom-left-radius: 50% 12vh;
+  border-bottom-right-radius: 50% 12vh;
+  animation: pl-lift 0.85s var(--ease-swift) 1.45s forwards;
 }
-.preloader__frame {
+.preloader__center {
   position: absolute;
-  top: calc(50% - var(--th) / 2); bottom: calc(50% - var(--th) / 2);
-  left: calc(50% - var(--tw) / 2); right: calc(50% - var(--tw) / 2);
-  overflow: hidden;
-  border-radius: 16px;
-  background: var(--color-surface);
-  box-shadow: 0 0 0 2px rgb(255 61 110 / 0.7);
-  clip-path: inset(50% 0 50% 0 round 22px);
-  animation: pl-open 0.7s var(--ease-swift) 0.1s forwards, pl-fade 0.45s ease 1.7s forwards;
+  top: 45%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  animation: pl-in 0.6s var(--ease-signal) both;
 }
-@media (min-width: 768px) { .preloader__frame { border-radius: 22px; } }
-.pl-img { opacity: 0; animation: pl-show 0.01s steps(1) forwards; animation-delay: calc(0.35s + var(--i) * 0.24s); }
-.preloader__meta {
+.preloader__ring {
   position: absolute;
-  top: calc(var(--header-h) + 0.75rem);
-  left: var(--gutter);
+  width: 80px;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-cyan);
+  opacity: 0;
+  animation: pl-ring 1.2s var(--ease-signal) infinite;
+}
+.preloader__ring:nth-child(2) { animation-delay: 0.25s; }
+.preloader__ring:nth-child(3) { animation-delay: 0.5s; }
+.preloader__label {
+  position: absolute;
+  top: calc(45% + 4.5rem);
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  animation: pl-fade 0.3s ease 1.4s forwards;
+  justify-content: center;
+  gap: 0.6rem;
+  animation: pl-in 0.6s var(--ease-signal) 0.15s both;
 }
+.preloader__brand { position: absolute; left: var(--gutter); bottom: calc(12vh + 1.6rem); }
 .preloader__count {
   position: absolute;
   right: var(--gutter);
-  bottom: 1.25rem;
-  font-size: clamp(4rem, 2rem + 9vw, 11rem);
+  bottom: calc(12vh + 1.2rem);
+  font-size: clamp(3.4rem, 1.6rem + 7vw, 9rem);
   font-weight: 600;
   line-height: 0.8;
   letter-spacing: -0.05em;
   font-variant-numeric: tabular-nums;
   color: var(--color-ink);
   counter-reset: pct var(--pct);
-  animation: pl-count 1.3s var(--ease-swift) 0.1s forwards, pl-fade 0.3s ease 1.45s forwards;
+  animation: pl-count 1.25s var(--ease-swift) 0.1s forwards;
 }
 .preloader__count::after { content: counter(pct) "%"; }
+.preloader__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(12vh + 0px);
+  height: 2px;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--color-violet), var(--color-cyan), var(--color-live));
+  animation: pl-bar 1.25s var(--ease-swift) 0.1s forwards;
+}
 
 @keyframes preloader-done { 0%, 99% { visibility: visible; } 100% { visibility: hidden; } }
-@keyframes pl-fade { to { opacity: 0; } }
-@keyframes pl-show { to { opacity: 1; } }
-@keyframes pl-open { to { clip-path: inset(0 0 0 0 round 22px); } }
+@keyframes pl-lift { to { transform: translate3d(0, -115%, 0); } }
+@keyframes pl-in { from { opacity: 0; transform: translate(-50%, -40%) scale(0.9); } }
+@keyframes pl-ring { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(3.4); opacity: 0; } }
 @keyframes pl-count { to { --pct: 100; } }
+@keyframes pl-bar { to { transform: scaleX(1); } }
+.preloader__label { --tx: 0; }
+@keyframes pl-in-label { from { opacity: 0; transform: translateY(8px); } }
+.preloader__label { animation-name: pl-in-label; }
 
 /* Returning visitors: never shown. Skip (click / key): fast-forward. */
 html[data-preloaded] .preloader { display: none; }
 .preloader[data-skip],
-.preloader[data-skip] * { animation-duration: 0.3s !important; animation-delay: 0s !important; }
+.preloader[data-skip] * { animation-duration: 0.35s !important; animation-delay: 0s !important; }
 
 
 /* ════════════════════════════════════════════════════════════════════

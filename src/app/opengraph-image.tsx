@@ -32,7 +32,7 @@ export default function OpengraphImage() {
           </div>
           <div style={{ fontSize: 22, letterSpacing: 6, color: "#A09CB5" }}>PARK LIVE NETWORK</div>
         </div>
-        <svg width="520" height="520" viewBox="-260 -260 520 520" style={{ position: "absolute", right: 40, top: 55 }}>
+        <svg width="280" height="280" viewBox="-260 -260 520 520" style={{ position: "absolute", right: 56, top: 36 }}>
           {arcs.map((a) => (
             <g key={a.r} opacity={a.o} stroke="#4FE3FF" strokeWidth="14" fill="none" strokeLinecap="round">
               <path d={`M${-a.r * 0.77} ${-a.r * 0.64} A${a.r} ${a.r} 0 0 0 ${-a.r * 0.77} ${a.r * 0.64}`} />
@@ -42,11 +42,10 @@ export default function OpengraphImage() {
           <path d="M-40 -55 L70 0 L-40 55 Z" fill="none" stroke="#3D8BFF" strokeWidth="14" strokeLinejoin="round" />
         </svg>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 112, fontWeight: 800, letterSpacing: -4, lineHeight: 0.9 }}>
-            {(site.hero.lines[0] ?? "").toUpperCase()}
-          </div>
-          <div style={{ fontSize: 104, fontStyle: "italic", lineHeight: 1, color: "#8f7bff" }}>{site.hero.lines[1] ?? ""}</div>
-          <div style={{ marginTop: 24, fontSize: 30, color: "#A09CB5" }}>{site.hero.tail}</div>
+          <div style={{ fontSize: 30, letterSpacing: 6, color: "#4FE3FF" }}>{site.hero.eyebrow.toUpperCase()}</div>
+          <div style={{ marginTop: 12, fontSize: 84, fontWeight: 800, letterSpacing: -3, lineHeight: 0.92 }}>PARK LIVE NETWORK</div>
+          <div style={{ marginTop: 14, fontSize: 48, fontStyle: "italic", color: "#8f7bff" }}>{`${site.hero.title} ${site.hero.accent}`}</div>
+          <div style={{ marginTop: 22, fontSize: 26, color: "#A09CB5" }}>{site.hero.intro}</div>
         </div>
       </div>
     ),

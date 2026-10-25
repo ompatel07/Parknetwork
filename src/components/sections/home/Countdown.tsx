@@ -129,7 +129,7 @@ export function Countdown({ channel = "04" }: { channel?: string }) {
             <p className="eyebrow text-muted">T – minus</p>
             <span
               aria-hidden
-              className="mt-2 block h-[0.8em] overflow-hidden font-display text-[clamp(8.5rem,30vw,28rem)] leading-[0.8] font-semibold tracking-[-0.06em]"
+              className="mt-2 block h-[0.8em] overflow-hidden font-display text-[clamp(6rem,min(30vw,44svh),28rem)] leading-[0.8] font-semibold tracking-[-0.06em]"
             >
               <span ref={digits} className="block transition-transform duration-700 ease-(--ease-signal)">
                 {steps.map((_, i) => (
@@ -140,21 +140,21 @@ export function Countdown({ channel = "04" }: { channel?: string }) {
               </span>
             </span>
           </div>
-          <ol className="relative min-h-[11rem] md:min-h-[13rem] lg:col-span-5 lg:min-h-[min(34rem,58svh)]">
+          <ol className="relative min-h-[11rem] md:min-h-[13rem] lg:col-span-5 lg:h-[min(34rem,56svh)]">
             {steps.map((s, i) => (
               <li
                 key={s.title}
                 className="cd-step group/step absolute inset-0 translate-y-6 opacity-0 transition-[opacity,transform] duration-700 ease-(--ease-signal) data-[on]:translate-y-0 data-[on]:opacity-100 lg:flex lg:flex-col lg:justify-end"
               >
-                <div className="relative mb-7 hidden aspect-[16/10] overflow-hidden rounded-[1.5rem] ring-1 ring-white/10 [clip-path:inset(0_0_100%_0)] transition-[clip-path] duration-1000 ease-(--ease-swift) group-data-[on]/step:[clip-path:inset(0_0_0_0)] lg:block">
+                <div className="relative mb-6 hidden h-[min(18rem,26svh)] overflow-hidden rounded-[1.5rem] ring-1 ring-white/10 [clip-path:inset(0_0_100%_0)] transition-[clip-path] duration-1000 ease-(--ease-swift) group-data-[on]/step:[clip-path:inset(0_0_0_0)] lg:block">
                   <Photo k={media.steps[i] ?? "on-air"} sizes="(min-width: 1024px) 36vw, 1px" />
                   <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur">
                     T – {String(n - i).padStart(2, "0")}
                   </span>
                 </div>
                 <p className="eyebrow text-cyan">Step {String(i + 1).padStart(2, "0")}</p>
-                <h3 className="mt-3 text-d2">{s.title}</h3>
-                <p className="mt-4 max-w-md text-lead text-muted">{s.text}</p>
+                <h3 className="mt-3 text-[clamp(2rem,1.2rem+2.6vw,4rem)] leading-[0.95] font-semibold tracking-[-0.02em]">{s.title}</h3>
+                <p className="mt-3 max-w-md text-muted md:text-lg">{s.text}</p>
               </li>
             ))}
           </ol>

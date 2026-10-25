@@ -36,33 +36,40 @@ export const ALT: Record<PhotoKey, string> = {
   "payment-tap": "A smartphone tapping a card terminal to pay",
   handshake: "Two people shaking hands over documents",
   "india-phone": "A smiling man in a turban talking on his phone",
+  "phone-smile": "A young woman smiling at her phone on an evening street",
+  "dance-creator": "A creator dancing in front of a phone on a tripod under neon lights",
+  "friends-phone": "Three friends laughing together over a smartphone",
+  "night-friends": "Friends gathered at night sharing something on a phone",
 };
 
 export const photo = (key: PhotoKey) => ({ ...PHOTOS[key], alt: ALT[key] });
 
 /** Where each photo is used. Swap keys here to change the art direction. */
 export const media = {
-  /** Hero "program monitor" — cycles like a live vision mixer */
-  heroFeeds: [
-    { key: "neon-studio", cam: "CAM 01", label: "Studio B" },
-    { key: "crowd-blue", cam: "CAM 02", label: "Live crowd" },
-    { key: "neon-laptop", cam: "CAM 03", label: "Audio room" },
-    { key: "mic-podcast", cam: "CAM 04", label: "Talk desk" },
-    { key: "stage-speaker", cam: "CAM 05", label: "Main stage" },
-  ] satisfies { key: PhotoKey; cam: string; label: string }[],
+  /** Hero: the live-stream phone and the floating app cards */
+  hero: {
+    stream: "ringlight-man",
+    shortVideo: "dance-creator",
+    match: ["phone-smile", "india-phone"],
+  } satisfies { stream: PhotoKey; shortVideo: PhotoKey; match: [PhotoKey, PhotoKey] },
 
   /** Photos that sit inline inside the manifesto sentence */
-  manifesto: { hosts: "mic-pink", agencies: "team-table", communities: "crowd-lights" } satisfies Record<string, PhotoKey>,
+  manifesto: { apps: "mic-pink", users: "crowd-lights", team: "team-table" } satisfies Record<string, PhotoKey>,
 
   /** One photo per service (keyed by service slug) */
   services: {
-    "audio-chat-rooms": "headphones-night",
-    "live-streaming-management": "neon-studio",
-    "agency-management": "team-table",
-    "host-recruitment": "ringlight-man",
-    "coin-seller-services": "payment-tap",
-    "bd-partnerships": "handshake",
+    "live-streaming": "neon-studio",
+    "audio-chat": "headphones-night",
+    "dating-social": "phone-smile",
+    "short-video": "dance-creator",
+    "app-agency-network": "team-table",
   } satisfies Record<string, PhotoKey>,
+
+  /** "Why choose us" panels, in order */
+  why: ["mixer-colour", "crowd-lights", "stage-speaker", "team-meeting", "handshake"] satisfies PhotoKey[],
+
+  /** Partnership audiences: app owners, agencies, investors, creators */
+  audiences: ["friends-phone", "team-table", "handshake", "dance-creator"] satisfies PhotoKey[],
 
   /** One photo per role (keyed by role slug) */
   roles: {
@@ -89,7 +96,7 @@ export const media = {
 
   /** Photos that trail the cursor in the closing section */
   trail: [
-    "neon-studio", "crowd-lights", "mic-pink", "headphones-night", "on-air",
-    "neon-face", "concert-phone", "mixer-colour", "ringlight-man", "stage-speaker",
+    "neon-studio", "crowd-lights", "dance-creator", "headphones-night", "on-air",
+    "neon-face", "phone-smile", "mixer-colour", "night-friends", "stage-speaker",
   ] satisfies PhotoKey[],
 };
