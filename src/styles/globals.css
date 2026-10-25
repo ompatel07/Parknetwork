@@ -1,0 +1,399 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+@import "./effects.css";
+
+/* ════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — "THE SIGNAL"
+   ════════════════════════════════════════════════════════════════════ */
+@theme {
+  /* Colour */
+  --color-bg: #07060d;
+  --color-surface: #100e1a;
+  --color-surface-2: #18152a;
+  --color-violet: #7c5cff;
+  --color-signal: #3d8bff;
+  --color-cyan: #4fe3ff;
+  --color-live: #ff3d6e;
+  --color-ink: #f5f4fa;
+  --color-muted: #a09cb5;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-line-strong: rgb(255 255 255 / 0.16);
+
+  /* Type */
+  --font-display: var(--font-clash), "Clash Display", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-general), "General Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+
+  /* Fluid type scale (360px → 1920px) */
+  --text-hero: clamp(2.9rem, 0.4rem + 10.6vw, 11.5rem);
+  --text-hero--line-height: 0.86;
+  --text-hero--letter-spacing: -0.03em;
+  --text-d1: clamp(2.6rem, 1.5rem + 5.2vw, 7.5rem);
+  --text-d1--line-height: 0.9;
+  --text-d1--letter-spacing: -0.02em;
+  --text-d2: clamp(2.1rem, 1.35rem + 3.4vw, 5rem);
+  --text-d2--line-height: 0.95;
+  --text-d2--letter-spacing: -0.015em;
+  --text-d3: clamp(1.6rem, 1.15rem + 1.9vw, 3rem);
+  --text-d3--line-height: 1.02;
+  --text-d3--letter-spacing: -0.01em;
+  --text-h4: clamp(1.2rem, 1.05rem + 0.7vw, 1.65rem);
+  --text-h4--line-height: 1.2;
+  --text-h4--letter-spacing: 0em;
+  --text-lead: clamp(1.05rem, 0.96rem + 0.45vw, 1.35rem);
+  --text-lead--line-height: 1.55;
+  --text-micro: 0.72rem;
+  --text-micro--line-height: 1;
+  --text-micro--letter-spacing: 0.18em;
+
+  /* Radius */
+  --radius-chip: 8px;
+  --radius-card: 16px;
+  --radius-panel: 28px;
+
+  /* Motion */
+  --ease-signal: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-swift: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Layout */
+  --container-site: 1440px;
+
+  --animate-live-pulse: live-pulse 1.6s var(--ease-signal) infinite;
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+
+  @keyframes live-pulse {
+    0% { box-shadow: 0 0 0 0 rgb(255 61 110 / 0.7); }
+    70% { box-shadow: 0 0 0 7px rgb(255 61 110 / 0); }
+    100% { box-shadow: 0 0 0 0 rgb(255 61 110 / 0); }
+  }
+  @keyframes marquee {
+    to { transform: translate3d(-50%, 0, 0); }
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   BASE
+   ════════════════════════════════════════════════════════════════════ */
+@layer base {
+  :root {
+    color-scheme: dark;
+    --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+    --section-y: clamp(5.5rem, 3.5rem + 9vw, 12rem);
+    --header-h: 4.5rem;
+  }
+
+  html {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-color: var(--color-surface-2) var(--color-bg);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    min-height: 100svh;
+    overflow-x: clip;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  ::selection {
+    background: var(--color-violet);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Custom cursor hides the native one only where it's active */
+  html.has-cursor,
+  html.has-cursor a,
+  html.has-cursor button,
+  html.has-cursor [role="button"],
+  html.has-cursor label {
+    cursor: none;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   UTILITIES
+   ════════════════════════════════════════════════════════════════════ */
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility section-y {
+  padding-block: var(--section-y);
+}
+
+@utility text-gradient {
+  background: linear-gradient(100deg, var(--color-ink) 10%, #c9bcff 45%, var(--color-cyan) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-beam {
+  background: linear-gradient(95deg, var(--color-violet), var(--color-signal) 55%, var(--color-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(245 244 250 / 0.28);
+}
+
+@utility glass {
+  background: rgb(16 14 26 / 0.55);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--color-line);
+}
+
+@utility hairline {
+  border-color: var(--color-line);
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Serif italic accent word inside display headlines */
+@utility accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  padding-right: 0.06em;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   ATMOSPHERE — grain + glow
+   ════════════════════════════════════════════════════════════════════ */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.9s steps(4) infinite;
+  will-change: transform;
+}
+@keyframes grain-shift {
+  0% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(-4%, 3%, 0); }
+  50% { transform: translate3d(3%, -5%, 0); }
+  75% { transform: translate3d(-2%, -2%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.5;
+}
+
+/* Signal mark — arcs light up outward like a live broadcast */
+.signal-animated .signal-arc {
+  animation: arc-pulse 2.4s var(--ease-signal) infinite;
+}
+.signal-animated .signal-arc--outer { animation-delay: 0.28s; }
+@keyframes arc-pulse {
+  0%, 100% { opacity: 1; }
+  40% { opacity: 0.25; }
+}
+
+/* Viewfinder corner brackets */
+.viewfinder {
+  --vf: 22px;
+  --vf-c: rgb(245 244 250 / 0.35);
+  background:
+    linear-gradient(var(--vf-c), var(--vf-c)) top left / var(--vf) 1px,
+    linear-gradient(var(--vf-c), var(--vf-c)) top left / 1px var(--vf),
+    linear-gradient(var(--vf-c), var(--vf-c)) top right / var(--vf) 1px,
+    linear-gradient(var(--vf-c), var(--vf-c)) top right / 1px var(--vf),
+    linear-gradient(var(--vf-c), var(--vf-c)) bottom left / var(--vf) 1px,
+    linear-gradient(var(--vf-c), var(--vf-c)) bottom left / 1px var(--vf),
+    linear-gradient(var(--vf-c), var(--vf-c)) bottom right / var(--vf) 1px,
+    linear-gradient(var(--vf-c), var(--vf-c)) bottom right / 1px var(--vf);
+  background-repeat: no-repeat;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   PRELOADER — pure CSS so it starts on first paint (no JS wait).
+   A ring "hole" grows from the centre and reveals the page beneath.
+   ════════════════════════════════════════════════════════════════════ */
+@property --hole {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  /* The wrapper's own animation only flips visibility at the end */
+  animation: preloader-done 1.75s linear forwards;
+}
+.preloader__curtain {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 50% 50%, rgb(124 92 255 / 0.18), transparent 70%),
+    var(--color-bg);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
+  mask: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
+  animation: preloader-open 0.75s var(--ease-swift) 1s forwards;
+}
+/* The bright ring riding the edge of the opening — the signal expanding into the page */
+.preloader__wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  aspect-ratio: 1;
+  margin: -75vmax 0 0 -75vmax;
+  border-radius: 9999px;
+  border: 2px solid var(--color-cyan);
+  box-shadow: 0 0 40px 6px rgb(79 227 255 / 0.45), inset 0 0 40px 6px rgb(124 92 255 / 0.4);
+  transform: scale(0);
+  opacity: 0;
+  animation: preloader-wave 0.75s var(--ease-swift) 1s forwards;
+}
+.preloader__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: preloader-fade 0.35s ease-in 0.85s forwards;
+}
+@keyframes preloader-done {
+  0%, 99% { visibility: visible; }
+  100% { visibility: hidden; }
+}
+@keyframes preloader-wave {
+  0% { transform: scale(0); opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes preloader-fade {
+  to { opacity: 0; transform: scale(0.9); }
+}
+.preloader__ring {
+  position: absolute;
+  width: 84px;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-cyan);
+  opacity: 0;
+  animation: preloader-ring 1.1s var(--ease-signal) infinite;
+}
+.preloader__ring:nth-child(2) { animation-delay: 0.22s; }
+.preloader__ring:nth-child(3) { animation-delay: 0.44s; }
+.preloader__mark { animation: preloader-mark 0.5s var(--ease-signal) both; }
+.preloader__label { animation: preloader-mark 0.5s var(--ease-signal) 0.15s both; }
+
+@keyframes preloader-ring {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+@keyframes preloader-mark {
+  from { opacity: 0; transform: translateY(8px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes preloader-open {
+  from { --hole: 0px; }
+  to { --hole: 75vmax; }
+}
+
+/* Returning visitors: never shown. Skip (click / key): fast-forward. */
+html[data-preloaded] .preloader { display: none; }
+.preloader[data-skip] { animation-duration: 0.45s; animation-delay: 0s; }
+.preloader[data-skip] .preloader__curtain,
+.preloader[data-skip] .preloader__wave { animation-duration: 0.4s; animation-delay: 0s; }
+.preloader[data-skip] .preloader__content { animation-duration: 0.15s; animation-delay: 0s; }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   ENTRANCE ANIMATIONS — CSS-driven so they start without waiting for JS.
+   First visit waits for the preloader; later pages wait for the wipe.
+   ════════════════════════════════════════════════════════════════════ */
+:root { --intro-delay: 1.5s; }
+html[data-preloaded] { --intro-delay: 0.55s; }
+
+.rise-line {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.rise-word {
+  display: inline-block;
+  animation: rise-word 1.25s var(--ease-signal) both;
+  animation-delay: calc(var(--intro-delay) + var(--i, 0) * 0.07s);
+}
+.fade-up {
+  animation: fade-up 1.1s var(--ease-signal) both;
+  animation-delay: calc(var(--intro-delay) + var(--d, 0s));
+}
+@keyframes rise-word {
+  from { transform: translate3d(0, 108%, 0) rotate(5deg); }
+  to { transform: none; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   REDUCED MOTION — calm, static fallbacks everywhere
+   ════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain { animation: none; }
+  .preloader { display: none; }
+}
