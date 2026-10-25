@@ -55,7 +55,7 @@ export function FooterWordmark() {
 
   return (
     <div ref={root} aria-hidden className="relative select-none [container-type:inline-size]">
-      <div className="flex items-end justify-between overflow-hidden pt-[0.06em] font-display text-[17.6cqi] leading-[0.82] font-bold tracking-[-0.02em]">
+      <div className="flex items-end justify-between overflow-hidden pt-[0.06em] pr-[0.12em] font-display text-[17.6cqi] leading-[0.82] font-bold tracking-[-0.02em]">
         {WORD.map((ch, i) =>
           ch === " " ? (
             <span key={i} className="w-[0.22em]" />

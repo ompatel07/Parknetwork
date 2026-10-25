@@ -195,20 +195,22 @@ export const site = {
       "Platform names and logos are trademarks of their respective owners, shown to identify platforms our teams have worked with.",
   },
 
-  /** PLACEHOLDER — confirm every region served. lat/lng drive the world map pings. */
+  /**
+   * Global presence — CLIENT: Park Live Network serves every country.
+   * These are world regions (not a limit) used by the globe and marquee;
+   * lat/lng is where the globe turns when a region is selected.
+   */
+  coverage: "Every country",
   regions: [
-    { name: "India", code: "IN", lat: 22.5, lng: 79 },
-    { name: "Bangladesh", code: "BD", lat: 23.7, lng: 90.4 },
-    { name: "Nepal", code: "NP", lat: 28.2, lng: 84.1 },
-    { name: "Sri Lanka", code: "LK", lat: 7.9, lng: 80.8 },
-    { name: "Pakistan", code: "PK", lat: 30.4, lng: 69.3 },
-    { name: "United Arab Emirates", code: "AE", lat: 24.4, lng: 54.4 },
-    { name: "Saudi Arabia", code: "SA", lat: 24.7, lng: 46.7 },
-    { name: "Indonesia", code: "ID", lat: -2.5, lng: 118 },
-    { name: "Philippines", code: "PH", lat: 12.9, lng: 121.8 },
-    { name: "Malaysia", code: "MY", lat: 4.2, lng: 101.9 },
-    { name: "Egypt", code: "EG", lat: 26.8, lng: 30.8 },
-    { name: "Nigeria", code: "NG", lat: 9.1, lng: 8.7 },
+    { name: "South Asia", code: "SAS", lat: 22, lng: 79 },
+    { name: "Southeast Asia", code: "SEA", lat: 6, lng: 112 },
+    { name: "East Asia", code: "EAS", lat: 34, lng: 118 },
+    { name: "Middle East", code: "MEA", lat: 25, lng: 47 },
+    { name: "Africa", code: "AFR", lat: 4, lng: 20 },
+    { name: "Europe", code: "EUR", lat: 50, lng: 12 },
+    { name: "North America", code: "NAM", lat: 40, lng: -98 },
+    { name: "Latin America", code: "LAT", lat: -12, lng: -60 },
+    { name: "Oceania", code: "OCE", lat: -25, lng: 135 },
   ],
 
   /** Core services — CLIENT */
@@ -300,25 +302,87 @@ export const site = {
     { title: "Creators", text: "Find the right platform, training and support to build an audience." },
   ],
 
-  /** PLACEHOLDER — confirm roles, duties and eligibility. `form` picks the application form. */
+  /**
+   * Roles — CLIENT: BD, Agency, Admin and Manager are separate roles.
+   * PLACEHOLDER wording for duties/eligibility — client to confirm.
+   * `form` picks the application form; `subtitle` is optional.
+   */
   roles: [
     {
       slug: "super-admin",
       icon: "crown",
       title: "Super Admin",
-      summary: "Oversee rooms, teams and day-to-day operations across the network.",
+      subtitle: "Network operations lead",
+      summary: "Lead operations across the network — teams, platforms and standards.",
       responsibilities: [
-        "Coordinate admins, hosts and agency contacts",
-        "Monitor room quality and community guidelines",
-        "Escalate and resolve operational issues",
+        "Oversee admins, managers and agency partners",
+        "Set operating standards and monitor quality",
+        "Resolve escalations and report to leadership",
       ],
-      eligibility: ["18 years or older", "Prior moderation or team-lead experience", "Strong communication skills"],
+      eligibility: ["18 years or older", "Senior operations or team-lead experience", "Strong communication and decisions"],
       form: "team",
+    },
+    {
+      slug: "admin",
+      icon: "shield",
+      title: "Admin",
+      subtitle: "Room & platform operations",
+      summary: "Run day-to-day rooms and platform operations with care.",
+      responsibilities: [
+        "Moderate rooms and enforce community guidelines",
+        "Coordinate host schedules and room operations",
+        "Handle user and host queries promptly",
+      ],
+      eligibility: ["18 years or older", "Moderation or community experience", "Available for regular shifts"],
+      form: "team",
+    },
+    {
+      slug: "manager",
+      icon: "users",
+      title: "Manager",
+      subtitle: "Team & performance lead",
+      summary: "Lead a team of hosts and agencies towards clear goals.",
+      responsibilities: [
+        "Guide and support a team of hosts or agencies",
+        "Track performance and share regular reports",
+        "Plan recruitment and engagement activities",
+      ],
+      eligibility: ["18 years or older", "People or team management experience", "Organised and goal-focused"],
+      form: "team",
+    },
+    {
+      slug: "bd",
+      icon: "trend",
+      title: "BD",
+      subtitle: "Business Development",
+      summary: "Grow the network by bringing in new agencies, partners and platforms.",
+      responsibilities: [
+        "Find and approach new agencies and partners",
+        "Present Park Live Network and close partnerships",
+        "Support new partners through onboarding",
+      ],
+      eligibility: ["18 years or older", "Sales, BD or partnership experience", "Confident communicator"],
+      form: "team",
+    },
+    {
+      slug: "agency",
+      icon: "agency",
+      title: "Agency",
+      subtitle: "Agency owner / partner",
+      summary: "Bring your agency and its hosts into a structured, supported network.",
+      responsibilities: [
+        "Recruit and guide hosts within your agency",
+        "Coordinate schedules, reporting and quality",
+        "Uphold platform rules and safety standards",
+      ],
+      eligibility: ["Agency owner or lead, 18+", "An existing or planned team of hosts", "Commitment to our guidelines"],
+      form: "agency",
     },
     {
       slug: "coin-seller",
       icon: "coins",
       title: "Coin Seller",
+      subtitle: "Authorised reseller",
       summary: "Serve users in your region as an authorised, verified coin seller.",
       responsibilities: [
         "Handle coin requests through approved channels",
@@ -329,22 +393,10 @@ export const site = {
       form: "coin-seller",
     },
     {
-      slug: "bd-agency-admin",
-      icon: "briefcase",
-      title: "BD Agency Admin",
-      summary: "Build and manage an agency of hosts with our team's support.",
-      responsibilities: [
-        "Recruit and guide hosts within your agency",
-        "Coordinate schedules and reporting",
-        "Uphold community and safety standards",
-      ],
-      eligibility: ["18 years or older", "Team or agency management experience", "Available for regular check-ins"],
-      form: "team",
-    },
-    {
       slug: "live-host",
       icon: "mic",
       title: "Live Host",
+      subtitle: "On-air talent",
       summary: "Go on air, host audio rooms and build a community around you.",
       responsibilities: [
         "Host live streams or audio rooms on schedule",
@@ -358,6 +410,7 @@ export const site = {
     slug: string;
     icon: IconName;
     title: string;
+    subtitle: string;
     summary: string;
     responsibilities: string[];
     eligibility: string[];
@@ -409,8 +462,8 @@ export const site = {
     },
     {
       category: "General",
-      q: "Which countries do you work in?",
-      a: "Our teams and network members operate across multiple countries. If you're unsure whether we support your region, contact us — we'll let you know.",
+      q: "Which countries do you serve?",
+      a: "We serve platforms, creators, agencies and communities globally — in every country. Wherever you are, contact us and our team will help.",
     },
     {
       category: "Applying",

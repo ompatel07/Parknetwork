@@ -16,7 +16,6 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { MotionNotice } from "@/components/motion/MotionControls";
-import { LiquidController } from "@/components/motion/LiquidController";
 import { motionScript } from "@/lib/motion";
 
 export const metadata: Metadata = {
@@ -58,14 +57,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               "@type": "Organization",
               name: site.name,
               url: site.url,
-              logo: `${site.url}/brand/logo-badge.jpeg`,
+              logo: `${site.url}/brand/logo.png`,
               description: site.description,
               email: site.contact.email,
               telephone: site.contact.phone.href.replace("tel:", ""),
               founder: { "@type": "Person", name: site.team[0]?.name },
               slogan: site.slogan,
               sameAs: site.socials.map((s) => s.href),
-              areaServed: site.regions.map((r) => r.name),
+              areaServed: "Worldwide",
             }),
           }}
         />
@@ -91,7 +90,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Cursor />
             <RevealObserver />
             <ParallaxController />
-            <LiquidController />
             <MotionNotice />
             <WhatsAppFloat />
           </PageTransitionProvider>

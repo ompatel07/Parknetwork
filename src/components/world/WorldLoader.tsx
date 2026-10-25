@@ -13,10 +13,10 @@ function particleBudget() {
   const nav = navigator as Nav;
   const lowEnd = !!nav.connection?.saveData || (nav.hardwareConcurrency ?? 8) < 4 || (nav.deviceMemory ?? 8) < 4;
   const w = window.innerWidth;
-  if (lowEnd) return 4500;
-  if (w < 768) return 9000;
-  if (w < 1280) return 15000;
-  return 21000;
+  if (lowEnd) return 4000;
+  if (w < 768) return 6500;
+  if (w < 1280) return 11000;
+  return 15000;
 }
 
 function hasWebGL() {
@@ -33,7 +33,13 @@ export function WorldLoader() {
 
   useEffect(() => {
     const go = () => {
-      if (hasWebGL()) setCount(particleBudget());
+      let off = false;
+      try {
+        off = localStorage.getItem("pln:noworld") === "1";
+      } catch {
+        /* ignore */
+      }
+      if (!off && hasWebGL()) setCount(particleBudget());
     };
     const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
     if (w.requestIdleCallback) {

@@ -7,7 +7,7 @@ import { Meter } from "@/components/ui/Meter";
    All sizes are in cqw (percent of the phone's width) so they scale with it. */
 
 const card =
-  "rounded-[5cqw] border border-white/12 bg-[rgb(16_14_26/0.78)] shadow-[0_30px_70px_-20px_rgb(0_0_0/0.85)] backdrop-blur-xl";
+  "rounded-[5cqw] border border-white/12 bg-[rgb(16_14_26/0.92)] shadow-[0_30px_70px_-20px_rgb(0_0_0/0.85)]";
 
 export function AudioRoomCard() {
   const seats = [
@@ -71,7 +71,7 @@ export function ShortVideoCard() {
       <div className="relative aspect-[9/13] overflow-hidden rounded-[3.6cqw]">
         <Photo k={media.hero.shortVideo} sizes="180px" position="50% 40%" />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgb(0_0_0/0.7),transparent_45%)]" />
-        <span className="absolute top-1/2 left-1/2 grid size-[11cqw] -translate-1/2 place-items-center rounded-full bg-white/25 backdrop-blur-sm">
+        <span className="absolute top-1/2 left-1/2 grid size-[11cqw] -translate-1/2 place-items-center rounded-full bg-white/25">
           <Play className="ml-[0.6cqw] size-[5cqw] text-white" fill="currentColor" />
         </span>
         <span className="absolute right-[2.4cqw] bottom-[6cqw] flex flex-col items-center text-[2.8cqw] text-white">

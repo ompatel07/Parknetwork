@@ -68,10 +68,10 @@ export default function AboutPage() {
                   <circle cx="12" cy="100" r="2" fill="#7C5CFF" />
                 </g>
               </svg>
-              <div className="absolute inset-[13%] overflow-hidden rounded-full shadow-[0_0_90px_-10px_rgb(124_92_255/0.6)] ring-1 ring-white/10">
-                <Image src="/brand/logo-badge.jpeg" alt={`${site.name} logo`} fill sizes="(min-width: 1024px) 22rem, 70vw" className="scale-[1.02] object-cover" />
+              <div className="absolute inset-[11%] rounded-full shadow-[0_0_90px_-10px_rgb(124_92_255/0.6)]">
+                <Image src="/brand/logo.png" alt={`${site.name} official logo`} fill sizes="(min-width: 1024px) 22rem, 70vw" className="object-contain" />
               </div>
-              <LiveBadge className="absolute bottom-[6%] left-1/2 -translate-x-1/2 bg-bg/80 backdrop-blur">Our mark</LiveBadge>
+              <LiveBadge className="absolute bottom-[6%] left-1/2 -translate-x-1/2 bg-bg/80">Our mark</LiveBadge>
             </div>
           </div>
         </div>
@@ -217,9 +217,9 @@ export default function AboutPage() {
 
       <GlobeSection
         channel="07"
-        title="Where we"
-        accent="operate."
-        lead="Teams and network relationships spanning multiple countries, supporting cross-border collaboration."
+        title="Global,"
+        accent="every country."
+        lead="We serve platforms, creators and communities worldwide — with teams and network relationships that support cross-border collaboration in every region."
       />
 
       <GoLive title="Let's" accent="talk" channel="08" />

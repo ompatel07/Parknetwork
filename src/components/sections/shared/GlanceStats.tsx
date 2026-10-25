@@ -11,7 +11,7 @@ export function GlanceStats({ className }: { className?: string }) {
       className={cn("grid grid-cols-2 gap-px overflow-hidden rounded-panel border border-line bg-line lg:grid-cols-4", className)}
     >
       {site.stats.items.map((s, i) => (
-        <div key={s.label} className="group relative flex flex-col gap-5 bg-bg/85 p-5 backdrop-blur-sm md:p-8">
+        <div key={s.label} className="group relative flex flex-col gap-5 bg-bg/85 p-5 md:p-8">
           <span aria-hidden className="eyebrow order-1 flex items-center gap-3 text-cyan/80">
             0{i + 1}
             <span className="h-px flex-1 bg-line" />

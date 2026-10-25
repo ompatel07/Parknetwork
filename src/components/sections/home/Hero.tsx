@@ -114,13 +114,15 @@ export function Hero() {
           <div className="phone-anchor relative size-full [container-type:inline-size]">
             {/* phone */}
             <div className="hero-phone-in size-full">
-              <div ref={device} className="size-full [transform-style:preserve-3d]">
+              {/* tilts in 3D via the stage's perspective; no preserve-3d — it
+                  would keep every animation inside the phone off the GPU */}
+              <div ref={device} className="size-full">
                 <LivePhone />
               </div>
             </div>
 
             {/* cards (positions in % of the phone) */}
-            <div data-depth="1.4" className="hero-card-r pointer-events-none absolute top-[9%] left-[66%] z-10 lg:left-[80%]">
+            <div data-depth="1.4" className="hero-card-r pointer-events-none absolute top-[12.5%] left-[66%] z-10 lg:left-[80%]">
               <div className="hero-card-in" style={{ ["--d" as string]: "0.25s" }}><div className="float-y" style={{ ["--b" as string]: "5.5s" }}>
                 <MatchCard />
               </div></div>
@@ -164,7 +166,7 @@ export function Hero() {
       </div>
 
       {/* Broadcast lower-third ticker */}
-      <div className="fade-up relative z-30 flex h-12 items-stretch border-y border-line bg-bg/85 backdrop-blur-md lg:absolute lg:inset-x-0 lg:bottom-0 lg:border-b-0" style={{ ["--d" as string]: "0.8s" }}>
+      <div className="fade-up relative z-30 flex h-12 items-stretch border-y border-line bg-bg/95 lg:absolute lg:inset-x-0 lg:bottom-0 lg:border-b-0" style={{ ["--d" as string]: "0.8s" }}>
         <span className="flex shrink-0 items-center gap-2 bg-live px-4 font-mono text-xs font-semibold tracking-wider text-white">
           <span className="size-1.5 rounded-full bg-white animate-live-pulse" /> ON AIR
         </span>

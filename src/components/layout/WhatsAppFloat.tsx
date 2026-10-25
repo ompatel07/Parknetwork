@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { site, whatsappHref } from "@/config/site";
 import { cn } from "@/lib/cn";
+import { getScrollY, onScrollY } from "@/lib/scroll";
 
 /** Floating "Chat on WhatsApp" button: shows after the first screen, hides over the footer. */
 export function WhatsAppFloat() {
@@ -11,14 +12,21 @@ export function WhatsAppFloat() {
   const [footer, setFooter] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.6);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    let last: boolean | null = null;
+    const onScroll = (y: number) => {
+      const next = y > window.innerHeight * 0.6;
+      if (next !== last) {
+        last = next;
+        setScrolled(next);
+      }
+    };
+    onScroll(getScrollY());
+    const off = onScrollY(onScroll);
     const f = document.querySelector("footer");
     const io = f ? new IntersectionObserver(([e]) => setFooter(!!e?.isIntersecting), { rootMargin: "0px 0px -80px 0px" }) : null;
     if (f && io) io.observe(f);
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      off();
       io?.disconnect();
     };
   }, []);
@@ -39,7 +47,8 @@ export function WhatsAppFloat() {
       )}
     >
       <span className="relative grid size-6 place-items-center">
-        <span aria-hidden className="absolute inset-0 rounded-full bg-white/50 animate-ping [animation-duration:2.4s]" />
+        {/* the ping only runs while the button is showing */}
+        {show && <span aria-hidden className="absolute inset-0 rounded-full bg-white/50 animate-ping [animation-duration:2.4s]" />}
         <MessageCircle className="relative size-6" strokeWidth={2.2} aria-hidden />
       </span>
       <span className="hidden text-sm font-semibold md:inline">Chat on WhatsApp</span>

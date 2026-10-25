@@ -74,8 +74,11 @@ export const media = {
   /** One photo per role (keyed by role slug) */
   roles: {
     "super-admin": "mixer-colour",
+    admin: "neon-laptop",
+    manager: "team-meeting",
+    bd: "handshake",
+    agency: "team-table",
     "coin-seller": "india-phone",
-    "bd-agency-admin": "team-meeting",
     "live-host": "ringlight-phone",
   } satisfies Record<string, PhotoKey>,
 

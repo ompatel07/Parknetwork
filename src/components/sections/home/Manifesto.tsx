@@ -14,7 +14,6 @@ function PhotoPill({ k, live = false }: { k: PhotoKey; live?: boolean }) {
   return (
     <span
       aria-hidden
-      data-liquid
       className="mf-w group/pill relative mx-[0.12em] inline-block h-[0.84em] w-[1.75em] -translate-y-[0.07em] overflow-hidden rounded-full align-middle ring-1 ring-white/15 transition-[width] duration-700 ease-(--ease-signal) hover:w-[2.7em]"
     >
       <Photo k={k} sizes="220px" className="transition-transform duration-700 ease-(--ease-signal) group-hover/pill:scale-110" />

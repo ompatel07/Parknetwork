@@ -35,11 +35,13 @@ function CursorInner() {
     root.classList.add("has-cursor");
     gsap.set([d, r, b], { xPercent: -50, yPercent: -50, x: -100, y: -100 });
 
-    const dx = gsap.quickTo(d, "x", { duration: 0.12, ease: "power3.out" });
-    const dy = gsap.quickTo(d, "y", { duration: 0.12, ease: "power3.out" });
-    const lag = { duration: 0.45, ease: "power3.out" };
-    const rxs = [gsap.quickTo(r, "x", lag), gsap.quickTo(b, "x", lag)];
-    const rys = [gsap.quickTo(r, "y", lag), gsap.quickTo(b, "y", lag)];
+    const dx = gsap.quickTo(d, "x", { duration: 0.06, ease: "power3.out" });
+    const dy = gsap.quickTo(d, "y", { duration: 0.06, ease: "power3.out" });
+    // Ring trails a touch; the label bubble stays close so it never feels laggy
+    const ringEase = { duration: 0.22, ease: "power3.out" };
+    const bub = { duration: 0.14, ease: "power3.out" };
+    const rxs = [gsap.quickTo(r, "x", ringEase), gsap.quickTo(b, "x", bub)];
+    const rys = [gsap.quickTo(r, "y", ringEase), gsap.quickTo(b, "y", bub)];
     const rx = (v: number) => rxs.forEach((fn) => fn(v));
     const ry = (v: number) => rys.forEach((fn) => fn(v));
 
@@ -52,7 +54,7 @@ function CursorInner() {
       r.dataset.state = next;
       d.dataset.state = next;
       if (next === "label") l.textContent = text;
-      gsap.to(b, { scale: next === "label" ? 1 : 0, duration: 0.45, ease: "expo.out", overwrite: true });
+      gsap.to(b, { scale: next === "label" ? 1 : 0, duration: 0.35, ease: "expo.out", overwrite: true });
     };
 
     const onMove = (e: PointerEvent) => {
@@ -116,7 +118,7 @@ function CursorInner() {
       />
       <div
         ref={bubble}
-        className="fixed top-0 left-0 grid size-24 scale-0 place-items-center rounded-full bg-[linear-gradient(135deg,var(--color-violet),var(--color-signal))] shadow-[0_10px_50px_-5px_rgb(124_92_255/0.6)]"
+        className="fixed top-0 left-0 grid size-20 scale-0 place-items-center rounded-full will-change-transform bg-[linear-gradient(135deg,var(--color-violet),var(--color-signal))] shadow-[0_10px_50px_-5px_rgb(124_92_255/0.6)]"
       >
         <span ref={label} className="eyebrow text-[0.68rem] text-white" />
       </div>

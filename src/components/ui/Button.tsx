@@ -30,7 +30,7 @@ const variants: Record<Variant, string> = {
   primary:
     "text-white bg-[linear-gradient(110deg,var(--color-violet),var(--color-signal))] shadow-[inset_0_1px_0_rgb(255_255_255/0.28),0_12px_40px_-12px_rgb(124_92_255/0.8)] hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_18px_60px_-10px_rgb(79_227_255/0.55)] before:absolute before:inset-0 before:-translate-x-full before:bg-[linear-gradient(100deg,transparent_20%,rgb(255_255_255/0.28)_50%,transparent_80%)] before:transition-transform before:duration-700 before:ease-(--ease-signal) hover:before:translate-x-full",
   ghost:
-    "text-ink border border-line-strong bg-white/[0.03] backdrop-blur-md hover:border-cyan/50 hover:bg-white/[0.06]",
+    "text-ink border border-line-strong bg-white/[0.04] hover:border-cyan/50 hover:bg-white/[0.06]",
   link: "text-ink rounded-none px-0! py-0! h-auto! gap-2",
 };
 

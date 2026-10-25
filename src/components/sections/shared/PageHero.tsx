@@ -16,7 +16,7 @@ function MonitorUI({ cam, live = false }: { cam: string; live?: boolean }) {
       <span
         className={cn(
           "absolute top-4 left-4 rounded-md px-2 py-1 font-mono text-[0.6rem] font-semibold tracking-wider",
-          live ? "bg-live text-white" : "bg-bg/60 text-white/85 backdrop-blur",
+          live ? "bg-live text-white" : "bg-bg/60 text-white/85",
         )}
       >
         {live ? "PGM" : "PVW"} · {cam}
@@ -96,12 +96,12 @@ export function PageHero({
         </ChannelLabel>
         <h1
           className={cn(
-            "mt-8 font-display leading-[0.86] font-semibold tracking-[-0.045em] uppercase md:mt-10",
+            "mt-8 font-display font-semibold tracking-[-0.045em] uppercase md:mt-10",
             compact
-              ? "text-[clamp(2.3rem,0.5rem+5vw,6rem)] lg:max-w-[60vw]"
+              ? "text-[clamp(2.3rem,0.5rem+5vw,6rem)] leading-[0.9] lg:max-w-[60vw]"
               : main
-                ? "text-[clamp(2.9rem,0.4rem+7.6vw,8.6rem)] lg:max-w-[58vw]"
-                : "text-[clamp(2.9rem,0.4rem+8.6vw,10rem)]",
+                ? "text-[clamp(2.9rem,0.4rem+7.6vw,8.6rem)] leading-[0.86] lg:max-w-[58vw]"
+                : "text-[clamp(2.9rem,0.4rem+8.6vw,10rem)] leading-[0.86]",
           )}
         >
           <span className="block">

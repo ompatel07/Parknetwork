@@ -140,14 +140,14 @@ export default function ContactPage() {
                 </p>
               </div>
               <Frame k="neon-laptop" sizes="(min-width: 1024px) 30vw, 94vw" className="mt-6 hidden aspect-[4/3] rounded-[1.75rem] lg:block">
-                <span className="eyebrow absolute bottom-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur">
+                <span className="eyebrow absolute bottom-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90">
                   Real people read every message
                 </span>
               </Frame>
             </div>
           </div>
           <div className="lg:col-span-8" data-reveal>
-            <div className="rounded-[2rem] border border-line-strong bg-surface/90 p-6 backdrop-blur-md md:p-10">
+            <div className="rounded-[2rem] border border-line-strong bg-surface/90 p-6 md:p-10">
               <SmartForm type="support" />
             </div>
           </div>

@@ -106,7 +106,7 @@ export function Ecosystem({ channel = "03" }: { channel?: string }) {
                         )}
                       >
                         {it.more ? (
-                          <span className="grid size-(--eco-tile) place-items-center rounded-[26%] border border-dashed border-line-strong bg-bg/60 text-center backdrop-blur">
+                          <span className="grid size-(--eco-tile) place-items-center rounded-[26%] border border-dashed border-line-strong bg-bg/60 text-center">
                             <span className="font-display text-[calc(var(--eco-tile)*0.22)] leading-none font-semibold">{it.name.split(" ")[0]}</span>
                           </span>
                         ) : (

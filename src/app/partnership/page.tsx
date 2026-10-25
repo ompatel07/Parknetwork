@@ -83,9 +83,9 @@ export default function PartnershipPage() {
           />
           <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {site.audiences.map((au, i) => (
-              <li key={au.title} className="group rounded-[1.9rem] border border-line bg-surface/80 p-2.5 backdrop-blur-sm transition-colors duration-500 hover:border-line-strong">
+              <li key={au.title} className="group rounded-[1.9rem] border border-line bg-surface/80 p-2.5 transition-colors duration-500 hover:border-line-strong">
                 <Frame k={media.audiences[i] ?? "team-table"} sizes="(min-width: 1024px) 24vw, (min-width: 640px) 48vw, 94vw" className="aspect-[4/3] rounded-[1.5rem]" delay={i * 0.08}>
-                  <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur">0{i + 1}</span>
+                  <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90">0{i + 1}</span>
                 </Frame>
                 <div className="p-5">
                   <h3 className="text-h4 font-semibold">{au.title}</h3>
@@ -160,7 +160,7 @@ export default function PartnershipPage() {
             </div>
           </div>
           <div className="lg:col-span-8" data-reveal>
-            <div className="rounded-[2rem] border border-line-strong bg-surface/90 p-6 backdrop-blur-md md:p-10">
+            <div className="rounded-[2rem] border border-line-strong bg-surface/90 p-6 md:p-10">
               <Tabs
                 tabs={[
                   { id: "agency", label: "Agency registration", content: <SmartForm type="agency" /> },

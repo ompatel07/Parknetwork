@@ -76,7 +76,7 @@ export function WhyChoose({ channel = "04" }: { channel?: string }) {
                   <span
                     className={cn(
                       "absolute font-display font-semibold text-white uppercase transition-opacity duration-500",
-                      "top-1/2 right-5 left-14 -translate-y-1/2 truncate text-base",
+                      "top-1/2 right-5 left-14 -translate-y-1/2 line-clamp-2 text-[0.95rem] leading-tight sm:text-base",
                       "lg:top-auto lg:right-auto lg:bottom-6 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-0 lg:text-lg lg:[writing-mode:vertical-rl] lg:rotate-180",
                       on ? "opacity-0" : "opacity-100",
                     )}

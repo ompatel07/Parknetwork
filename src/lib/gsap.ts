@@ -8,6 +8,8 @@ import { motionOff } from "./motion";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
   gsap.defaults({ ease: "expo.out", duration: 1 });
+  // Phone address bars resizing the viewport shouldn't re-measure every pin
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 export { gsap, ScrollTrigger, useGSAP };

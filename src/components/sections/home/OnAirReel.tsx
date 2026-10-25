@@ -86,13 +86,12 @@ export function OnAirReel({ channel = "05" }: { channel?: string }) {
             {ITEMS.map((it, i) => (
               <figure
                 key={it.key}
-                data-liquid
                 className="ring-card absolute inset-0 overflow-hidden rounded-[1.25rem] bg-surface md:rounded-[1.6rem]"
                 style={{ transform: `rotateY(${i * STEP}deg) translateZ(var(--r))` }}
               >
                 <Photo k={it.key} sizes="(min-width: 768px) 20vw, 46vw" />
                 <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(7_6_13/0.85),transparent_50%)]" />
-                {i % 3 === 0 && <LiveBadge className="absolute top-3 left-3 bg-bg/60 backdrop-blur">Live</LiveBadge>}
+                {i % 3 === 0 && <LiveBadge className="absolute top-3 left-3 bg-bg/60">Live</LiveBadge>}
                 <figcaption className="absolute inset-x-4 bottom-4">
                   <span className="eyebrow text-white/70">0{i + 1}</span>
                   <span className="mt-1.5 block font-display text-[clamp(1rem,0.8rem+0.8vw,1.5rem)] leading-tight font-semibold uppercase">

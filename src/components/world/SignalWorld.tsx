@@ -1,6 +1,7 @@
 "use client";
 
 import { motionOff } from "@/lib/motion";
+import { getScrollY } from "@/lib/scroll";
 import { useEffect, useRef } from "react";
 import {
   AdditiveBlending,
@@ -71,7 +72,7 @@ export default function SignalWorld({ count }: { count: number }) {
     } catch {
       return; // no WebGL — the page still works without the particles
     }
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = 1;
     renderer.setPixelRatio(dpr);
     renderer.setClearColor(0x000000, 0);
     el.appendChild(renderer.domElement);
@@ -104,7 +105,7 @@ export default function SignalWorld({ count }: { count: number }) {
       uW0: { value: 0 }, uW1: { value: 0 }, uW2: { value: 0 }, uW3: { value: 0 }, uW4: { value: 1 },
       uChaos: { value: 0.6 },
       uGlobeRot: { value: state.globeRot },
-      uSize: { value: count < 10000 ? 4.4 : 3.3 },
+      uSize: { value: count < 8000 ? 5 : 3.9 },
       uPixelRatio: { value: dpr },
       uAlpha: { value: 0 },
       uMouse: { value: [0, 0] as [number, number] },
@@ -201,7 +202,7 @@ export default function SignalWorld({ count }: { count: number }) {
 
     let raf = 0;
     let prev = performance.now();
-    let lastScroll = window.scrollY;
+    let lastScroll = getScrollY();
     let velChaos = 0;
     let lastDrawnAlpha = 1;
     const start = prev;
@@ -219,7 +220,7 @@ export default function SignalWorld({ count }: { count: number }) {
         if (now > spinPausedUntil) state.globeRot += dt * 0.12;
 
         // scroll speed stirs the particles a little
-        const sy = window.scrollY;
+        const sy = getScrollY(); // cached — never forces layout mid-frame
         const v = Math.abs(sy - lastScroll) / Math.max(dt, 0.001);
         lastScroll = sy;
         velChaos += (Math.min(0.22, v * 0.00007) - velChaos) * 0.08;

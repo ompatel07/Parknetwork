@@ -6,7 +6,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/hooks";
 import { site } from "@/config/site";
 import { scrollToTarget } from "./SmoothScroll";
-import { SignalMark } from "@/components/ui/SignalMark";
+import { LogoBadge } from "@/components/ui/Logo";
 
 type Ctx = { navigate: (href: string) => void };
 const TransitionContext = createContext<Ctx | null>(null);
@@ -139,7 +139,7 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
         </div>
         <div ref={content} className="absolute inset-0 grid place-items-center opacity-0">
           <div className="flex flex-col items-center gap-5 text-center">
-            <SignalMark className="size-14" animated />
+            <LogoBadge className="size-16" sizes="64px" />
             <p className="eyebrow flex items-center gap-2 text-muted">
               <span className="size-1.5 rounded-full bg-live" />
               Now tuning in

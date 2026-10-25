@@ -71,7 +71,7 @@ export function Frame({
   return (
     // The outer box is what the reveal observer watches (a fully clipped
     // element never counts as "visible"), the inner layer does the wipe.
-    <div data-reveal="frame" data-liquid data-vskew className={cn("frame relative overflow-hidden", className)} style={{ ["--d" as string]: `${delay}s` }}>
+    <div data-reveal="frame" className={cn("frame relative overflow-hidden", className)} style={{ ["--d" as string]: `${delay}s` }}>
       <div className="frame-clip absolute inset-0 overflow-hidden rounded-[inherit] bg-surface-2">
         <div className="frame-img absolute inset-x-0" {...(parallax ? { "data-parallax": "" } : {})}>
           <Photo k={k} sizes={sizes} priority={priority} position={position} className={imgClassName} />

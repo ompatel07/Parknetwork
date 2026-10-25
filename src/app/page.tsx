@@ -2,7 +2,7 @@ import { site } from "@/config/site";
 import { Hero } from "@/components/sections/home/Hero";
 import { Manifesto } from "@/components/sections/home/Manifesto";
 import { Multiview } from "@/components/sections/home/Multiview";
-import { RolesStack } from "@/components/sections/home/RolesStack";
+import { RoleSwitcher } from "@/components/sections/shared/RoleSwitcher";
 import { Countdown } from "@/components/sections/home/Countdown";
 import { FaqTeaser } from "@/components/sections/home/FaqTeaser";
 import { GoLive } from "@/components/sections/home/GoLive";
@@ -21,12 +21,12 @@ export default function HomePage() {
       <Ecosystem channel="03" />
       <WhyChoose channel="04" />
       <Leadership channel="05" />
-      <RolesStack />
+      <RoleSwitcher />
       <Countdown channel="07" />
       <GlobeSection channel="08" />
-      <div className="relative border-y border-line bg-bg/60 py-6 backdrop-blur-sm md:py-10" aria-label="Where we operate">
-        <VelocityMarquee items={site.regions.map((r) => r.name)} />
-        <VelocityMarquee items={[...site.regions].reverse().map((r) => r.name)} speed={-50} outline />
+      <div className="relative border-y border-line bg-bg py-6 md:py-10" aria-label="Serving every country">
+        <VelocityMarquee items={["Every country", ...site.regions.map((r) => r.name)]} />
+        <VelocityMarquee items={["Every time zone", ...[...site.regions].reverse().map((r) => r.name)]} speed={-50} outline />
       </div>
       <FaqTeaser channel="09" />
       <GoLive channel="10" />

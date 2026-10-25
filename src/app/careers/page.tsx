@@ -5,7 +5,7 @@ import { GraduationCap, Headphones, ShieldCheck } from "lucide-react";
 import { site } from "@/config/site";
 import { PageHero } from "@/components/sections/shared/PageHero";
 import { StepsRow } from "@/components/sections/shared/StepsRow";
-import { RolesStack } from "@/components/sections/home/RolesStack";
+import { RoleSwitcher } from "@/components/sections/shared/RoleSwitcher";
 import { GoLive } from "@/components/sections/home/GoLive";
 import { RoleSheet } from "@/components/sections/careers/RoleSheet";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -15,7 +15,7 @@ import type { PhotoKey } from "@/config/media";
 
 export const metadata: Metadata = {
   title: "Careers — Join Our Team",
-  description: "Open roles for live hosts, coin sellers, BD agency admins and super admins. Free to apply, 18+ only.",
+  description: "Open roles at Park Live Network: Super Admin, Admin, Manager, BD, Agency, Coin Seller and Live Host. Free to apply, 18+ only.",
   alternates: { canonical: "/careers" },
 };
 
@@ -34,7 +34,7 @@ export default function CareersPage() {
         label="Join our team"
         title="Your voice,"
         accent="our network."
-        lead="Join a network of 5,000 professionals. Hosts, coin sellers, agency admins and super admins — choose a role, check the requirements and apply in minutes. Applying is always free."
+        lead="Join a network of 5,000 professionals. Seven roles — from Live Host and Agency to BD, Manager, Admin and Super Admin. Choose yours, check the requirements and apply in minutes. Applying is always free."
         scene="dust"
         dim={0.6}
         photos={["ringlight-man", "headphones-night"]}
@@ -44,9 +44,10 @@ export default function CareersPage() {
             <li key={r.slug}>
               <Link
                 href={`?apply=${r.slug}`}
+                prefetch={false}
                 scroll={false}
                 data-cursor="Apply"
-                className="block rounded-full border border-line bg-bg/50 px-4 py-2 text-sm text-muted backdrop-blur transition-colors hover:border-cyan/40 hover:text-ink"
+                className="block rounded-full border border-line bg-bg/50 px-4 py-2 text-sm text-muted transition-colors hover:border-cyan/40 hover:text-ink"
               >
                 Apply · {r.title}
               </Link>
@@ -62,7 +63,7 @@ export default function CareersPage() {
             {WHY.map((w, i) => (
               <li
                 key={w.title}
-                className="group rounded-[2rem] border border-line bg-surface/70 p-2.5 backdrop-blur-sm transition-colors duration-500 hover:border-line-strong"
+                className="group rounded-[2rem] border border-line bg-surface/70 p-2.5 transition-colors duration-500 hover:border-line-strong"
               >
                 <Frame k={w.photo} sizes="(min-width: 768px) 31vw, 94vw" className="aspect-[4/3] rounded-[1.5rem]" delay={i * 0.1} />
                 <div className="p-5 md:p-7">
@@ -81,7 +82,7 @@ export default function CareersPage() {
         </div>
       </section>
 
-      <RolesStack channel="02" />
+      <RoleSwitcher channel="02" />
 
       <section className="relative bg-bg py-(--section-y)">
         <div className="container-site">

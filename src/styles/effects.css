@@ -57,8 +57,10 @@ html[data-motion="on"] .float-y { animation: float-y var(--b, 6s) ease-in-out in
 /* Live phone internals */
 html[data-motion="on"] .live-feed img { animation: live-kb 14s ease-in-out infinite alternate; }
 @keyframes live-kb { from { transform: scale(1); } to { transform: scale(1.09) translate(-1.5%, 1%); } }
-html[data-motion="on"] .chat-line { animation: chat-in 0.55s var(--ease-signal) both; }
-@keyframes chat-in { from { transform: translateY(70%); opacity: 0; } }
+.chat-avatar[data-hue="0"] { background: linear-gradient(135deg, var(--color-violet), var(--color-signal)); }
+.chat-avatar[data-hue="1"] { background: linear-gradient(135deg, var(--color-signal), var(--color-cyan)); }
+.chat-avatar[data-hue="2"] { background: linear-gradient(135deg, var(--color-live), var(--color-violet)); }
+.chat-avatar[data-hue="3"] { background: linear-gradient(135deg, var(--color-cyan), var(--color-violet)); }
 .heart-float {
   position: absolute;
   bottom: 0;
@@ -67,18 +69,18 @@ html[data-motion="on"] .chat-line { animation: chat-in 0.55s var(--ease-signal) 
   height: 7.5cqw;
   margin-left: -3.75cqw;
   pointer-events: none;
-  animation: heart-up 2.8s cubic-bezier(0.25, 0.6, 0.35, 1) forwards;
-  filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.35));
+  opacity: 0;
+  will-change: transform, opacity;
+  /* animated from LivePhone.tsx (Web Animations API) */
 }
-@keyframes heart-up {
-  0% { transform: translate(0, 0) scale(0.2); opacity: 0; }
-  12% { transform: translate(0, -6cqw) scale(var(--s)); opacity: 1; }
-  55% { transform: translate(calc(var(--x) * -0.6), -50cqw) rotate(calc(var(--r) * -1)) scale(var(--s)); opacity: 0.95; }
-  100% { transform: translate(var(--x), -100cqw) rotate(var(--r)) scale(calc(var(--s) * 0.8)); opacity: 0; }
-}
+.sv-progress { width: 100%; transform: scaleX(0.42); transform-origin: left; }
 html[data-motion="on"] .sv-progress { animation: sv-progress 6s linear infinite; }
-@keyframes sv-progress { from { width: 0%; } to { width: 100%; } }
-.sv-progress { width: 42%; }
+@keyframes sv-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Sections pause every CSS animation while off-screen (see RevealObserver) */
+[data-inview="0"] *,
+[data-inview="0"] *::before,
+[data-inview="0"] *::after { animation-play-state: paused !important; }
 html[data-motion="on"] .match-heart { animation: beat 1.6s ease-in-out infinite; }
 @keyframes beat {
   0%, 100% { transform: translate(-50%, -50%) scale(1); }
@@ -267,6 +269,11 @@ html.js[data-motion="on"] [data-reveal="words"] .rw {
   transition-delay: calc(var(--d, 0s) + var(--i, 0) * 0.055s);
 }
 html.js[data-motion="on"] [data-reveal="words"].is-in .rw { transform: none; }
+/* Serif italic accents have long tails (y, g) and lean right — give their
+   masks more room, and start the words lower so they stay hidden. */
+.accent .rl { padding: 0 0.08em 0.26em 0; margin: 0 -0.08em -0.26em 0; }
+html.js[data-motion="on"] [data-reveal="words"] .accent .rw { transform: translate3d(0, 150%, 0) rotate(6deg); }
+html.js[data-motion="on"] [data-reveal="words"].is-in .accent .rw { transform: none; }
 
 /* ─── Photo inside type ("GO" in the closing section) ───────────── */
 .photo-type {
@@ -275,7 +282,8 @@ html.js[data-motion="on"] [data-reveal="words"].is-in .rw { transform: none; }
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: saturate(1.25) contrast(1.1);
+  filter: saturate(1.3) brightness(1.35) contrast(1.05);
+  -webkit-text-stroke: 1px rgb(245 244 250 / 0.28);
 }
 html[data-motion="on"] .photo-type { animation: photo-pan 14s ease-in-out infinite alternate; }
 @keyframes photo-pan {
@@ -289,6 +297,10 @@ html[data-motion="on"] .eco-orbit { animation: spin 70s linear infinite; }
 html[data-motion="on"] .eco-upright { animation: spin 70s linear infinite reverse; }
 .eco[data-active] .eco-orbit,
 .eco[data-active] .eco-upright { animation-play-state: paused; }
+
+/* ─── Role switcher ──────────────────────────────────────────────── */
+html[data-motion="on"] .role-swap { animation: role-swap 0.55s var(--ease-signal) both; }
+@keyframes role-swap { from { opacity: 0; transform: translateY(12px); } }
 
 /* ─── Leadership passes ──────────────────────────────────────────── */
 .barcode {
@@ -356,8 +368,7 @@ html.js [data-reveal="frame"] .frame-img img {
 html.js [data-reveal="frame"].is-in .frame-img img { transform: scale(1); }
 
 .scanlines {
-  background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.045) 0 1px, transparent 1px 3px);
-  mix-blend-mode: overlay;
+  background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.16) 0 1px, transparent 1px 3px);
 }
 
 /* Audio meter bars (CSS only) */
@@ -376,8 +387,10 @@ html.js [data-reveal="frame"].is-in .frame-img img { transform: scale(1); }
 .tally { background: rgb(255 255 255 / 0.18); }
 [data-live] > .tile-ring { box-shadow: inset 0 0 0 2px var(--color-live), 0 0 40px -6px rgb(255 61 110 / 0.55); }
 [data-live] .tally { background: var(--color-live); box-shadow: 0 0 10px var(--color-live); }
-[data-live] .tile-img img { filter: none; transform: scale(1.06); }
-.tile-img img { filter: grayscale(0.85) brightness(0.62); transition: filter 0.8s var(--ease-signal), transform 1.4s var(--ease-signal); }
+[data-live] .tile-img { opacity: 1; }
+.tile-img { opacity: 0.42; transition: opacity 0.6s var(--ease-signal); }
+.tile-img img { transition: transform 1.4s var(--ease-signal); }
+[data-live] .tile-img img { transform: scale(1.05); }
 
 /* ─── Reduced motion: show the finished state ───────────────────── */
 html.js[data-motion="off"] [data-reveal] { opacity: 1; transform: none; }

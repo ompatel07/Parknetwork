@@ -42,7 +42,7 @@ const sphere = (lat: number, lng: number, r: number): [number, number, number] =
 /**
  * Builds every particle target. Each particle has one position per scene
  * plus random attributes: x = variation, y = size, z = colour shift,
- * w = flag (-1 ocean, 0 normal, 1 highlighted country, 2 HQ).
+ * w = flag (-1 ocean, 0 normal, 1 highlighted region).
  */
 export function buildShapes(n: number) {
   const rand = rng(20261025);
@@ -78,7 +78,7 @@ export function buildShapes(n: number) {
   }
   const regions = site.regions;
   const R = 1.32;
-  const regionCluster = 36;
+  const regionCluster = 70;
   const reserved = Math.min(n * 0.15, regions.length * regionCluster);
   const landCount = Math.floor(n * 0.6);
 
@@ -141,9 +141,8 @@ export function buildShapes(n: number) {
     let g: [number, number, number];
     if (i < reserved) {
       const reg = regions[Math.floor(i / regionCluster) % regions.length]!;
-      const isHq = reg === regions[0];
-      g = sphere(reg.lat + (rand() - 0.5) * 2.4, reg.lng + (rand() - 0.5) * 2.4, R * 1.004);
-      attrs[i4 + 3] = isHq ? 2 : 1;
+      g = sphere(reg.lat + (rand() - 0.5) * 9, reg.lng + (rand() - 0.5) * 12, R * 1.004);
+      attrs[i4 + 3] = 1;
     } else if (i < reserved + landCount) {
       const [lat, lng] = land[i % land.length]!;
       g = sphere(lat + (rand() - 0.5) * STEP * 0.7, lng + (rand() - 0.5) * STEP * 0.7, R);

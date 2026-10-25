@@ -66,10 +66,10 @@
   --animate-live-pulse: live-pulse 1.6s var(--ease-signal) infinite;
   --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
 
+  /* GPU-only (transform + opacity) so dozens of LIVE dots cost nothing */
   @keyframes live-pulse {
-    0% { box-shadow: 0 0 0 0 rgb(255 61 110 / 0.7); }
-    70% { box-shadow: 0 0 0 7px rgb(255 61 110 / 0); }
-    100% { box-shadow: 0 0 0 0 rgb(255 61 110 / 0); }
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.6); opacity: 0.45; }
   }
   @keyframes marquee {
     to { transform: translate3d(-50%, 0, 0); }
@@ -160,6 +160,12 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  /* The gradient only paints inside the box — stretch it over italic
+     tails (y, g) and right-leaning glyphs without changing the layout. */
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
+  padding-right: 0.08em;
+  margin-right: -0.08em;
 }
 
 @utility text-outline {
@@ -207,20 +213,11 @@
    ════════════════════════════════════════════════════════════════════ */
 .grain {
   position: fixed;
-  inset: -50%;
+  inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.07;
+  opacity: 0.06;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain-shift 0.9s steps(4) infinite;
-  will-change: transform;
-}
-@keyframes grain-shift {
-  0% { transform: translate3d(0, 0, 0); }
-  25% { transform: translate3d(-4%, 3%, 0); }
-  50% { transform: translate3d(3%, -5%, 0); }
-  75% { transform: translate3d(-2%, -2%, 0); }
-  100% { transform: translate3d(0, 0, 0); }
 }
 
 .glow-orb {
@@ -294,7 +291,7 @@
 }
 .preloader__ring {
   position: absolute;
-  width: 80px;
+  width: 112px;
   aspect-ratio: 1;
   border-radius: 9999px;
   border: 1.5px solid var(--color-cyan);
@@ -305,7 +302,7 @@
 .preloader__ring:nth-child(3) { animation-delay: 0.5s; }
 .preloader__label {
   position: absolute;
-  top: calc(45% + 4.5rem);
+  top: calc(45% + 5.5rem);
   left: 0;
   right: 0;
   display: flex;
@@ -402,5 +399,4 @@ html[data-motion="off"] *::after {
   transition-duration: 0.001ms !important;
   scroll-behavior: auto !important;
 }
-html[data-motion="off"] .grain { animation: none; }
 html[data-motion="off"] .preloader { display: none; }

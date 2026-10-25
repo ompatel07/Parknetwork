@@ -148,7 +148,7 @@ export function Countdown({ channel = "04" }: { channel?: string }) {
               >
                 <div className="relative mb-6 hidden h-[min(18rem,26svh)] overflow-hidden rounded-[1.5rem] ring-1 ring-white/10 [clip-path:inset(0_0_100%_0)] transition-[clip-path] duration-1000 ease-(--ease-swift) group-data-[on]/step:[clip-path:inset(0_0_0_0)] lg:block">
                   <Photo k={media.steps[i] ?? "on-air"} sizes="(min-width: 1024px) 36vw, 1px" />
-                  <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90 backdrop-blur">
+                  <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/60 px-2 py-1 text-white/90">
                     T – {String(n - i).padStart(2, "0")}
                   </span>
                 </div>
@@ -174,7 +174,9 @@ export function Countdown({ channel = "04" }: { channel?: string }) {
                 key={s.title}
                 className="cd-tick eyebrow truncate text-muted/50 transition-colors duration-500 data-[on]:text-ink"
               >
-                {String(n - i).padStart(2, "0")} · {s.title}
+                {String(n - i).padStart(2, "0")}
+                {/* phones: number only — the titles don't fit four across */}
+                <span className="hidden sm:inline"> · {s.title}</span>
               </span>
             ))}
           </div>

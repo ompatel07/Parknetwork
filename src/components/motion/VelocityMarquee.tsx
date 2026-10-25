@@ -3,6 +3,7 @@
 import { motionOff } from "@/lib/motion";
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
+import { getScrollY } from "@/lib/scroll";
 
 /**
  * Marquee that speeds up, reverses and skews with your scroll velocity.
@@ -27,35 +28,48 @@ export function VelocityMarquee({
     if (!el || motionOff()) return;
     let x = 0;
     let raf = 0;
-    let prev = performance.now();
-    let lastY = window.scrollY;
+    let prev = 0;
+    let lastY = getScrollY();
     let vel = 0;
     let dir = 1;
-    let visible = false;
-    const io = new IntersectionObserver(([e]) => (visible = !!e?.isIntersecting));
-    io.observe(el);
+    // Width is cached (reading it every frame would force a page layout)
+    let half = el.scrollWidth / 2;
+    const ro = new ResizeObserver(() => (half = el.scrollWidth / 2));
+    ro.observe(el);
 
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
-      const dt = Math.min(0.05, (now - prev) / 1000);
+      const dt = prev ? Math.min(0.05, (now - prev) / 1000) : 0;
       prev = now;
-      const y = window.scrollY;
+      const y = getScrollY();
       const dy = y - lastY;
       lastY = y;
-      if (!visible) return;
       if (Math.abs(dy) > 0.5) dir = dy > 0 ? 1 : -1;
       vel += (Math.min(40, Math.abs(dy)) - vel) * 0.1;
-      const half = el.scrollWidth / 2;
       x -= (speed + Math.sign(speed) * vel * 22) * dir * dt;
-      if (x <= -half) x += half;
-      if (x > 0) x -= half;
+      if (half > 0) {
+        if (x <= -half) x += half;
+        if (x > 0) x -= half;
+      }
       const skew = Math.max(-12, Math.min(12, vel * 0.5 * dir * Math.sign(speed)));
-      el.style.transform = `translate3d(${x}px,0,0) skewX(${-skew}deg)`;
+      el.style.transform = `translate3d(${x.toFixed(2)}px,0,0) skewX(${(-skew).toFixed(2)}deg)`;
     };
-    raf = requestAnimationFrame(tick);
+
+    // Only animate while on screen
+    const io = new IntersectionObserver(([e]) => {
+      cancelAnimationFrame(raf);
+      if (e?.isIntersecting) {
+        prev = 0;
+        lastY = getScrollY();
+        raf = requestAnimationFrame(tick);
+      }
+    });
+    io.observe(el);
+
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
+      ro.disconnect();
     };
   }, [speed]);
 

@@ -129,7 +129,7 @@ export default function ServicesPage() {
               <li key={s.slug}>
                 <a
                   href={`#${s.slug}`}
-                  className="flex items-center gap-2 rounded-full border border-line bg-bg/50 px-4 py-2 text-sm text-muted backdrop-blur transition-colors hover:border-cyan/40 hover:text-ink"
+                  className="flex items-center gap-2 rounded-full border border-line bg-bg/50 px-4 py-2 text-sm text-muted transition-colors hover:border-cyan/40 hover:text-ink"
                 >
                   <span className="eyebrow text-cyan">{String(i + 1).padStart(2, "0")}</span>
                   {s.title}

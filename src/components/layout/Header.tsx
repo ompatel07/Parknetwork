@@ -9,12 +9,12 @@ import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { TransitionLink } from "@/components/motion/TransitionLink";
 import { isActivePath } from "@/lib/nav";
+import { getScrollY, onScrollY } from "@/lib/scroll";
 import { MobileMenu } from "./MobileMenu";
 
 export function Header() {
   const pathname = usePathname();
-  const [hidden, setHidden] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   // The menu belongs to the page it was opened on, so navigating closes it.
   const [openOn, setOpenOn] = useState<string | null>(null);
   const open = openOn === pathname;
@@ -22,51 +22,53 @@ export function Header() {
   const [hovered, setHovered] = useState<string | null>(null);
   const lastY = useRef(0);
 
+  // Hide on scroll down / show on scroll up. Written straight to data
+  // attributes from the shared scroll cache (no React re-render and no
+  // forced layout while scrolling — keeps scrolling smooth).
   useEffect(() => {
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const y = window.scrollY;
-        const delta = y - lastY.current;
-        setScrolled(y > 24);
-        if (Math.abs(delta) > 6) setHidden(delta > 0 && y > 160);
+    const el = headerRef.current;
+    if (!el) return;
+    const set = (k: string, on: boolean) => {
+      if ((el.dataset[k] === "") !== on) {
+        if (on) el.dataset[k] = "";
+        else delete el.dataset[k];
+      }
+    };
+    const onScroll = (y: number) => {
+      const delta = y - lastY.current;
+      set("scrolled", y > 24);
+      if (Math.abs(delta) > 6) {
+        set("hidden", delta > 0 && y > 160);
         lastY.current = y;
-      });
+      }
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
-  // Show the header again after each navigation
-  useEffect(() => {
-    const show = () => setHidden(false);
+    const show = () => set("hidden", false);
+    onScroll(getScrollY());
+    const off = onScrollY(onScroll);
     window.addEventListener("page:enter", show);
-    return () => window.removeEventListener("page:enter", show);
+    return () => {
+      off();
+      window.removeEventListener("page:enter", show);
+    };
   }, []);
 
   return (
     <>
       <header
+        ref={headerRef}
+        data-menu={open || undefined}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-transform duration-700 ease-(--ease-signal)",
-          hidden && !open && "-translate-y-[120%]",
+          "group/hdr fixed inset-x-0 top-0 z-50 transition-transform duration-700 ease-(--ease-signal)",
+          !open && "data-[hidden]:-translate-y-[120%]",
         )}
       >
         {/* soft fade so content never collides with the bar */}
         <div
           aria-hidden
-          className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(to_bottom,rgb(7_6_13/0.9),rgb(7_6_13/0))] transition-opacity duration-500",
-            scrolled && !open ? "opacity-100" : "opacity-0",
-          )}
+          className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(to_bottom,rgb(7_6_13/0.9),rgb(7_6_13/0))] opacity-0 transition-opacity duration-500 group-data-[scrolled]/hdr:opacity-100 group-data-[menu]/hdr:opacity-0"
         />
         <div className="container-site relative grid h-(--header-h) grid-cols-[1fr_auto] items-center gap-4 lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
-          <Logo />
+          <Logo priority />
 
           <LayoutGroup>
             <nav aria-label="Main" className="hidden lg:block">

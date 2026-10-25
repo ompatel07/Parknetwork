@@ -89,7 +89,7 @@ export function Multiview() {
               <Timecode className="text-ink/80" />
             </span>
           </div>
-          <ul data-vskew className="grid gap-2 md:grid-cols-2 md:gap-2.5 lg:grid-cols-6">
+          <ul className="grid gap-2 md:grid-cols-2 md:gap-2.5 lg:grid-cols-6">
             {services.map((s, i) => {
               const live = i === active;
               return (
@@ -97,7 +97,6 @@ export function Multiview() {
                   <TransitionLink
                     href={`/services#${s.slug}`}
                     data-tile={i}
-                    data-liquid
                     data-live={live || undefined}
                     data-cursor={fine ? "Watch" : undefined}
                     onPointerEnter={() => fine && setHover(i)}
@@ -140,7 +139,7 @@ export function Multiview() {
                           {s.short}
                         </p>
                       </div>
-                      <span className="grid size-10 shrink-0 place-items-center rounded-full border border-white/25 bg-bg/40 backdrop-blur transition-all duration-500 ease-(--ease-signal) group-hover:rotate-45 group-hover:border-transparent group-hover:bg-white group-hover:text-bg">
+                      <span className="grid size-10 shrink-0 place-items-center rounded-full border border-white/25 bg-bg/40 transition-all duration-500 ease-(--ease-signal) group-hover:rotate-45 group-hover:border-transparent group-hover:bg-white group-hover:text-bg">
                         <ArrowUpRight className="size-[18px]" aria-hidden />
                       </span>
                     </div>

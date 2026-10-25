@@ -2,10 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import { site } from "@/config/site";
-import { SignalMark } from "@/components/ui/SignalMark";
+import Image from "next/image";
 
 /**
- * First-visit intro: the signal mark pulses while a counter runs to 100%,
+ * First-visit intro: the official badge pulses while a counter runs to 100%,
  * then the whole curtain lifts to reveal the hero. Pure CSS timing
  * (globals.css) so it starts on first paint; this only adds click/key skip.
  */
@@ -36,7 +36,9 @@ export function Preloader() {
           <span className="preloader__ring" />
           <span className="preloader__ring" />
           <span className="preloader__ring" />
-          <SignalMark className="relative size-16 md:size-20" animated />
+          <span className="preloader__badge relative block size-24 overflow-hidden rounded-full md:size-28">
+            <Image src="/brand/logo-256.png" alt="" fill sizes="112px" unoptimized loading="eager" className="object-contain" />
+          </span>
         </div>
         <p className="preloader__label eyebrow text-muted">
           <span className="size-1.5 rounded-full bg-live" /> Connecting {site.platforms.total}+ platforms
