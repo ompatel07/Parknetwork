@@ -97,6 +97,69 @@ export default function ContactPage() {
           ))}
         </div>
 
+        {/* Direct lines to named team members + the Telegram channel */}
+        <div className="container-site mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {c.lines.map((l, i) => (
+            <div
+              key={l.number}
+              data-reveal
+              style={{ ["--d" as string]: `${0.06 + i * 0.06}s` }}
+              className="flex flex-col justify-between gap-6 rounded-[2rem] border border-line bg-surface p-7"
+            >
+              <div>
+                <p className="eyebrow flex items-center gap-2 text-muted">
+                  <Phone className="size-4 text-cyan" aria-hidden /> Direct line
+                </p>
+                <p className="mt-4 font-display text-xl font-semibold">{l.role}</p>
+                <p className="mt-1 font-mono text-[0.95rem] tracking-wide text-ink/85">{l.display}</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <a
+                  href={whatsappHref(`Hi ${site.shortName} ${l.role.toLowerCase()}, `, l.number)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="Chat"
+                  className="flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-[#062b14] transition-transform hover:-translate-y-0.5"
+                >
+                  <MessageCircle className="size-4" aria-hidden /> WhatsApp
+                </a>
+                <a
+                  href={`tel:+${l.number}`}
+                  data-cursor="Call"
+                  className="flex items-center gap-2 rounded-full border border-line px-4 py-2.5 text-sm text-ink/85 transition-colors hover:border-cyan/40 hover:text-ink"
+                >
+                  <Phone className="size-4" aria-hidden /> Call
+                </a>
+              </div>
+            </div>
+          ))}
+          {site.socials
+            .filter((s) => s.platform === "telegram")
+            .map((s) => (
+              <a
+                key={s.href}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor="Join"
+                data-reveal
+                style={{ ["--d" as string]: "0.18s" }}
+                className="group flex flex-col justify-between gap-6 rounded-[2rem] bg-[linear-gradient(135deg,#229ED9,#1c7fc0)] p-7 text-white md:col-span-2 lg:col-span-1"
+              >
+                <div className="flex items-center justify-between">
+                  <p className="eyebrow flex items-center gap-2 text-white/85">
+                    <SocialIcon platform="telegram" className="size-4" /> Telegram channel
+                  </p>
+                  <ArrowUpRight className="size-6 transition-transform duration-500 group-hover:rotate-45" aria-hidden />
+                </div>
+                <div>
+                  <p className="font-display text-xl font-semibold">Join our Telegram</p>
+                  <p className="mt-1 text-white/85">{s.handle} · news, openings and updates</p>
+                </div>
+              </a>
+            ))}
+        </div>
+
         <div className="container-site mt-4" data-reveal>
           <div className="flex flex-col gap-6 rounded-[2rem] border border-line bg-surface p-7 md:flex-row md:items-center md:justify-between">
             <p className="eyebrow text-muted">Official social accounts</p>

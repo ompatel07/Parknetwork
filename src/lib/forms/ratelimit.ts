@@ -1,15 +1,13 @@
 import "server-only";
 
 /**
- * Basic rate limiting: 5 submissions per 10 minutes per IP.
+ * Basic rate limiting: by default 5 attempts per 10 minutes per key (IP).
  * Uses Upstash Redis when configured (shared across serverless instances),
  * otherwise an in-memory map (per instance — fine for low traffic).
  */
-const WINDOW_S = 600;
-const MAX = 5;
 const memory = new Map<string, { count: number; reset: number }>();
 
-export async function rateLimit(key: string): Promise<boolean> {
+export async function rateLimit(key: string, MAX = 5, WINDOW_S = 600): Promise<boolean> {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 

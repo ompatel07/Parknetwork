@@ -5,6 +5,8 @@ import { site, type FormType } from "@/config/site";
 import { schemas } from "@/lib/forms/schemas";
 import { FORMS } from "@/lib/forms/fields";
 import { rateLimit } from "@/lib/forms/ratelimit";
+import { extractContact } from "@/lib/forms/contact";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export type SubmitResult =
   | { ok: true; reference: string; delivered: boolean }
@@ -93,14 +95,45 @@ export async function submitForm(type: FormType, payload: Record<string, unknown
     return { ok: false, error: "Please check the highlighted fields.", fieldErrors };
   }
 
-  let delivered = false;
+  const data = parsed.data as Record<string, unknown>;
+
+  // 1. Email the team (when Resend is set up)
+  let emailed = false;
   try {
-    delivered = await sendEmail(type, parsed.data as Record<string, unknown>, reference);
+    emailed = await sendEmail(type, data, reference);
   } catch {
-    delivered = false;
+    emailed = false;
   }
-  if (!delivered && process.env.RESEND_API_KEY) {
+
+  // 2. Save it for the admin panel (when Supabase is set up)
+  const stored = await storeSubmission(type, data, reference, ip, emailed);
+
+  const delivered = emailed || stored;
+  const deliveryConfigured = !!process.env.RESEND_API_KEY || !!createAdminClient();
+  if (!delivered && deliveryConfigured) {
     return { ok: false, error: "Something went wrong sending your message. Please try again or contact us on WhatsApp." };
   }
   return { ok: true, reference, delivered };
+}
+
+async function storeSubmission(type: FormType, data: Record<string, unknown>, reference: string, ip: string, emailed: boolean) {
+  const db = createAdminClient();
+  if (!db) return false;
+  const { name, email, phone } = extractContact(data);
+  const { consent: _c, ...rest } = data;
+  try {
+    const { error } = await db.from("submissions").insert({
+      reference,
+      form: type,
+      name,
+      email,
+      phone,
+      data: rest,
+      emailed,
+      ip: ip === "unknown" ? null : ip,
+    });
+    return !error;
+  } catch {
+    return false;
+  }
 }

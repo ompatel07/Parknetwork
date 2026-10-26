@@ -73,6 +73,21 @@ export function Footer() {
               <Phone className="size-5 shrink-0 text-cyan" aria-hidden />
               Support {site.contact.phone.display}
             </a>
+            {site.contact.lines.map((l) => (
+              <a
+                key={l.number}
+                href={whatsappHref(`Hi ${site.shortName}, `, l.number)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex items-start gap-3 text-ink/85 transition-colors hover:text-ink"
+              >
+                <Phone className="mt-0.5 size-5 shrink-0 text-cyan" aria-hidden />
+                <span>
+                  {l.display}
+                  <span className="block text-sm text-muted">{l.role}</span>
+                </span>
+              </a>
+            ))}
             <p className="mt-3 text-sm text-muted">{site.contact.supportHours}</p>
             <ul className="mt-6 flex gap-2">
               {site.socials.map((s) => (

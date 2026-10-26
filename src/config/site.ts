@@ -111,10 +111,19 @@ export const site = {
     responseTime: "We aim to reply within 1–2 working days.", // PLACEHOLDER
     /** Set to null to hide */
     address: null as string | null, // PLACEHOLDER
+    /**
+     * CLIENT — direct lines to named team members (Contact page + footer).
+     * `number`: digits only with country code, used for WhatsApp and call links.
+     */
+    lines: [
+      { role: "Customer service manager", display: "+964 786 634 4539", number: "9647866344539" },
+      { role: "Product incharge manager", display: "+94 75 303 0753", number: "94753030753" },
+    ],
   },
 
   /** CLIENT — official social accounts */
   socials: [
+    { platform: "telegram", label: "Telegram", handle: "@ParkLivemanagement", href: "https://t.me/ParkLivemanagement" },
     { platform: "instagram", label: "Instagram", handle: "@park_liv_enetwork", href: "https://www.instagram.com/park_liv_enetwork/" },
     { platform: "linkedin", label: "LinkedIn", handle: "Park Live Network", href: "https://www.linkedin.com/company/higo-live-stream-group-chat/" },
     { platform: "youtube", label: "YouTube", handle: "@bm_sgamer", href: "https://www.youtube.com/@bm_sgamer" },
@@ -133,6 +142,7 @@ export const site = {
     { label: "Services", href: "/services" },
     { label: "Careers", href: "/careers" },
     { label: "Partnership", href: "/partnership" },
+    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ],
 
@@ -142,6 +152,7 @@ export const site = {
       { label: "Services", href: "/services" },
       { label: "Careers", href: "/careers" },
       { label: "Partnership", href: "/partnership" },
+      { label: "Blog", href: "/blog" },
     ],
     support: [
       { label: "Contact Us", href: "/contact" },
@@ -519,8 +530,8 @@ export type Service = Site["services"][number];
 export type Role = Site["roles"][number];
 
 /** Helpers derived from config — use these instead of building links by hand. */
-export const whatsappHref = (message: string = site.contact.whatsapp.greeting) =>
-  `https://wa.me/${site.contact.whatsapp.number}?text=${encodeURIComponent(message)}`;
+export const whatsappHref = (message: string = site.contact.whatsapp.greeting, number: string = site.contact.whatsapp.number) =>
+  `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
 
 export const mailHref = (email: string = site.contact.email, subject?: string) =>
   `mailto:${email}${subject ? `?subject=${encodeURIComponent(subject)}` : ""}`;

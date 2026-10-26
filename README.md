@@ -67,6 +67,42 @@ To use the client's own photos:
 
 Photos load through `next/image` (AVIF/WebP, responsive sizes, lazy by default). `<Frame>` wipes each photo open on scroll and adds a slight parallax.
 
+## Admin panel, blog and database (Supabase)
+
+The site has a private admin panel at **`/admin`** and a public **Blog** at `/blog`. Both use [Supabase](https://supabase.com) for the database, logins and image storage.
+
+### One-time setup
+
+1. **Keys.** In Supabase → Project Settings → API Keys, copy the Project URL, the publishable key and the secret key into `.env.local` (locally) and into Vercel → Settings → Environment Variables (see the table below). Redeploy after adding them.
+2. **Database.** In Supabase → SQL Editor → New query, paste the whole of [`supabase/schema.sql`](supabase/schema.sql) and press **Run**. It creates the tables, security rules and the `blog` image bucket. It is safe to run again.
+3. **First admin.** The first account in the project becomes the admin automatically. Sign in at `/admin` and add everyone else from **Users**.
+4. **Recommended:** in Supabase → Authentication → Sign In / Providers, turn off **Allow new users to sign up**. (Even if it stays on, self-sign-ups get no access until an admin enables them.)
+
+### Roles
+
+| Role | Can do |
+| --- | --- |
+| Admin | Everything: blog posts, form submissions and replies, and managing users |
+| Manager | Blog posts, plus form submissions and replies |
+| Editor | Blog posts only |
+
+### What's in the panel
+
+- **Dashboard:** new submissions, posts and team at a glance.
+- **Blog posts:** write in Markdown with a live preview. Add a cover image and inline images (paste, drop or upload; big photos are shrunk in the browser first). Save drafts, publish, schedule for a future date, unpublish and delete. Published posts appear on `/blog` straight away and in the sitemap.
+- **Submissions:** every website form is saved here, as well as emailed when Resend is set up. You can filter by status or form, search, and export to CSV. Each submission has a status (New, In progress, Replied, Closed), and you can reply by **email** (sent from the site, needs Resend), **WhatsApp** (opens the chat with your message ready to send) or an internal **note**.
+- **Users:** add team members with a password, change name, email or role, set a new password, disable or enable, and delete. The panel won't let you lock yourself out or remove the last admin.
+- **My account:** change your own name, login email and password.
+
+There is no "forgot password" email: an admin resets passwords from **Users**. (Supabase's built-in emails are heavily rate-limited unless you add your own email provider.)
+
+### How it's secured
+
+- Row Level Security is on for every table. Visitors can only read published posts. Submissions are inserted by the server and can only be read by managers and admins.
+- The secret key is only used on the server, and only after checking the signed-in user's role (`src/lib/admin/auth.ts`). Every admin page and action checks the role itself.
+- Disabling a user takes effect immediately, and their login is blocked in Supabase too.
+- `/admin` is excluded from search engines (`robots.txt` and `X-Robots-Tag`).
+
 ## Forms
 
 There are six forms: agency registration, host application, coin seller enquiry, business partnership, customer support, and team role applications.
@@ -74,7 +110,8 @@ There are six forms: agency registration, host application, coin seller enquiry,
 - Fields: `src/lib/forms/fields.ts`. Validation (shared by browser and server): `src/lib/forms/schemas.ts`.
 - Server action: `src/app/actions/submit.ts`. It runs a honeypot check, rate limiting (5 per 10 min per IP), Turnstile verification, Zod validation, then emails the submission via Resend.
 - The four team roles (Super Admin, Admin, Manager, BD) share the team application form; Agency, Coin Seller and Live Host each have their own.
-- Without `RESEND_API_KEY`, forms still validate and show success, with a visible "preview note" that email isn't connected yet.
+- Every submission is saved to Supabase (see the admin panel) and, when Resend is set up, emailed to `contact.formRecipient`.
+- With neither Supabase nor Resend connected, forms still validate and show success, with a visible "preview note" that delivery isn't connected yet.
 
 ## Performance notes
 
@@ -95,7 +132,10 @@ The site is tuned to stay smooth on mid-range phones. When adding features, keep
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | for production | Canonical URL for SEO, sitemap and social images |
-| `RESEND_API_KEY` | to deliver forms | API key from resend.com |
+| `NEXT_PUBLIC_SUPABASE_URL` | for blog + admin | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | for blog + admin | Supabase publishable (or legacy anon) key, safe in the browser |
+| `SUPABASE_SECRET_KEY` | for admin + forms | Supabase secret (or legacy service_role) key. **Server only, never share it** |
+| `RESEND_API_KEY` | to email forms + replies | API key from resend.com |
 | `EMAIL_FROM` | with Resend | Sender on a domain verified in Resend, e.g. `Park Live Network <noreply@parklivenetwork.com>` |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | recommended | Cloudflare Turnstile spam protection; the widget only appears when the site key is set |
 | `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` | optional | Shared rate limiting across serverless instances |
@@ -112,7 +152,10 @@ The site is tuned to stay smooth on mid-range phones. When adding features, keep
 
 ```
 src/
-  app/                 routes, server action, sitemap/robots/manifest/OG image
+  app/(site)/          the public website (pages share the header, footer, particles)
+  app/admin/           the admin panel (login, dashboard, posts, submissions, users, account)
+  app/actions/         website form server action
+  proxy.ts             keeps admin sessions fresh, sends signed-out visitors to /admin/login
   config/site.ts       ← all business data (PLACEHOLDER-marked)
   components/
     world/             the particle world (shapes, shaders, scene store/director)
@@ -122,6 +165,9 @@ src/
     layout/            header, mobile menu, footer
     ui/                buttons, badges, accordion, tabs, sheet…
   lib/                 hooks, GSAP setup, forms (schemas, fields, rate limit)
+  lib/supabase/        Supabase clients (server, browser, admin) + database types
+  lib/admin/           role checks for the admin panel
+supabase/schema.sql    database tables, security rules and storage bucket
   data/world-dots.ts   generated land dots (Natural Earth, public domain)
 ```
 
@@ -133,4 +179,6 @@ src/
 - [ ] Confirm the wording of the seven roles, and permission to show each platform logo
 - [ ] Have the Privacy Policy and Terms reviewed by the client or a lawyer (both pages carry a review banner)
 - [ ] Set up Resend (verified domain) and Turnstile keys
+- [ ] Run `supabase/schema.sql`, add the Supabase keys to Vercel, and change the first admin's email and password
+- [ ] Turn off public sign-ups in Supabase (Authentication → Sign In / Providers)
 - [ ] Connect the domain and set `NEXT_PUBLIC_SITE_URL`
