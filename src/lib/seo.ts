@@ -29,6 +29,8 @@ export function pageMeta({
   type?: "website" | "article";
   images?: { url: string; width?: number; height?: number; alt?: string }[];
 }): Metadata {
+  // Don't repeat the brand when the title already has it
+  if (title.toLowerCase().includes(site.name.toLowerCase())) absoluteTitle = true;
   const fullTitle = absoluteTitle ? title : `${title} | ${site.name}`;
   const og = images?.length ? images : [OG_IMAGE];
   return {

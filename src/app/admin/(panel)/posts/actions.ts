@@ -64,9 +64,16 @@ export async function savePost(_prev: PostFormState, formData: FormData): Promis
     : null;
   if (v.id && !existing) return { error: "This post no longer exists." };
 
-  // URL slug: typed by the author, or made from the title
-  const typed = slugify(v.slug);
-  if (v.slug && !typed) return { error: "Please check the highlighted fields.", fieldErrors: { slug: "Use letters, numbers and dashes." } };
+  // URL slug: typed by the author, or made from the title. If a whole link
+  // was pasted (e.g. "https://www.parklivenetwork.online/blog/my-post"),
+  // keep only its last part; a bare site address means "use the title".
+  const pasted = /^(https?:\/\/|www\.)/i.test(v.slug)
+    ? (v.slug.replace(/^(https?:\/\/)?[^/]+/i, "").split("/").filter(Boolean).pop() ?? "")
+    : v.slug;
+  const cleaned = slugify(pasted);
+  if (pasted && !cleaned) return { error: "Please check the highlighted fields.", fieldErrors: { slug: "Use letters, numbers and dashes." } };
+  // the site's own address typed as a slug ("https-www-parklivenetwork-online") → use the title
+  const typed = /^(https?-+)?(www-+)?parklivenetwork(-online)?$/.test(cleaned) ? "" : cleaned;
   let slug = typed || slugify(v.title) || `post-${Date.now().toString(36)}`;
   const taken = async (s: string) => {
     let q = supabase.from("posts").select("id").eq("slug", s);

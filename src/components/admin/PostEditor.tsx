@@ -258,7 +258,10 @@ export function PostEditor({ post, notice, defaultAuthor }: { post: EditablePost
                   value={shownSlug}
                   onChange={(e) => {
                     setSlugEdited(true);
-                    setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "-"));
+                    let v = e.target.value.trim();
+                    // a whole link was pasted → keep just its last part (empty = use the title)
+                    if (/^(https?:\/\/|www\.)/i.test(v)) v = v.replace(/^(https?:\/\/)?[^/]+/i, "").split("/").filter(Boolean).pop() ?? "";
+                    setSlug(v.toLowerCase().replace(/[^a-z0-9-]/g, "-"));
                   }}
                   maxLength={120}
                   placeholder="made-from-the-title"

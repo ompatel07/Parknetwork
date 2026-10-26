@@ -85,7 +85,7 @@ export default async function PostsPage({ searchParams }: Props) {
                   <th className={th}>Status</th>
                   <th className={cn(th, "hidden md:table-cell")}>Publish date</th>
                   <th className={cn(th, "hidden sm:table-cell")}>Last edited</th>
-                  <th className={th}>
+                  <th className={cn(th, "hidden sm:table-cell")}>
                     <span className="sr-only">Actions</span>
                   </th>
                 </tr>
@@ -97,7 +97,7 @@ export default async function PostsPage({ searchParams }: Props) {
                   return (
                     <tr key={p.id} className="transition-colors hover:bg-white/[0.02]">
                       <td className={td}>
-                        <Link href={`/admin/posts/${p.id}`} className="block max-w-[9.5rem] hover:text-cyan sm:max-w-[28rem]">
+                        <Link href={`/admin/posts/${p.id}`} className="block max-w-[11rem] hover:text-cyan sm:max-w-[28rem]">
                           <span className="block truncate font-medium">{p.title}</span>
                           <span className="block truncate text-xs text-muted">/blog/{p.slug}</span>
                         </Link>
@@ -109,11 +109,11 @@ export default async function PostsPage({ searchParams }: Props) {
                       <td className={cn(td, "hidden whitespace-nowrap text-muted sm:table-cell")}>
                         <LocalTime iso={p.updated_at} mode="relative" />
                       </td>
-                      <td className={cn(td, "text-right whitespace-nowrap")}>
+                      <td className={cn(td, "hidden text-right whitespace-nowrap sm:table-cell")}>
                         <div className="flex justify-end gap-1">
                           {live && (
                             <a href={`/blog/${p.slug}`} target="_blank" rel="noopener noreferrer" className={cn(btn.base, btn.quiet, btn.sm)} title="View on the website">
-                              <ExternalLink className="size-3.5" /> View
+                              <ExternalLink className="size-3.5" aria-hidden /> <span className="sr-only sm:not-sr-only">View</span>
                             </a>
                           )}
                           <Link href={`/admin/posts/${p.id}`} className={cn(btn.base, btn.ghost, btn.sm)}>
