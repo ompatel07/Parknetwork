@@ -74,7 +74,7 @@ export function Leadership({ channel = "05" }: { channel?: string }) {
                     />
                     <span aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(16_14_26/0.85),transparent_40%)]" />
                     {i === 0 && (
-                      <span className="eyebrow absolute top-3 left-3 rounded-md bg-live px-2 py-1 text-white">Founder</span>
+                      <span className="eyebrow absolute top-3 left-3 rounded-md bg-live-deep px-2 py-1 text-white">Founder</span>
                     )}
                   </div>
 

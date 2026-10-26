@@ -16,7 +16,7 @@ function MonitorUI({ cam, live = false }: { cam: string; live?: boolean }) {
       <span
         className={cn(
           "absolute top-4 left-4 rounded-md px-2 py-1 font-mono text-[0.6rem] font-semibold tracking-wider",
-          live ? "bg-live text-white" : "bg-bg/60 text-white/85",
+          live ? "bg-live-deep text-white" : "bg-bg/60 text-white/85",
         )}
       >
         {live ? "PGM" : "PVW"} · {cam}
@@ -116,7 +116,7 @@ export function PageHero({
 
         {/* Photo (phones/tablets) */}
         {main && (
-          <Frame k={main} sizes="94vw" className="mt-10 aspect-[16/10] rounded-[1.5rem] lg:hidden" delay={0.4}>
+          <Frame k={main} sizes="94vw" priority className="mt-10 aspect-[16/10] rounded-[1.5rem] lg:hidden" delay={0.4}>
             <MonitorUI cam="CAM 01" live />
           </Frame>
         )}

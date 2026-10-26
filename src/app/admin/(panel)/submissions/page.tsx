@@ -88,7 +88,7 @@ export default async function SubmissionsPage({ searchParams }: Props) {
             className={cn("flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 text-sm", status === s ? "bg-white/[0.08] text-ink" : "text-muted hover:text-ink")}
           >
             {SUBMISSION_STATUS[s].label}
-            <span className={cn("rounded-full px-1.5 text-xs tabular-nums", s === "new" && statusCounts[s] ? "bg-live text-white" : "bg-white/[0.07]")}>
+            <span className={cn("rounded-full px-1.5 text-xs tabular-nums", s === "new" && statusCounts[s] ? "bg-live-deep text-white" : "bg-white/[0.07]")}>
               {statusCounts[s]}
             </span>
           </Link>

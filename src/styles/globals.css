@@ -19,6 +19,8 @@
   --color-signal: #3d8bff;
   --color-cyan: #4fe3ff;
   --color-live: #ff3d6e;
+  /* same pink, deep enough for small white text (4.6:1 contrast, WCAG AA) */
+  --color-live-deep: #e11d5c;
   --color-ink: #f5f4fa;
   --color-muted: #a09cb5;
   --color-line: rgb(255 255 255 / 0.08);

@@ -73,7 +73,7 @@ export function Shell({
                 <i.icon className={cn("size-[18px]", active ? "text-cyan" : "")} aria-hidden />
                 <span className="flex-1">{i.label}</span>
                 {!!i.badge && (
-                  <span className="grid min-w-5 place-items-center rounded-full bg-live px-1.5 text-[0.7rem] leading-5 font-semibold text-white">
+                  <span className="grid min-w-5 place-items-center rounded-full bg-live-deep px-1.5 text-[0.7rem] leading-5 font-semibold text-white">
                     {i.badge > 99 ? "99+" : i.badge}
                   </span>
                 )}

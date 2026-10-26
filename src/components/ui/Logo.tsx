@@ -15,7 +15,12 @@ export function LogoBadge({ className, priority = false, sizes = "48px" }: { cla
 /** Logo lockup: official badge + "PARK / LIVE NETWORK" wordmark (light, for dark backgrounds). */
 export function Logo({ className, compact = false, priority = false }: { className?: string; compact?: boolean; priority?: boolean }) {
   return (
-    <TransitionLink href="/" aria-label={`${site.name} — home`} className={cn("group inline-flex items-center gap-2.5 rounded-full", className)}>
+    <TransitionLink
+      href="/"
+      // with the wordmark showing, its text is the link name (+ hidden "home")
+      aria-label={compact ? `${site.name} — home` : undefined}
+      className={cn("group inline-flex items-center gap-2.5 rounded-full", className)}
+    >
       <LogoBadge
         priority={priority}
         className="size-10 shadow-[0_0_0_1px_rgb(255_255_255/0.12),0_8px_24px_-8px_rgb(61_139_255/0.6)] transition-transform duration-500 ease-(--ease-signal) group-hover:scale-110 group-hover:rotate-[-8deg] md:size-11"
@@ -26,6 +31,7 @@ export function Logo({ className, compact = false, priority = false }: { classNa
             P<span className="text-signal">A</span>RK
           </span>
           <span className="mt-0.5 text-[0.55rem] font-semibold tracking-[0.3em] text-muted md:text-[0.6rem]">LIVE NETWORK</span>
+          <span className="sr-only"> — home</span>
         </span>
       )}
     </TransitionLink>

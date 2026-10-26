@@ -167,7 +167,7 @@ export function Hero() {
 
       {/* Broadcast lower-third ticker */}
       <div className="fade-up relative z-30 flex h-12 items-stretch border-y border-line bg-bg/95 lg:absolute lg:inset-x-0 lg:bottom-0 lg:border-b-0" style={{ ["--d" as string]: "0.8s" }}>
-        <span className="flex shrink-0 items-center gap-2 bg-live px-4 font-mono text-xs font-semibold tracking-wider text-white">
+        <span className="flex shrink-0 items-center gap-2 bg-live-deep px-4 font-mono text-xs font-semibold tracking-wider text-white">
           <span className="size-1.5 rounded-full bg-white animate-live-pulse" /> ON AIR
         </span>
         <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]">

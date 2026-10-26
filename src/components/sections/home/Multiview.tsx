@@ -124,7 +124,7 @@ export function Multiview() {
                     <span
                       className={cn(
                         "absolute top-3 right-4 rounded-md px-2 py-1 font-mono text-[0.62rem] font-semibold tracking-wider transition-colors duration-300 md:top-3.5 md:right-5",
-                        live ? "bg-live text-white" : "bg-white/10 text-white/70",
+                        live ? "bg-live-deep text-white" : "bg-white/10 text-white/70",
                       )}
                     >
                       {live ? "LIVE" : "PVW"}

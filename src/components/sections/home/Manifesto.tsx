@@ -18,7 +18,7 @@ function PhotoPill({ k, live = false }: { k: PhotoKey; live?: boolean }) {
     >
       <Photo k={k} sizes="220px" className="transition-transform duration-700 ease-(--ease-signal) group-hover/pill:scale-110" />
       {live && (
-        <span className="absolute top-[0.12em] left-[0.18em] flex items-center gap-[0.05em] rounded-full bg-live px-[0.12em] py-[0.02em] font-mono text-[0.16em] font-semibold text-white">
+        <span className="absolute top-[0.12em] left-[0.18em] flex items-center gap-[0.05em] rounded-full bg-live-deep px-[0.12em] py-[0.02em] font-mono text-[0.16em] font-semibold text-white">
           ● LIVE
         </span>
       )}

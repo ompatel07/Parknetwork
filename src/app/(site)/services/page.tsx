@@ -44,7 +44,7 @@ function ServiceBlock({ s, i }: { s: Service; i: number }) {
           >
             <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(7_6_13/0.6),transparent_45%)]" />
             <div aria-hidden className="viewfinder absolute inset-4" />
-            <span className="absolute top-6 left-6 rounded-md bg-live px-2 py-1 font-mono text-[0.62rem] font-semibold tracking-wider text-white">
+            <span className="absolute top-6 left-6 rounded-md bg-live-deep px-2 py-1 font-mono text-[0.62rem] font-semibold tracking-wider text-white">
               LIVE · CH.{String(i + 1).padStart(2, "0")}
             </span>
             <Meter className="absolute right-6 bottom-6" />

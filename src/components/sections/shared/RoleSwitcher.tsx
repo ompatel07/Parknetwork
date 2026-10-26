@@ -127,7 +127,7 @@ export function RoleSwitcher({ channel = "06" }: { channel?: string }) {
                     <div className="overflow-hidden">
                       <div className="relative mb-5 aspect-[16/9] overflow-hidden rounded-[1.25rem]">
                         <Photo k={photoFor(r)} sizes="94vw" />
-                        <span className="eyebrow absolute top-3 left-3 rounded-md bg-live px-2 py-1 text-white">18+</span>
+                        <span className="eyebrow absolute top-3 left-3 rounded-md bg-live-deep px-2 py-1 text-white">18+</span>
                       </div>
                       <Details r={r} compact />
                     </div>
@@ -155,7 +155,7 @@ export function RoleSwitcher({ channel = "06" }: { channel?: string }) {
                 <span className="eyebrow absolute top-4 left-4 rounded-md bg-bg/70 px-2 py-1 text-white/90">
                   Role {String(active + 1).padStart(2, "0")} / {String(roles.length).padStart(2, "0")}
                 </span>
-                <span className="eyebrow absolute top-4 right-4 rounded-md bg-live px-2 py-1 text-white">18+</span>
+                <span className="eyebrow absolute top-4 right-4 rounded-md bg-live-deep px-2 py-1 text-white">18+</span>
                 <div className="absolute inset-x-6 bottom-5 flex items-end justify-between gap-4">
                   <div>
                     <p className="eyebrow text-cyan">{current.subtitle}</p>

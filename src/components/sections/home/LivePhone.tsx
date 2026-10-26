@@ -169,7 +169,7 @@ export function LivePhone({ className }: { className?: string }) {
               <span className="rounded-full bg-cyan px-[2.4cqw] py-[0.9cqw] text-[2.9cqw] font-semibold text-bg">Follow</span>
             </span>
             <span className="ml-auto flex items-center gap-[1.4cqw]">
-              <span className="rounded-[1.4cqw] bg-live px-[1.8cqw] py-[0.6cqw] font-mono text-[2.9cqw] font-semibold text-white">LIVE</span>
+              <span className="rounded-[1.4cqw] bg-live-deep px-[1.8cqw] py-[0.6cqw] font-mono text-[2.9cqw] font-semibold text-white">LIVE</span>
               <span className="flex items-center gap-[1cqw] rounded-[1.4cqw] bg-black/45 px-[1.8cqw] py-[0.6cqw] font-mono text-[2.9cqw] text-white tabular-nums">
                 <Eye className="size-[3.2cqw]" />
                 <span ref={viewersEl}>12,486</span>

@@ -28,11 +28,22 @@ function hasWebGL() {
   }
 }
 
+const START_EVENTS = ["pointerdown", "touchstart", "wheel", "scroll", "keydown"] as const;
+
+/**
+ * Desktop: the world loads as soon as the page is idle.
+ * Phones/tablets: it loads on the first touch or scroll — the 3D engine is
+ * big, so this keeps the first seconds smooth while the page comes to life,
+ * and the particles fade in just as the visitor starts exploring.
+ */
 export function WorldLoader() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    let done = false;
     const go = () => {
+      if (done) return;
+      done = true;
       let off = false;
       try {
         off = localStorage.getItem("pln:noworld") === "1";
@@ -42,12 +53,23 @@ export function WorldLoader() {
       if (!off && hasWebGL()) setCount(particleBudget());
     };
     const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
-    if (w.requestIdleCallback) {
-      const id = w.requestIdleCallback(go, { timeout: 1200 });
-      return () => window.cancelIdleCallback?.(id);
+    const whenIdle = (timeout: number) => (w.requestIdleCallback ? w.requestIdleCallback(go, { timeout }) : window.setTimeout(go, 300));
+
+    const touch = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
+    if (!touch) {
+      const id = whenIdle(1200);
+      return () => {
+        window.cancelIdleCallback?.(id);
+        window.clearTimeout(id);
+      };
     }
-    const t = window.setTimeout(go, 600);
-    return () => window.clearTimeout(t);
+
+    const start = () => {
+      START_EVENTS.forEach((e) => window.removeEventListener(e, start));
+      whenIdle(600);
+    };
+    START_EVENTS.forEach((e) => window.addEventListener(e, start, { passive: true, once: true }));
+    return () => START_EVENTS.forEach((e) => window.removeEventListener(e, start));
   }, []);
 
   return (
