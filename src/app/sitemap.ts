@@ -4,8 +4,11 @@ import { getPublishedPosts } from "@/lib/blog";
 
 const ROUTES = ["", "/about", "/services", "/careers", "/partnership", "/blog", "/contact", "/faq", "/privacy", "/terms"];
 
-/** Rebuilt at most once an hour (publishing a post refreshes it straight away). */
-export const revalidate = 3600;
+/**
+ * Built fresh on every request (one small database query), so published,
+ * edited and deleted posts show up for search engines straight away.
+ */
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();

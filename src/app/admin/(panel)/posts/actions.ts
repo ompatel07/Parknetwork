@@ -39,7 +39,6 @@ const schema = z.object({
 
 function revalidateBlog(...slugs: (string | null | undefined)[]) {
   revalidatePath("/blog");
-  revalidatePath("/sitemap.xml");
   for (const s of new Set(slugs.filter(Boolean))) revalidatePath(`/blog/${s}`);
   revalidatePath("/admin/posts");
   revalidatePath("/admin");
