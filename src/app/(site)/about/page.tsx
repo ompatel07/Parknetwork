@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMeta, breadcrumbs } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import Image from "next/image";
 import { site } from "@/config/site";
 import { PageHero } from "@/components/sections/shared/PageHero";
@@ -16,11 +18,12 @@ import { TiltCard } from "@/components/motion/TiltCard";
 import { ScrubText } from "@/components/motion/ScrubText";
 import { PHOTOS } from "@/data/photos";
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description: site.about.paragraphs[0],
-  alternates: { canonical: "/about" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "About Us – Digital Entertainment Platform Management",
+  description:
+    "Park Live Network is a digital entertainment platform management company: live streaming management, audio chat room management and agency & host recruitment for 70+ apps worldwide.",
+  path: "/about",
+});
 
 const MESH = [
   "radial-gradient(70% 80% at 90% 0%, rgb(124 92 255 / 0.45), transparent 70%), radial-gradient(60% 60% at 0% 100%, rgb(61 139 255 / 0.25), transparent 70%)",
@@ -31,6 +34,7 @@ export default function AboutPage() {
   const a = site.about;
   return (
     <>
+      <JsonLd data={breadcrumbs({ name: "About Us", path: "/about" })} />
       <PageHero
         channel="01"
         label="About Park Live Network"

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMeta, breadcrumbs } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Check } from "lucide-react";
 import { site, type Service } from "@/config/site";
 import { PageHero } from "@/components/sections/shared/PageHero";
@@ -14,12 +16,12 @@ import { Meter } from "@/components/ui/Meter";
 import { media } from "@/config/media";
 import { cn } from "@/lib/cn";
 
-export const metadata: Metadata = {
-  title: "Services",
+export const metadata: Metadata = pageMeta({
+  title: "Live Streaming & Audio Chat Room Management Services",
   description:
-    "Live streaming platform management, audio chat & group voice rooms, dating & social networking apps, short-video platforms, and application & agency network management.",
-  alternates: { canonical: "/services" },
-};
+    "Live streaming management, audio chat room management, dating & social apps, short-video platforms and agency network management — digital entertainment platform services worldwide.",
+  path: "/services",
+});
 
 /** Where each service's main call-to-action should lead */
 const NEXT: Record<string, { label: string; href: string }> = {
@@ -112,12 +114,33 @@ function ServiceBlock({ s, i }: { s: Service; i: number }) {
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd data={[
+        breadcrumbs({ name: "Services", path: "/services" }),
+        {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Park Live Network services",
+          itemListElement: site.services.map((s, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+              "@type": "Service",
+              name: s.title,
+              description: s.description,
+              serviceType: s.title,
+              url: `${site.url}/services#${s.slug}`,
+              areaServed: "Worldwide",
+              provider: { "@id": `${site.url}/#organization` },
+            },
+          })),
+        },
+      ]} />
       <PageHero
         channel="02"
         label="Services"
         title="Platform"
         accent="management services."
-        lead="We manage live streaming, audio chat, dating, social and short-video applications — with recruitment, agency networks and growth strategies that scale."
+        lead="Live streaming management, audio chat room management and agency and host recruitment for live streaming, audio chat, dating, social and short-video applications — with growth strategies that scale."
         scene="rings"
         align="left"
         dim={0.5}

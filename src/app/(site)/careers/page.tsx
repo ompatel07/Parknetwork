@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMeta, breadcrumbs } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Suspense } from "react";
 import Link from "next/link";
 import { GraduationCap, Headphones, ShieldCheck } from "lucide-react";
@@ -13,11 +15,12 @@ import { Accordion } from "@/components/ui/Accordion";
 import { Frame } from "@/components/ui/Photo";
 import type { PhotoKey } from "@/config/media";
 
-export const metadata: Metadata = {
-  title: "Careers — Join Our Team",
-  description: "Open roles at Park Live Network: Super Admin, Admin, Manager, BD, Agency, Coin Seller and Live Host. Free to apply, 18+ only.",
-  alternates: { canonical: "/careers" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Careers – Agency & Host Recruitment",
+  description:
+    "Agency and host recruitment at Park Live Network: apply as Live Host, Agency, Coin Seller, BD, Manager, Admin or Super Admin. Free to apply, 18+ only, worldwide.",
+  path: "/careers",
+});
 
 /* PLACEHOLDER copy — client to confirm */
 const WHY: { icon: typeof ShieldCheck; title: string; text: string; photo: PhotoKey }[] = [
@@ -29,12 +32,13 @@ const WHY: { icon: typeof ShieldCheck; title: string; text: string; photo: Photo
 export default function CareersPage() {
   return (
     <>
+      <JsonLd data={breadcrumbs({ name: "Careers", path: "/careers" })} />
       <PageHero
         channel="03"
         label="Join our team"
         title="Your voice,"
         accent="our network."
-        lead="Join a network of 5,000 professionals. Seven roles — from Live Host and Agency to BD, Manager, Admin and Super Admin. Choose yours, check the requirements and apply in minutes. Applying is always free."
+        lead="Agency and host recruitment for a network of 5,000 professionals. Seven roles — from Live Host and Agency to BD, Manager, Admin and Super Admin. Choose yours, check the requirements and apply in minutes. Applying is always free."
         scene="dust"
         dim={0.6}
         photos={["ringlight-man", "headphones-night"]}

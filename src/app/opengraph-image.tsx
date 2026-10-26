@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { site } from "@/config/site";
 
-export const alt = `${site.name} — ${site.tagline}`;
+export const alt = site.seo.title;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -37,8 +37,8 @@ export default async function OpengraphImage() {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 30, letterSpacing: 6, color: "#4FE3FF" }}>{site.hero.eyebrow.toUpperCase()}</div>
           <div style={{ marginTop: 12, fontSize: 84, fontWeight: 800, letterSpacing: -3, lineHeight: 0.92 }}>PARK LIVE NETWORK</div>
-          <div style={{ marginTop: 14, fontSize: 48, fontStyle: "italic", color: "#8f7bff" }}>{`${site.hero.title} ${site.hero.accent}`}</div>
-          <div style={{ marginTop: 22, fontSize: 26, color: "#A09CB5" }}>{site.hero.intro}</div>
+          <div style={{ marginTop: 14, fontSize: 46, fontStyle: "italic", color: "#8f7bff" }}>Live Streaming & Audio Chat Management</div>
+          <div style={{ marginTop: 22, fontSize: 26, color: "#A09CB5" }}>Agencies · Hosts · Creators · Platforms — worldwide</div>
         </div>
       </div>
     ),

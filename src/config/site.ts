@@ -47,7 +47,27 @@ export const site = {
   tagline: "Connecting Digital Platforms. Empowering Global Communities.", // CLIENT
   slogan: "Connecting Platforms. Empowering People. Growing Globally.", // CLIENT
   description:
-    "Park Live Network is a digital platform management and network development company for live streaming, audio chat, dating, social and short-video applications — 70+ apps managed and 500,000+ active users across our network.", // CLIENT
+    "Park Live Network connects agencies, managers, creators, hosts, and digital entertainment professionals worldwide through digital entertainment platform management and recruitment.", // CLIENT (SEO brief)
+
+  /** Search engines + link previews — CLIENT SEO brief */
+  seo: {
+    /** Home page title, exactly as requested */
+    title: "Park Live Network | Live Streaming & Audio Chat Management",
+    keywords: [
+      "Park Live Network",
+      "Live Streaming Management",
+      "Audio Chat Room Management",
+      "Agency and Host Recruitment",
+      "Digital Entertainment Platform Management",
+      "live streaming agency",
+      "host recruitment",
+      "audio chat rooms",
+      "voice chat platform management",
+      "live streaming app management",
+    ],
+    /** Date of the last content update — used as the sitemap's lastmod for static pages */
+    updated: "2026-10-27",
+  },
   /**
    * Public address used in canonical links, the sitemap, share links and
    * link previews. NEXT_PUBLIC_SITE_URL overrides it if ever needed.
@@ -56,9 +76,9 @@ export const site = {
 
   /** Homepage banner — CLIENT */
   hero: {
-    eyebrow: "Global digital network",
+    eyebrow: "Live streaming management",
     title: "Your global partner in",
-    accent: "digital platform management.",
+    accent: "digital entertainment platform management.",
     intro: "Managing 70+ applications. Connecting 500,000+ active users. Building a global professional network.",
     categories: ["Live Streaming", "Audio Chat", "Social Networking", "Dating Apps", "Short Videos"],
   },

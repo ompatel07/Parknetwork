@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
+import { pageMeta, breadcrumbs } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { site, type FaqCategory } from "@/config/site";
 import { PageHero } from "@/components/sections/shared/PageHero";
 import { GoLive } from "@/components/sections/home/GoLive";
 import { Accordion } from "@/components/ui/Accordion";
 
-export const metadata: Metadata = {
-  title: "FAQ",
-  description: "Answers about applying, verification, agencies, coin sellers, support and safety at Park Live Network.",
-  alternates: { canonical: "/faq" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "FAQ – Live Streaming, Agencies & Host Recruitment",
+  description:
+    "Answers about applying, verification, agency and host recruitment, coin sellers, support and safety at Park Live Network.",
+  path: "/faq",
+});
 
 const ORDER: FaqCategory[] = ["General", "Applying", "Agencies & partners", "Support & safety"];
 const slug = (c: string) => c.toLowerCase().replace(/[^a-z]+/g, "-");
@@ -24,7 +27,8 @@ export default function FaqPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={breadcrumbs({ name: "FAQ", path: "/faq" })} />
+      <JsonLd data={jsonLd} />
       <PageHero
         channel="06"
         label="FAQ"

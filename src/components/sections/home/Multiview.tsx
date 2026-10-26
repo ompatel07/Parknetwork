@@ -61,7 +61,8 @@ export function Multiview() {
           </div>
           <div className="lg:col-span-4 lg:col-start-9" data-reveal style={{ ["--d" as string]: "0.1s" }}>
             <p className="text-lead text-muted">
-              From live streaming to short video — the management, networks and growth strategies digital platforms need.
+              Live streaming management, audio chat room management, agency and host recruitment — the networks and growth
+              strategies digital entertainment platforms need.
             </p>
             <div className="mt-6">
               <Button href="/services" variant="link">

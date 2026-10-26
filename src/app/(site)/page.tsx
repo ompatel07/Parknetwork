@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { site } from "@/config/site";
+import { pageMeta } from "@/lib/seo";
 import { Hero } from "@/components/sections/home/Hero";
 import { Manifesto } from "@/components/sections/home/Manifesto";
 import { Multiview } from "@/components/sections/home/Multiview";
@@ -11,6 +13,8 @@ import { Ecosystem } from "@/components/sections/shared/Ecosystem";
 import { WhyChoose } from "@/components/sections/shared/WhyChoose";
 import { Leadership } from "@/components/sections/shared/Leadership";
 import { VelocityMarquee } from "@/components/motion/VelocityMarquee";
+
+export const metadata: Metadata = pageMeta({ title: site.seo.title, description: site.description, path: "/", absoluteTitle: true });
 
 export default function HomePage() {
   return (

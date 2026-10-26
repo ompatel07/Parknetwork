@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { site } from "@/config/site";
 import { LegalPage } from "@/components/sections/shared/LegalPage";
 
-export const metadata: Metadata = {
-  title: "Terms & Conditions",
-  description: `The terms for using the ${site.name} website.`,
-  alternates: { canonical: "/terms" },
-};
+export const metadata: Metadata = pageMeta({ title: "Terms & Conditions", description: `The terms and conditions for using the ${site.name} website, applying for roles, registering an agency and contacting our team.`, path: "/terms" });
 
 /* PLACEHOLDER — TO BE REVIEWED BY CLIENT/LEGAL before launch */
 export default function TermsPage() {

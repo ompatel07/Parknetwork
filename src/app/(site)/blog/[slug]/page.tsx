@@ -9,6 +9,8 @@ import { PostCard } from "@/components/blog/PostCard";
 import { ShareRow } from "@/components/blog/ShareRow";
 import { TransitionLink } from "@/components/motion/TransitionLink";
 import { Button } from "@/components/ui/Button";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbs, pageMeta } from "@/lib/seo";
 
 /** Re-checked at most once a minute; editing in the admin refreshes it instantly. */
 export const revalidate = 60;
@@ -24,18 +26,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPublishedPost(slug);
   if (!post) return { title: "Post not found", robots: { index: false } };
-  return {
+  const base = pageMeta({
     title: post.title,
-    description: post.excerpt || undefined,
-    alternates: { canonical: `/blog/${post.slug}` },
+    description: post.excerpt || `${post.title} — from the ${site.name} blog.`,
+    path: `/blog/${post.slug}`,
+    keywords: post.tags,
+    type: "article",
+    images: post.cover_url ? [{ url: post.cover_url, alt: post.cover_alt || post.title }] : undefined,
+  });
+  return {
+    ...base,
     openGraph: {
+      ...base.openGraph,
       type: "article",
-      title: post.title,
-      description: post.excerpt || undefined,
       publishedTime: post.published_at ?? undefined,
       modifiedTime: post.updated_at,
+      authors: [post.author_name || site.name],
       tags: post.tags,
-      images: post.cover_url ? [{ url: post.cover_url, alt: post.cover_alt || post.title }] : undefined,
     },
   };
 }
@@ -51,23 +58,24 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+      <JsonLd
+        data={[
+          {
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             headline: post.title,
             description: post.excerpt,
-            image: post.cover_url ?? undefined,
+            image: post.cover_url ?? `${site.url}/opengraph-image`,
             datePublished: post.published_at,
             dateModified: post.updated_at,
             author: { "@type": post.author_name ? "Person" : "Organization", name: author },
-            publisher: { "@type": "Organization", name: site.name, logo: { "@type": "ImageObject", url: `${site.url}/brand/logo.png` } },
+            publisher: { "@id": `${site.url}/#organization` },
             mainEntityOfPage: url,
             keywords: post.tags.join(", "),
-          }).replace(/</g, "\\u003c"),
-        }}
+            inLanguage: "en",
+          },
+          breadcrumbs({ name: "Blog", path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }),
+        ]}
       />
 
       <article data-scene="dust" data-scene-dim="0.35" className="relative pt-[calc(var(--header-h)+3rem)] pb-(--section-y) md:pt-[calc(var(--header-h)+4.5rem)]">

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMeta, breadcrumbs } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { ArrowUpRight, Clock, LifeBuoy, Mail, MapPin, MessageCircle, Phone, ShieldAlert } from "lucide-react";
 import { mailHref, site, whatsappHref } from "@/config/site";
 import { PageHero } from "@/components/sections/shared/PageHero";
@@ -9,16 +11,18 @@ import { TiltCard } from "@/components/motion/TiltCard";
 import { SmartForm } from "@/components/forms/SmartForm";
 import { Frame } from "@/components/ui/Photo";
 
-export const metadata: Metadata = {
-  title: "Contact Us",
-  description: `Contact ${site.name} on WhatsApp, by email or through our support form.`,
-  alternates: { canonical: "/contact" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Contact Us – Support, Recruitment & Partnerships",
+  description:
+    "Contact Park Live Network on WhatsApp, Telegram or our support form for live streaming management, agency and host recruitment, partnerships and support.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   const c = site.contact;
   return (
     <>
+      <JsonLd data={breadcrumbs({ name: "Contact", path: "/contact" })} />
       <PageHero
         channel="05"
         label="Contact"

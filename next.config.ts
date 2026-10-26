@@ -25,6 +25,18 @@ const nextConfig: NextConfig = {
         ]
       : [],
   },
+  // The old Vercel address shows the same site — send people and Google to
+  // the real domain so there's one address to index (no duplicate content).
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "parknetwork-olive.vercel.app" }],
+        destination: "https://www.parklivenetwork.online/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

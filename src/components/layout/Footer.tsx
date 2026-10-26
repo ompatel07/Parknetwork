@@ -43,6 +43,10 @@ export function Footer() {
           <div className="md:col-span-5 lg:col-span-4">
             <Logo />
             <p className="mt-6 max-w-sm text-muted">{site.tagline}</p>
+            <p className="mt-3 max-w-sm text-sm text-muted">
+              Live streaming management, audio chat room management, agency and host recruitment and digital entertainment
+              platform management — worldwide.
+            </p>
             <LiveBadge className="mt-6">70+ apps · 500K+ users · Global</LiveBadge>
           </div>
 

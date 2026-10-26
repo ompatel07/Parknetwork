@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMeta, breadcrumbs } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/config/site";
 import { getPublishedPosts } from "@/lib/blog";
 import { PageHero } from "@/components/sections/shared/PageHero";
@@ -9,11 +11,12 @@ import { Button } from "@/components/ui/Button";
 /** Re-checked at most once a minute; publishing in the admin refreshes it instantly. */
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description: `News, insights and updates from ${site.name} — live streaming, audio chat, creators, agencies and platform growth.`,
-  alternates: { canonical: "/blog" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Blog – Live Streaming & Entertainment Insights",
+  description:
+    "News and insights on live streaming management, audio chat rooms, agencies, hosts and digital entertainment platforms from Park Live Network.",
+  path: "/blog",
+});
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
@@ -22,6 +25,7 @@ export default async function BlogPage() {
 
   return (
     <>
+      <JsonLd data={breadcrumbs({ name: "Blog", path: "/blog" })} />
       <PageHero
         channel="06"
         label="Blog"

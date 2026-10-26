@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMeta, breadcrumbs } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Check, FileText, Handshake, Info, Rocket, UserRoundCheck } from "lucide-react";
 import { site } from "@/config/site";
 import { PageHero } from "@/components/sections/shared/PageHero";
@@ -13,11 +15,12 @@ import { Ecosystem } from "@/components/sections/shared/Ecosystem";
 import { media } from "@/config/media";
 import { Frame } from "@/components/ui/Photo";
 
-export const metadata: Metadata = {
-  title: "Agency & Partnerships",
-  description: "Partnership opportunities with Park Live Network for application owners, agencies, investors and creators. Transparent terms and structured onboarding.",
-  alternates: { canonical: "/partnership" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Agency & Platform Partnerships",
+  description:
+    "Partner with Park Live Network: agencies, application owners, investors and creators. Transparent terms, structured onboarding and global digital entertainment growth.",
+  path: "/partnership",
+});
 
 /* PLACEHOLDER copy — client to confirm */
 const BENEFITS = [
@@ -50,6 +53,7 @@ const COMMITMENTS = [
 export default function PartnershipPage() {
   return (
     <>
+      <JsonLd data={breadcrumbs({ name: "Partnership", path: "/partnership" })} />
       <PageHero
         channel="04"
         label="Agency & partnerships"
