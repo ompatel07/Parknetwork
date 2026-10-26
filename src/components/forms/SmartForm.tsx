@@ -25,7 +25,7 @@ function Label({ f }: { f: FieldDef }) {
   return (
     <span className="eyebrow flex items-center justify-between text-muted">
       {f.label}
-      {f.optional && <span className="normal-case tracking-normal text-muted/60">optional</span>}
+      {f.optional && <span className="normal-case tracking-normal text-muted">optional</span>}
     </span>
   );
 }

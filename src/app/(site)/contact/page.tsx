@@ -174,7 +174,7 @@ export default function ContactPage() {
                   >
                     <SocialIcon platform={s.platform} className="size-4" />
                     <span>
-                      {s.label} <span className="text-muted/70">{s.handle}</span>
+                      {s.label} <span className="text-muted">{s.handle}</span>
                     </span>
                   </a>
                 </li>

@@ -112,7 +112,7 @@ export function OnAirReel({ channel = "05" }: { channel?: string }) {
           <ChannelLabel channel={channel}>On air</ChannelLabel>
           <RevealHeading title="Moments" accent="on air." className="mt-6 text-d1 uppercase" />
         </div>
-        <div className="no-scrollbar mt-12 overflow-x-auto">
+        <div tabIndex={0} role="region" aria-label="Moments on air — scroll sideways" className="no-scrollbar mt-12 overflow-x-auto focus-visible:outline-2 focus-visible:outline-cyan">
           <div className="flex w-max snap-x snap-mandatory gap-4 px-(--gutter)">
             {ITEMS.map((it, i) => (
               <figure key={it.key} className="relative aspect-[3/4] w-[70vw] shrink-0 snap-start overflow-hidden rounded-[1.4rem] sm:w-[40vw] lg:w-[22vw]">

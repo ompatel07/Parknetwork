@@ -135,7 +135,7 @@ export function Ecosystem({ channel = "03" }: { channel?: string }) {
               })}
             </div>
           </div>
-          <p className="mx-auto mt-6 max-w-md text-center text-xs text-muted/80">{p.disclaimer}</p>
+          <p className="mx-auto mt-6 max-w-md text-center text-xs text-muted">{p.disclaimer}</p>
         </div>
       </div>
     </section>

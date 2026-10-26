@@ -109,7 +109,7 @@ export function RoleSwitcher({ channel = "06" }: { channel?: string }) {
                       >
                         {r.title}
                       </span>
-                      <span className={cn("eyebrow mt-1.5 block transition-colors", on ? "text-cyan" : "text-muted/70")}>{r.subtitle}</span>
+                      <span className={cn("eyebrow mt-1.5 block transition-colors", on ? "text-cyan" : "text-muted")}>{r.subtitle}</span>
                     </span>
                     <span
                       className={cn(

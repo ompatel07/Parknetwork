@@ -31,7 +31,7 @@ export function Leadership({ channel = "05" }: { channel?: string }) {
       {/* rail */}
       <div className="relative mt-14 md:mt-20">
         <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgb(255_255_255/0.18),transparent)]" />
-        <ul data-reveal className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-(--gutter) pb-10 lg:container-site lg:grid lg:grid-cols-5 lg:gap-5 lg:overflow-visible lg:pb-0">
+        <ul data-reveal tabIndex={0} aria-label="Leadership team" className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-(--gutter) pb-10 lg:container-site lg:grid lg:grid-cols-5 lg:gap-5 lg:overflow-visible lg:pb-0">
           {team.map((m, i) => (
             <li
               key={m.name}
