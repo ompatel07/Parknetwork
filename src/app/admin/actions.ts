@@ -9,10 +9,10 @@ import { rateLimit } from "@/lib/forms/ratelimit";
 
 export type LoginState = { error?: string; email?: string } | null;
 
-/** Only redirect back inside the admin panel (never to another site). */
+/** Only redirect back inside the admin panel (never to another site or an odd path). */
 function safeNext(v: FormDataEntryValue | null) {
   const s = typeof v === "string" ? v : "";
-  return s.startsWith("/admin") && !s.startsWith("//") && !s.includes("\\") ? s : "/admin";
+  return /^\/admin(\/[\w\-/]*)?(\?[\w\-=&%.]*)?$/.test(s) && !s.includes("..") && !s.includes("//") ? s : "/admin";
 }
 
 export async function signIn(_prev: LoginState, formData: FormData): Promise<LoginState> {
@@ -23,7 +23,9 @@ export async function signIn(_prev: LoginState, formData: FormData): Promise<Log
 
   const h = await headers();
   const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "unknown";
-  if (!(await rateLimit(`login:${ip}`, 10, 600))) {
+  // Slow down password guessing: 10 tries per account, and 30 per network
+  // (a whole office may share one internet connection) every 10 minutes
+  if (!(await rateLimit(`login-email:${email}`, 10, 600)) || !(await rateLimit(`login:${ip}`, 30, 600))) {
     return { error: "Too many sign-in attempts. Please wait a few minutes and try again.", email };
   }
 

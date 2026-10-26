@@ -48,7 +48,17 @@ export const site = {
   slogan: "Connecting Platforms. Empowering People. Growing Globally.", // CLIENT
   description:
     "Park Live Network is a digital platform management and network development company for live streaming, audio chat, dating, social and short-video applications — 70+ apps managed and 500,000+ active users across our network.", // CLIENT
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.parklivenetwork.com", // PLACEHOLDER domain
+  /**
+   * Public address used in canonical links, the sitemap, share links and
+   * link previews. Set NEXT_PUBLIC_SITE_URL once the real domain is live;
+   * until then Vercel's production address is used automatically.
+   */
+  url: (
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://www.parklivenetwork.com") // PLACEHOLDER domain
+  ).replace(/\/$/, ""),
 
   /** Homepage banner — CLIENT */
   hero: {

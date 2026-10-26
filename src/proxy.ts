@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { supabasePublishableKey, supabaseUrl } from "@/lib/supabase/env";
+import { sessionCookieOptions, supabasePublishableKey, supabaseUrl } from "@/lib/supabase/env";
 
 /**
  * Runs before every /admin request:
@@ -14,6 +14,7 @@ export async function proxy(request: NextRequest) {
   if (!supabaseUrl || !supabasePublishableKey) return response;
 
   const supabase = createServerClient(supabaseUrl, supabasePublishableKey, {
+    cookieOptions: sessionCookieOptions,
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll: (list, headers) => {

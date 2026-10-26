@@ -24,7 +24,12 @@ const schema = z.object({
   slug: z.string().trim().max(120).optional().default(""),
   excerpt: z.string().trim().max(400, "Keep the summary under 400 characters.").default(""),
   content: z.string().max(200_000, "The post is too long.").default(""),
-  cover_url: z.string().trim().url("That doesn't look like a valid image link.").or(z.literal("")).default(""),
+  cover_url: z
+    .string()
+    .trim()
+    .regex(/^https?:\/\/[^\s"'<>]+$/i, "That doesn't look like a valid image link.")
+    .or(z.literal(""))
+    .default(""),
   cover_alt: z.string().trim().max(200).default(""),
   tags: z.string().default(""),
   author_name: z.string().trim().max(80).default(""),

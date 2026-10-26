@@ -10,6 +10,18 @@ export const supabasePublishableKey =
 /** False until the Supabase URL and publishable key are set. */
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabasePublishableKey);
 
+/**
+ * Login session cookies: unreadable by page scripts (httpOnly — nothing in
+ * the browser needs them; signing in/out happens on the server) and
+ * HTTPS-only when hosted on Vercel.
+ */
+export const sessionCookieOptions = {
+  httpOnly: true,
+  secure: !!process.env.VERCEL,
+  sameSite: "lax" as const,
+  path: "/",
+};
+
 /** Public bucket that holds blog images (created by supabase/schema.sql). */
 export const BLOG_BUCKET = "blog";
 
